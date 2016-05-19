@@ -3,15 +3,20 @@
 @main("Student update") {
 <div class="panel panel-default">
 		<div class="panel-body">
-		<form method="POST" action="@routes.Application.updateStudentPost()">
-		<input type="hidden" value="@studentForm.get.getId()" name="id" />
+		<form method="POST" action="@routes.Application.updateStudentPost(id)">
+		<input type="hidden" value="@id" name="id" />
 		<fieldset>
         	<legend>@Messages.get("actor.tile.pageUpdateStudent")</legend>
 				<div class="form-group">
 					<table class="table" border=2px>
 						<tr>
 							<td><label>@Messages.get("actor.lable.name")</label></td>
-							<td><input type="text"  value="@studentForm.get.getName()" name="name" id="studentName" class="form-control" required="required"/></td>
+							<td><input type="text"  value="@studentForm.get.getName()" name="name" id="studentName" class="form-control"/></td>
+  							@if(studentForm.hasErrors) {
+ 								@studentForm("name").error.get.message
+ 								@studentForm("birthDate").error.get.message
+ 								@studentForm("address").error.get.message
+ 							}
   						</tr>
 	
 						<tr>

@@ -132,14 +132,18 @@ public class Application extends Controller {
 	 * @return Result This method redirects to createAndList.scala.html
 	 */
 	@Transactional(readOnly=false)
-	public Result updateStudentPost() {
-		Student studentForm = formFactory.form(Student.class).bindFromRequest().get();
-		Student t = JPA.em().find(Student.class, studentForm.getId());
-		t.setName(studentForm.getName());
-		t.setAddress(studentForm.getAddress());
-		t.setBirthDate(studentForm.getBirthDate());
-		t.setDepartment(studentForm.getDepartment());
-		t.setGender(studentForm.getGender());
+	public Result updateStudentPost(Long id) {
+		Form<Student> studentForm = formFactory.form(Student.class).bindFromRequest();
+		if (studentForm.hasErrors()) {
+			return badRequest(views.html.updateStudent.render(id, studentForm, departments, sex));
+		}
+		Student student = studentForm.get();
+		Student t = JPA.em().find(Student.class, student.getId());
+		t.setName(student.getName());
+		t.setAddress(student.getAddress());
+		t.setBirthDate(student.getBirthDate());
+		t.setDepartment(student.getDepartment());
+		t.setGender(student.getGender());
 		return redirect(routes.Application.listStudent());
 	}	
 	
