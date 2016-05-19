@@ -1,8 +1,6 @@
 @(studentForm: Form[Student], departments: List[String], sex: List[String])
 @import play.i18n._
 @main("Student Add") {
-<a href="/changeLanguage/en/addStudent/0" id="en">English</a>
-<a href="/changeLanguage/ja/addStudent/0" id="ja">Japanese</a>
 <div class="panel panel-default">
 		<div class="panel-body">
 		<form method="POST" action="@routes.Application.saveStudent()">

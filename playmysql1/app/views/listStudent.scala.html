@@ -1,8 +1,6 @@
 @(students:List[Student])
 @import play.i18n._
 @main("Student CRUD") {
-	<a href="/changeLanguage/en/listStudent/0" id="en">English</a>
-   	<a href="/changeLanguage/ja/listStudent/0" id="ja">Japanese</a>
 	<a id='addBtnId' class="btn btn-primary" href="/student/add">@Messages.get("actor.title.addStudent")</a>
 	<div class="panel panel-default">
 		<div class="panel-body">

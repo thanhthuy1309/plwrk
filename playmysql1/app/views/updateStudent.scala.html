@@ -1,8 +1,6 @@
 @(id: Long, studentForm: Form[Student], departments: List[String], sex: List[String])
 @import play.i18n._
 @main("Student update") {
-<a href="/changeLanguage/en/updateStudent/@studentForm.get.getId()" id="en">English</a>
-<a href="/changeLanguage/ja/updateStudent/@studentForm.get.getId()" id="ja">Japanese</a>
 <div class="panel panel-default">
 		<div class="panel-body">
 		<form method="POST" action="@routes.Application.updateStudentPost()">

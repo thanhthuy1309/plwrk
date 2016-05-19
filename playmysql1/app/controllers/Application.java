@@ -26,7 +26,6 @@ public class Application extends Controller {
     
     static List<String> departments;
     static List<String> sex;
-
     static {
     	departments = new ArrayList<String>();
     	departments.add("Information Technology");
@@ -144,14 +143,9 @@ public class Application extends Controller {
 		return redirect(routes.Application.listStudent());
 	}	
 	
-	public Result changeLanguage(String lang, String page, int id) {
+	public Result changeLanguage(String lang) {
 		ctx().changeLang(new Lang(Lang.forCode(lang)));
-		if (page.equals("updateStudent")){
-			return redirect(routes.Application.updateStudentGet(id));
-		} else if (page.equals("addStudent")){
-			return redirect(routes.Application.addStudentGet());
-		}
-		return redirect(routes.Application.listStudent());
+		return redirect(request().getHeader("referer"));
 	}
 	
 }
