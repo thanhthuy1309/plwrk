@@ -1,0 +1,45 @@
+@(students:List[Student])
+@import play.i18n._
+@main("Student CRUD") {
+	<a href="/changeLanguage/en/listStudent/0" id="en">English</a>
+   	<a href="/changeLanguage/ja/listStudent/0" id="ja">Japanese</a>
+	<a id='addBtnId' class="btn btn-primary" href="/student/add">@Messages.get("actor.title.addStudent")</a>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<fieldset>
+				<legend>@Messages.get("actor.title.pageList")</legend>
+				<div id="wrapper">
+					<table class="table" border=2px>
+						<thead>
+							<tr>
+								<th>@Messages.get("actor.table.id")</th>
+								<th>@Messages.get("actor.table.name")</th>
+								<th>@Messages.get("actor.table.birthDate")</th>
+								<th>@Messages.get("actor.table.gender")</th>
+								<th>@Messages.get("actor.table.address")</th>
+								<th>@Messages.get("actor.table.department")</th>
+								<th>@Messages.get("actor.table.operations")</th>
+							</tr>
+						</thead>
+						<tbody id="students">
+							@for(index<- 0 to students.size -1) {
+								<tr>
+									<td>@(index +1)</td>
+									<td>@students(index).getName()</td>
+									<td>@students(index).getBirthDate</td>
+									<td>@students(index).getGender</td>
+									<td>@students(index).getAddress</td>
+									<td>@students(index).getDepartment</td>
+									<td>
+										<a id='updateBtnId'  class='btn btn-primary' href='/student/update/@students(index).getId'> @Messages.get("actor.button.update")</a>&nbsp
+										<a id='deleteBtnId'  class='btn btn-danger' onclick="confirmDelete();"> @Messages.get("actor.button.delete")</a>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+}

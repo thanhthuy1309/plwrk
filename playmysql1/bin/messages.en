@@ -1,0 +1,21 @@
+actor.name.required = This {0} is required.
+actor.title.addStudent = Add Student
+actor.title.pageList = List of Students
+actor.table.id = Id
+actor.table.name = Name
+actor.table.birthDate = Birth Date
+actor.table.gender = Gender
+actor.table.address = Address
+actor.table.department = Department
+actor.table.operations = Operations
+actor.button.update = Update
+actor.button.delete = Delete
+
+actor.tile.pageUpdateStudent = Update Existing Student
+actor.tile.pageAddStudent = Create New Student
+actor.lable.name = Name :
+actor.lable.birthDate = Birth Date :
+actor.lable.gender = Gender :
+actor.lable.address = Address :
+actor.lable.department = Department :
+actor.button.cancel = Cancel
