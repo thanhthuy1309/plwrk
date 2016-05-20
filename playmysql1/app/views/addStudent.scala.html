@@ -6,23 +6,21 @@
 		<form method="POST" action="@routes.Application.saveStudent()">
 		<fieldset>
         	<legend>@Messages.get("actor.tile.pageAddStudent")</legend>
+				@if(studentForm.hasErrors) {
+					@if(studentForm.errors.size > 0) {
+						@for((key,value) <- studentForm.errors) {
+							@for(err <- value) {
+	                        @err.message().toString()
+	                    }
+						}
+					}
+				}
 				<div class="form-group">
 					<table class="table" border=2px>
 						<tr>
 							<td><label>@Messages.get("actor.lable.name")</label></td>
  							
 							<td><input type="text"  value="@studentForm("name").value" placeholder="Pleace input name" name="name" id="studentName" class="form-control" /></td>
- 								@if(studentForm("name").hasErrors) {
- 									@studentForm("name").error.get.message
- 								}
- 								
- 								@if(studentForm("birthDate").hasErrors) {
- 									@studentForm("birthDate").error.get.message
- 								}
- 								
- 								@if(studentForm("address").hasErrors) {
- 									@studentForm("address").error.get.message
- 								}
   						</tr>
 	
 						<tr>
