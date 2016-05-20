@@ -3,9 +3,12 @@ package controllers;
 import static play.libs.Json.toJson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
+import javax.persistence.Query;
 
 import models.Person;
 import models.Student;
@@ -18,6 +21,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 import dto.PersonDto;
+import dto.StudentDto;
 
 public class Application extends Controller {
 
@@ -65,12 +69,85 @@ public class Application extends Controller {
     }
 
     @Transactional(readOnly = true)
-    public Result listStudent() {
-    	List<Student> students = (List<Student>) JPA.em().createQuery("select s from Student s").getResultList();
-        return ok(views.html.listStudent.render(students));
+    public Result listStudent(int page) {
+    	String sql = "select s from Student s";
+    	
+    	StudentDto s = new StudentDto();
+    	Form<StudentDto> studentForm = Form.form(StudentDto.class).fill(s);
+
+    	return init(page, sql, studentForm, null);
     }
-    
+
     @Transactional(readOnly = true)
+    public Result searchStudent() {
+    	Form<StudentDto> studentForm = formFactory.form(StudentDto.class).bindFromRequest();
+    	StudentDto student = studentForm.get();
+    	Map<String, String> mapValue = new HashMap<String, String>();
+    	String sql = "select s from Student s where 1 = 1";
+    	if (!isEmpty(student.getName())) {
+    		sql += " and name like :name";
+    		mapValue.put("name", student.getName());
+    	}
+    	if (!isEmpty(student.getAddress())) {
+    		sql += " and address like :address";
+    		mapValue.put("address", student.getAddress());
+		}
+    	if (!isEmpty(student.getGender()) && !student.getGender().equals("All")) {
+    		sql += " and gender like :gender";
+    		mapValue.put("gender", student.getGender());
+    	}
+    	if (!isEmpty(student.getBirthDate())) {
+    		sql += " and birthDate like :birthDate";
+    		mapValue.put("birthDate", student.getBirthDate());
+    	}
+    	if (!isEmpty(student.getDepartment())) {
+    		sql += " and department like :department";
+    		mapValue.put("department", student.getDepartment());
+    	}
+    	return init(1, sql, studentForm, mapValue);
+    }
+
+    private Result init(int page, String sql, Form<StudentDto> studentForm, Map<String, String> mapValue) {
+    	int pageSize = 3;
+    	Query query = JPA.em().createQuery(sql);
+    	if (mapValue != null) {
+    		for (String key : mapValue.keySet()) {
+                query.setParameter(key,mapValue.get(key));
+            }
+		}
+    	int allResult = query.getResultList().size();
+    	int maxPage = calPageSize(allResult, pageSize);
+    	
+    	int currentRecord = 0;
+    	if (page != 1) {
+    		currentRecord = pageSize * (page-1);
+		}
+    	
+    	List<Student> students = (List<Student>) query.setFirstResult(currentRecord).setMaxResults(pageSize).getResultList();
+
+    	List<String> sexList = new ArrayList<String>();
+    	sexList.add("All");
+    	sexList.add("Male");
+    	sexList.add("Female");
+    	return ok(views.html.listStudent.render(students, studentForm, departments, sexList, page, maxPage));
+    }
+
+    private boolean isEmpty(String value) {
+		return value == null || value.equals("");
+	}
+
+    private int calPageSize(int countList, int viewCount) {
+
+		int pageSize = 0;
+		if (countList % viewCount == 0) {
+			pageSize = countList / viewCount;
+		} else {
+			pageSize = countList / viewCount + 1;
+		}
+		return pageSize;
+	}
+
+	@Transactional(readOnly = true)
     public Result students() {
     	List<Student> students = (List<Student>) JPA.em().createQuery("select s from Student s").getResultList();
         return ok(toJson(students));
@@ -94,7 +171,7 @@ public class Application extends Controller {
 			return badRequest(views.html.addStudent.render(studentForm, departments, sex));
 		}
 		JPA.em().persist(studentForm.get());
-		return redirect(routes.Application.listStudent());
+		return redirect(routes.Application.listStudent(1));
 	}
 
 	/**
@@ -108,7 +185,7 @@ public class Application extends Controller {
 	public Result deleteStudent(Long id) {
 		Student student = JPA.em().find(Student.class, id);
 		JPA.em().remove(student);
-		return redirect(routes.Application.listStudent());
+		return redirect(routes.Application.listStudent(1));
 	}
 
 	/**
@@ -145,7 +222,7 @@ public class Application extends Controller {
 		t.setBirthDate(student.getBirthDate());
 		t.setDepartment(student.getDepartment());
 		t.setGender(student.getGender());
-		return redirect(routes.Application.listStudent());
+		return redirect(routes.Application.listStudent(1));
 	}	
 	
 	public Result changeLanguage(String lang) {

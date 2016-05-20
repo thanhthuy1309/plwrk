@@ -19,3 +19,4 @@ actor.lable.gender = 性別 :
 actor.lable.address = 住所 :
 actor.lable.department = 部門 :
 actor.button.cancel = キャンセル
+actor.button.search = 捜索

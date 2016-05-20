@@ -4,7 +4,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 import play.data.validation.ValidationError;
 import play.i18n.Messages;
@@ -85,6 +90,7 @@ public class Student {
 	public void setLastUpdate(Timestamp lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
+	
 	public List<ValidationError> validate() {
 	    List<ValidationError> errors = new ArrayList<ValidationError>();
 	    if (this.name.equals("")) {
@@ -98,4 +104,28 @@ public class Student {
 	    }
 	    return errors.isEmpty() ? null : errors;
 	}
+
+	/**
+	 * @param id
+	 * @param name
+	 * @param address
+	 * @param gender
+	 * @param birthDate
+	 * @param department
+	 * @param lastUpdate
+	 */
+	public Student(Long id, String name, String address, String gender,
+			String birthDate, String department, Timestamp lastUpdate) {
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.gender = gender;
+		this.birthDate = birthDate;
+		this.department = department;
+		this.lastUpdate = lastUpdate;
+	}
+
+	public Student() {
+	}
+	
 }

@@ -7,7 +7,8 @@ GET     /                           	controllers.Application.index()
 POST    /person                     	controllers.Application.addPerson()
 GET     /persons                    	controllers.Application.getPersons()
 
-GET		/listStudent					controllers.Application.listStudent()
+GET		/listStudent					controllers.Application.listStudent(page:Int=1)
+GET  	/listStudent/:page 				controllers.Application.listStudent(page:Int)
 GET		/students						controllers.Application.students()
 
 GET		/student/add					controllers.Application.addStudentGet()
@@ -17,6 +18,8 @@ GET     /student/delete/:id          	controllers.Application.deleteStudent(id:L
 GET     /student/update/:id             controllers.Application.updateStudentGet(id:Long)
 POST    /student/update/:id            	controllers.Application.updateStudentPost(id:Long)
 
-GET    /changeLanguage/:lang      controllers.Application.changeLanguage(lang:String)
+GET    /changeLanguage/:lang     		controllers.Application.changeLanguage(lang:String)
+
+POST		/listStudent			controllers.Application.searchStudent()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)

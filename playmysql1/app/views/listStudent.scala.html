@@ -1,4 +1,4 @@
-@(students:List[Student])
+@(students:List[Student],studentForm: Form[dto.StudentDto], departments: List[String], sex: List[String], currentPage: Int, maxPage: Int)
 @import play.i18n._
 @main("Student CRUD") {
 	<a id='addBtnId' class="btn btn-primary" href="/student/add">@Messages.get("actor.title.addStudent")</a>
@@ -7,6 +7,53 @@
 			<fieldset>
 				<legend>@Messages.get("actor.title.pageList")</legend>
 				<div id="wrapper">
+					<div class="form-group">
+						<form method="POST" action="@routes.Application.searchStudent()">
+							<table class="table" border=2px>
+								<tr>
+									<td><label>@Messages.get("actor.lable.name")</label></td>
+									<td><input type="text"  value="@studentForm("name").value"  name="name" id="studentName" class="form-control" /></td>
+									<td><label>@Messages.get("actor.lable.birthDate")</label></td>
+									<td><input type="Text" name="birthDate"  value="@studentForm("birthDate").value" id="birthDateId"
+		 								maxlength="25" size="25"  readonly/>  
+		 								 <img src="/assets/img/cal.gif"
+										onclick="javascript:NewCssCal('birthDateId')" style="cursor: pointer" /></td>
+		  						</tr>
+								<tr>
+									<td><label>@Messages.get("actor.lable.gender")</label></td>
+									<td>
+										<div class="input-group">
+											@for(s <- sex) {
+												@if(s == studentForm("gender").value){
+													&nbsp<input type="radio" name="gender" value="@s" CHECKED />@s
+												} else {
+													&nbsp<input type="radio" name="gender" value="@s"/>@s
+												}
+											}
+										</div>
+									</td>
+									<td><label>@Messages.get("actor.lable.address")</label></td>
+									<td><input type="text" name="address"  value="@studentForm("address").value" id="studentAddress" class="form-control" /></td>
+								</tr>
+								<tr>
+									<td><label>@Messages.get("actor.lable.department")</label></td>
+									<td><select name="department" class="form-control">
+											<option value=""></option>
+											@for(value <- departments) {
+												@if(value == studentForm("department").value){
+													<option value="@value" selected>@value</option>
+												} else {
+													<option value="@value">@value</option>
+												}
+											}
+									</select></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</table>
+							<button class='btnEdit btn btn-primary' type="submit" >@Messages.get("actor.button.search")</button>
+						</form>
+					</div>
 					<table class="table" border=2px>
 						<thead>
 							<tr>
@@ -21,6 +68,7 @@
 						</thead>
 						<tbody id="students">
 							@for(index<- 0 to students.size -1) {
+								
 								<tr>
 									<td>@(index +1)</td>
 									<td>@students(index).getName()</td>
@@ -36,6 +84,7 @@
 							}
 						</tbody>
 					</table>
+					@pagination(currentPage, maxPage)
 				</div>
 			</fieldset>
 		</div>

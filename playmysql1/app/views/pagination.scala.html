@@ -1,0 +1,25 @@
+@(currentPage: Integer, maxPage: Integer)
+
+<div>
+  <ul class="pagination">
+        @if(currentPage == 1) {
+            <li class="disabled"><span>&laquo;</span></li>
+        } else {
+            <li><a href="@controllers.routes.Application.listStudent(currentPage - 1)">&laquo;</a></li>
+        }
+
+        @for(listStudent <- 1 to maxPage) {
+            @if(currentPage == listStudent) {
+                <li class="disabled"><span>@listStudent</span></li>
+            } else {
+                <li><a href="@controllers.routes.Application.listStudent(listStudent)">@listStudent</a></li>
+            }
+        }
+
+        @if(currentPage == maxPage) {
+            <li class="disabled"><span>&raquo;</span></li>
+        } else {
+            <li><a href="@controllers.routes.Application.listStudent(currentPage + 1)">&raquo;</a></li>
+        }
+    </ul>
+</div>

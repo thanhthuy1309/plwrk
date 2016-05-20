@@ -19,3 +19,4 @@ actor.lable.gender = Gender :
 actor.lable.address = Address :
 actor.lable.department = Department :
 actor.button.cancel = Cancel
+actor.button.search = Search
