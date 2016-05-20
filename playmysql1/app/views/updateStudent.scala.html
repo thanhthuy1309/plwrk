@@ -11,17 +11,23 @@
 					<table class="table" border=2px>
 						<tr>
 							<td><label>@Messages.get("actor.lable.name")</label></td>
-							<td><input type="text"  value="@studentForm.get.getName()" name="name" id="studentName" class="form-control"/></td>
-  							@if(studentForm.hasErrors) {
- 								@studentForm("name").error.get.message
- 								@studentForm("birthDate").error.get.message
- 								@studentForm("address").error.get.message
- 							}
+							<td><input type="text"  value="@studentForm("name").value" name="name" id="studentName" class="form-control"/></td>
+  							@if(studentForm("name").hasErrors) {
+ 									@studentForm("name").error.get.message
+ 								}
+ 								
+ 								@if(studentForm("birthDate").hasErrors) {
+ 									@studentForm("birthDate").error.get.message
+ 								}
+ 								
+ 								@if(studentForm("address").hasErrors) {
+ 									@studentForm("address").error.get.message
+ 								}
   						</tr>
 	
 						<tr>
 							<td><label>@Messages.get("actor.lable.birthDate")</label></td>
-							<td><input type="Text" name="birthDate"  value="@studentForm.get.getBirthDate" id="birthDateId"
+							<td><input type="Text" name="birthDate"  value="@studentForm("birthDate").value" id="birthDateId"
  								maxlength="25" size="25"  readonly/>  
  								 <img src="/assets/img/cal.gif"
 								onclick="javascript:NewCssCal('birthDateId')" style="cursor: pointer" /></td>
@@ -31,7 +37,7 @@
 							<td>
 								<div class="input-group">
 									@for(s <- sex) {
-										@if(s == studentForm.get.getGender){
+										@if(s == studentForm("gender").value){
 											<input type="radio" name="gender" value="@s" CHECKED />@s
 										} else {
 											<input type="radio" name="gender" value="@s"/>@s
@@ -42,13 +48,13 @@
 						</tr>
 						<tr>
 							<td><label>@Messages.get("actor.lable.address")</label></td>
-							<td><input type="text" name="address"  value="@studentForm.get.getAddress" id="studentAddress" class="form-control" /></td>
+							<td><input type="text" name="address"  value="@studentForm("address").value" id="studentAddress" class="form-control" /></td>
   						</tr>
 						<tr>
 							<td><label>@Messages.get("actor.lable.department")</label></td>
 							<td><select name="department" class="form-control">
 									@for(value <- departments) {
-										@if(value == studentForm.get.getDepartment){
+										@if(value == studentForm("department").value){
 											<option value="@value" selected>@value</option>
 										} else {
 											<option value="@value">@value</option>

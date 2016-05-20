@@ -77,7 +77,8 @@ public class Application extends Controller {
     }
 
     public Result addStudentGet() {
-    	Form<Student> studentForm = Form.form(Student.class);
+    	Student s = new Student();
+    	Form<Student> studentForm = Form.form(Student.class).fill(s);
     	return ok(views.html.addStudent.render(studentForm, departments, sex));
     }
 

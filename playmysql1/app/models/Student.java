@@ -22,7 +22,7 @@ public class Student {
 
 	private String address;
 
-	private String gender;
+	private String gender = "Male";
 
 	private String birthDate;
 	private String department;
