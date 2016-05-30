@@ -1,0 +1,11 @@
+@(page: String, isLoggedIn: Boolean, userInfo: jp.gmo.net.models.User)
+
+@Main(page, isLoggedIn, userInfo) {
+	<br/>
+	<br/>
+	<br/>
+   <div class="container">
+     <p>In the profile page.</p> 
+     <p>Only authenticated users can visit this page.  Try logging out and then attempting to retrieve /profile.</p>
+   </div>
+}
