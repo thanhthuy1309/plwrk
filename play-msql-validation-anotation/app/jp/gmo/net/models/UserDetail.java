@@ -26,7 +26,7 @@ public class UserDetail {
     
     private String address;
     
-    private Long age;
+    private Integer age;
 
     private String birthday;
     
@@ -117,14 +117,14 @@ public class UserDetail {
 	/**
 	 * @return the age
 	 */
-	public Long getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
 	/**
 	 * @param age the age to set
 	 */
-	public void setAge(Long age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 

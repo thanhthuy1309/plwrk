@@ -11,3 +11,5 @@ my.required.username = UserName is not null
 
 actor.lable.register=Please register
 actor.lable.email=E-mail
+
+error.invalid = sai format number

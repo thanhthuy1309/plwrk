@@ -9,16 +9,17 @@ import play.i18n.Messages;
  */
 public class RegisterFormData {
 
+	
 	/** The submitted email. */
 	@Constraints.Required(message = "my.required.email")
 	@Constraints.Email(message = "my.format.email")
-	public String email = "";
+	private String email = "";
 
 	private String username;
 
 	/** The submitted password. */
 	@Constraints.Required(message = "my.required.password")
-	public String password = "";
+	private String password = "";
 
 	@Constraints.Pattern(value = "\\d{1,11}", message = "my.pattern.phone")
 	@Constraints.MinLength(value=10, message="my.minLength.phone")
@@ -29,7 +30,7 @@ public class RegisterFormData {
 
 	@Constraints.Min(value=1, message="my.min.age")
 	@Constraints.Max(value=100, message="my.max.age")
-	private Long age;
+	private Integer age = 0;
 	
 	@Constraints.Pattern(value="\\d{4}/\\d{2}/\\d{2}", message="my.pattern.birthday")
 	private String birthday;
@@ -109,14 +110,14 @@ public class RegisterFormData {
 	/**
 	 * @return the age
 	 */
-	public Long getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
 	/**
 	 * @param age the age to set
 	 */
-	public void setAge(Long age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
@@ -134,6 +135,8 @@ public class RegisterFormData {
 		this.birthday = birthday;
 	}
 
+	// Hoặc có thể sử dụng hàm này để check validation
+	//  Trong trường hợp @Constraints không hổ trợ check validation đúng yêu cầu mong muốn
 	public String validate() {
 		UserServiceImpl userServiceimpl= new UserServiceImpl();
         if (username == null || username.trim().equals("")) {
