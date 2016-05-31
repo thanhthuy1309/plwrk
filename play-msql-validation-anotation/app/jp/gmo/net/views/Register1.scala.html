@@ -1,21 +1,73 @@
-@(page: String, isLoggedIn: Boolean, userInfo: jp.gmo.net.models.User)
+@(page: String, registerForm: Form[jp.gmo.net.dto.RegisterFormData])
+@import play.i18n._
 
-@Main(page, isLoggedIn, userInfo) {
-	<br/>
-	<br/>
-	<br/>
-   <div class="container">
-     <div class="row">
-  <div class="col-sm-4 col-sm-offset-4">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Please log in</h3>
-      </div>
-      <div class="panel-body">
-      aaaaaaaaaaaaaaaaaaaaaaaaaa
-      </div>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        
+        <!--  Load site-specific customizations after bootstrap. -->
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    </head>
+    <body>
+   	<div class="container">
+    	<div class="row">
+  			<div>
+    			<div class="panel panel-default">
+			      <div class="panel-heading">
+			        <h3 class="panel-title">@Messages.get("actor.lable.register")</h3>
+			      </div>
+			      <div class="panel-body">
+			      	<form action="@jp.gmo.net.controllers.routes.UserController.postRegister()" method="POST">
+			      		
+						@if(registerForm.hasErrors) {
+			      			@if(registerForm.errors.size > 0) {
+								@for((key,value) <- registerForm.errors) {
+									@for(err <- value) {
+										<p style="color: red">@Messages.get(err.message().toString())</p>
+			                    }
+								}
+							}
+						}
+			          <fieldset>
+			            <div class="form-group" >
+				            <label>E-mail: </label>
+				            <input id="@registerForm("email").id" name="@registerForm("email").name" value="@registerForm("email").value" class="form-control" placeholder="E-mail" type="text">
+			            </div>
+			            <div class="form-group" >
+			            	<label>UserName: </label>
+			            	<input id="@registerForm("username").id" name="@registerForm("username").name" value="@registerForm("username").value" class="form-control" placeholder="username" type="text">
+			            </div>
+			            <div class="form-group" >
+				            <label>Password: </label>
+				            <input id="@registerForm("password").id" name="@registerForm("password").name" value="@registerForm("password").value" class="form-control" placeholder="Password" type="password">
+			            </div>
+			            <div class="form-group" >
+			            	<label>Phone: </label>
+			            	<input id="@registerForm("phone").id" name="@registerForm("phone").name" value="@registerForm("phone").value" class="form-control" placeholder="0123456789" type="text">
+			            </div>
+			            <div class="form-group" >
+			            	<label>Address: </label>
+			            	<textarea rows="1" cols="1" id="@registerForm("address").id" name="@registerForm("address").name" value="@registerForm("address").value" class="form-control" placeholder="123 Ho Chi Minh"></textarea>
+			            </div>
+			            <div class="form-group" >
+			            	<label>Age: </label>
+			            	<input id="@registerForm("age").id" name="@registerForm("age").name" value="@registerForm("age").value" class="form-control" placeholder="23" type="text">
+			            </div>
+			            <div class="form-group" >
+			            	<label>Birthday: </label>
+			            	<input id="@registerForm("birthday").id" name="@registerForm("birthday").name" value="@registerForm("birthday").value" class="form-control" placeholder="YYYY/MM/DD" type="text">
+			            </div>
+			            <input class="btn btn-lg btn-success btn-block" type="submit" value="Register">
+			          </fieldset>
+			        </form>
+			      </div>
+    			</div>
+  			</div>
+		</div>
    </div>
-}
+</body>
+</html>

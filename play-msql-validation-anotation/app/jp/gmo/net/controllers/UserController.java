@@ -3,6 +3,7 @@ package jp.gmo.net.controllers;
 import javax.inject.Inject;
 
 import jp.gmo.net.dto.LoginFormData;
+import jp.gmo.net.dto.RegisterFormData;
 import jp.gmo.net.models.User;
 import jp.gmo.net.service.UserService;
 import jp.gmo.net.views.html.Detail;
@@ -50,11 +51,21 @@ public class UserController extends Controller {
 	}
 
 	public Result register() {
-		userService.insertUser();
-		return ok(Register1.render("Register1", Secured.isLoggedIn(ctx()),
-				Secured.getUserInfo(ctx())));
+		Form<RegisterFormData> registerForm = Form.form(RegisterFormData.class);
+		return ok(Register1.render("Register1", registerForm));
 	}
 	
+	@SuppressWarnings("deprecation")
+	public Result postRegister() {
+		// Get the submitted form data from the request object, and run validation.
+		Form<RegisterFormData> registerForm = Form.form(RegisterFormData.class).bindFromRequest();
+		if (registerForm.hasErrors()) {
+			return badRequest(Register1.render("Register1",registerForm));
+		} else {
+			userService.insertUser(registerForm.get());
+			return redirect(jp.gmo.net.controllers.routes.UserController.login());
+		}
+	}
 	/**
 	 * Processes a login form submission from an unauthenticated user. First we
 	 * bind the HTTP POST data to an instance of LoginFormData. The binding

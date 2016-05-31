@@ -1,0 +1,13 @@
+my.required.email = This email is required
+my.format.email = This email is not format
+my.required.password = This password is required
+my.pattern.phone = This phone must contain from 0 to 11 digits
+my.minLength.phone = This phone must > 10 digits
+my.min.age = This age must > 1
+my.max.age = This age must < 100
+my.maxLength.address = This address must < 200 character
+my.pattern.birthday = This birthday must correct format
+my.required.username = UserName is not null
+
+actor.lable.register=Please register
+actor.lable.email=E-mail
