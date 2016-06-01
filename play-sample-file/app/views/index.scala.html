@@ -1,0 +1,45 @@
+@(students:List[Students])
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>111</title>
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at(("img/favicon.png"))">
+          <script type='text/javascript' src='@routes.Assets.at("javascripts/index.js")'></script>
+	<link rel="stylesheet" href="@routes.Assets.at("css/bootstrap.min.css")">
+	<script type="text/javascript" src="@routes.Assets.at("js/jquery-2.2.0.min.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("js/myjs.js")"></script>
+    </head>
+    <body>
+        <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+    @for(student <- students) {
+    	@if(Integer.parseInt(student.getId()) %2 != 0) {
+	      <tr>
+	        <td style="color: red;">@student.getId()</td>
+	        <td>@student.getName()</td>
+	      </tr>
+      } else {
+      	<tr>
+	        <td>@student.getId()</td>
+	        <td>@student.getName()</td>
+	      </tr>
+      }
+     }
+    </tbody>
+  </table>
+
+    <form method="POST" action="@routes.Application.addStudents()">
+        <input type="text" name="name" class="form-control"/>
+        <button class="btn btn-default">Add Student</button>
+        <input id="idTest" type="button" class="btn btn-default" value="Test Javascript"/>
+    </form>
+    
+    </body>
+</html>
+
