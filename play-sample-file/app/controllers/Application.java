@@ -30,17 +30,20 @@ public class Application extends Controller {
     
     @Transactional(readOnly = true)
     public Result index() {
-    	List<Students> students = (List<Students>) JPA.em().createQuery("select p from Students p").getResultList();
+    	List<Students> students = (List<Students>) JPA.em().createNamedQuery("AccountAuthorityService.findAccountAuthorities").getResultList();
         return ok(index.render(students));
     }
 
     @Transactional
     public Result addStudents() {
     	MultipartFormData<File> body = request().body().asMultipartFormData();
+    	// lay gia tri cua field name = image
         MultipartFormData.FilePart<File> picture = body.getFile("image");
         if (picture != null) {
             File file = picture.getFile();
+            // su dung lay duong dan hien tai cua project 
 			String path = Play.application().path().getPath();
+			// file image duoc upload vao thu muc public/upload/
             File destination = new File(path + "/public/upload/", picture.getFilename());
             try {
 				FileUtils.moveFile(file, destination);
