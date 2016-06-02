@@ -11,7 +11,8 @@ libraryDependencies ++= Seq(
   // JPA dependencies to avoid conflicts.
   "mysql" % "mysql-connector-java" % "5.1.18",
   javaJpa,
-  "org.hibernate" % "hibernate-entitymanager" % "4.3.7.Final"
+  "org.hibernate" % "hibernate-entitymanager" % "4.3.7.Final",
+  "commons-io" % "commons-io" % "2.4"
 )
 
 // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present

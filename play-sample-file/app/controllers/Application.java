@@ -1,16 +1,23 @@
 package controllers;
 
-import java.util.List;
-
 import static play.libs.Json.toJson;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import models.Students;
+
+import org.apache.commons.io.FileUtils;
+
+import play.Play;
 import play.data.FormFactory;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
 import views.html.index;
 import dto.StudentsDto;
@@ -29,11 +36,27 @@ public class Application extends Controller {
 
     @Transactional
     public Result addStudents() {
-        StudentsDto studentsDto = formFactory.form(StudentsDto.class).bindFromRequest().get();
-        Students p = new Students();
-        p.setName(studentsDto.getName());
-        JPA.em().persist(p);
-        return redirect(routes.Application.index());
+    	MultipartFormData<File> body = request().body().asMultipartFormData();
+        MultipartFormData.FilePart<File> picture = body.getFile("image");
+        if (picture != null) {
+            File file = picture.getFile();
+			String path = Play.application().path().getPath();
+            File destination = new File(path + "/public/upload/", picture.getFilename());
+            try {
+				FileUtils.moveFile(file, destination);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	        StudentsDto studentsDto = formFactory.form(StudentsDto.class).bindFromRequest().get();
+	        Students p = new Students();
+	        p.setName(studentsDto.getName());
+	        p.setImage("upload/"+picture.getFilename());
+	        JPA.em().persist(p);
+	        return redirect(routes.Application.index());
+        } else {
+            flash("error", "Missing file");
+            return badRequest();
+        }
     }
 
     @Transactional(readOnly = true)

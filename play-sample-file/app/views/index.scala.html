@@ -23,19 +23,22 @@
 	      <tr>
 	        <td style="color: red;">@student.getId()</td>
 	        <td>@student.getName()</td>
+	        <td><img alt="" src="@routes.Assets.at((student.getImage()))" width="30px"></td>
 	      </tr>
       } else {
       	<tr>
 	        <td>@student.getId()</td>
 	        <td>@student.getName()</td>
+	        <td><img alt="" src="@routes.Assets.at((student.getImage()))" width="30px"></td>
 	      </tr>
       }
      }
     </tbody>
   </table>
 
-    <form method="POST" action="@routes.Application.addStudents()">
+    <form method="POST" action="@routes.Application.addStudents()" enctype="multipart/form-data">
         <input type="text" name="name" class="form-control"/>
+    	<input type="file" name="image" />
         <button class="btn btn-default">Add Student</button>
         <input id="idTest" type="button" class="btn btn-default" value="Test Javascript"/>
     </form>
