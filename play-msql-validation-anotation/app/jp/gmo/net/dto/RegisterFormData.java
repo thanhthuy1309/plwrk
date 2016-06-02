@@ -1,6 +1,7 @@
 package jp.gmo.net.dto;
 
 import jp.gmo.net.service.impl.UserServiceImpl;
+import jp.gmo.net.validators.MyValidator;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
 
@@ -18,7 +19,7 @@ public class RegisterFormData {
 	private String username;
 
 	/** The submitted password. */
-	@Constraints.Required(message = "my.required.password")
+	@Constraints.ValidateWith(value=MyValidator.class)
 	private String password = "";
 
 	@Constraints.Pattern(value = "\\d{1,11}", message = "my.pattern.phone")
