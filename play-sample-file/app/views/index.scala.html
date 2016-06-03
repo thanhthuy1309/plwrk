@@ -22,14 +22,21 @@
     	@if(Integer.parseInt(student.getId()) %2 != 0) {
 	      <tr>
 	        <td style="color: red;">@student.getId()</td>
-	        <td>@student.getName()</td>
+	        @if(student.getImage().contains(".zip")) {
+	        <td><a href="@routes.Assets.at((student.getImage()))">Download</a></td>
+	        }else {
 	        <td><img alt="" src="@routes.Assets.at((student.getImage()))" width="30px"></td>
+	        }
 	      </tr>
       } else {
       	<tr>
 	        <td>@student.getId()</td>
 	        <td>@student.getName()</td>
+	        @if(student.getImage().contains(".zip")) {
+	        <td><a href="@routes.Assets.at((student.getImage()))">Download</a></td>
+	        }else {
 	        <td><img alt="" src="@routes.Assets.at((student.getImage()))" width="30px"></td>
+	        }
 	      </tr>
       }
      }
