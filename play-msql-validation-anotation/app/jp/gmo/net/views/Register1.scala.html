@@ -27,7 +27,14 @@
 			      			@if(registerForm.errors.size > 0) {
 								@for((key,value) <- registerForm.errors) {
 									@for(err <- value) {
-										<p style="color: red">@Messages.get(err.message().toString())</p>
+										<p style="color: red">
+										@if(err.message().toString() == "my.error.custom.date") {
+											@Messages.get(err.message().toString(),"checkDate")
+										} else {
+											@Messages.get(err.message().toString())
+										}
+										
+										</p>
 			                    }
 								}
 							}
@@ -61,6 +68,12 @@
 			            	<label>Birthday: </label>
 			            	<input id="@registerForm("birthday").id" name="@registerForm("birthday").name" value="@registerForm("birthday").value" class="form-control" placeholder="YYYY/MM/DD" type="text">
 			            </div>
+			            
+			            <div class="form-group" >
+			            	<label>checkDate: </label>
+			            	<input id="@registerForm("checkDate").id" name="@registerForm("checkDate").name" value="@registerForm("checkDate").value" class="form-control" placeholder="YYYYMMDD" type="text">
+			            </div>
+			            
 			            <input class="btn btn-lg btn-success btn-block" type="submit" value="Register">
 			          </fieldset>
 			        </form>

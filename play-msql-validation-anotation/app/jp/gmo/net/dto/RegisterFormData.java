@@ -1,6 +1,6 @@
 package jp.gmo.net.dto;
 
-import jp.gmo.net.service.impl.UserServiceImpl;
+import jp.gmo.net.custom.validator.ValidateCustomDate;
 import jp.gmo.net.validators.MyValidator;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
@@ -16,9 +16,12 @@ public class RegisterFormData {
 	@Constraints.Email(message = "my.format.email")
 	private String email = "";
 
+	
 	private String username;
 
 	/** The submitted password. */
+	// Viet mot class rieng de thuc hien viec check loi
+	// Vi du viet class MyValidator
 	@Constraints.ValidateWith(value=MyValidator.class)
 	private String password = "";
 
@@ -35,6 +38,9 @@ public class RegisterFormData {
 	
 	@Constraints.Pattern(value="\\d{4}/\\d{2}/\\d{2}", message="my.pattern.birthday")
 	private String birthday;
+	
+	@ValidateCustomDate
+	private String checkDate;
 	
 	/**
 	 * @return the email
@@ -136,10 +142,27 @@ public class RegisterFormData {
 		this.birthday = birthday;
 	}
 
+	/**
+	 * @return the checkDate
+	 */
+	public String getCheckDate() {
+		return checkDate;
+	}
+
+	/**
+	 * @param checkDate the checkDate to set
+	 */
+	public void setCheckDate(String checkDate) {
+		this.checkDate = checkDate;
+	}
+
 	// Hoặc có thể sử dụng hàm này để check validation
 	//  Trong trường hợp @Constraints không hổ trợ check validation đúng yêu cầu mong muốn
+	// Ham nay chi tra ve 1 loi duy nhat
+	
+	// Neu moi tra ve nhieu loi thi su dung method
+	// public List<ValidationError> validate()
 	public String validate() {
-		UserServiceImpl userServiceimpl= new UserServiceImpl();
         if (username == null || username.trim().equals("")) {
             return Messages.get("my.required.username");
         }

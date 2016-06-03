@@ -13,3 +13,4 @@ actor.lable.register=Please register
 actor.lable.email=E-mail
 
 error.invalid = sai format number
+my.error.custom.date = {0} khong phai la kieu ngay
