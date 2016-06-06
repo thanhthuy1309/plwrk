@@ -1,16 +1,14 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.Table;
 @Entity
+@Table(name = "Image")
 public class Image {
-
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -45,21 +43,4 @@ public class Image {
 		this.contentType = contentType;
 	}
 
-	public static Image byId(Long id) {
-        return null;
-    }
-
-    public static List<Image> all() {
-        return null;
-    }
-
-    public static List<Long> allIds() {
-        List<Long> ids = new ArrayList<Long>();
-
-        for (Image image : all()) {
-            ids.add(image.id);
-        }
-
-        return ids;
-    }
 }

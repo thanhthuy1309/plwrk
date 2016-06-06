@@ -1,4 +1,6 @@
-@()
+@(ids: List[Long], message: String)
+
+@import helper._
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,7 +12,25 @@
 	<script type="text/javascript" src="@routes.Assets.at("js/myjs.js")"></script>
     </head>
     <body>
-    
+    	<blockquote>@message</blockquote>
+    	
+    	<h1>Images</h1>
+    	<ul>
+        @for(id <- ids) {
+            <li><img src="@routes.Application.renderImage(id)" alt="This is an image" /></li>
+        }
+        </ul>
+
+        <h1>Upload</h1>
+        <form method="POST" action="@routes.Application.upload()" enctype="multipart/form-data">
+            <p>
+                Select file
+                <input type="file" name="picture"><br/>
+            </p>
+            <p>
+                <input type="submit">
+            </p>
+        </form>
     </body>
 </html>
 
