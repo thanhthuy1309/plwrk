@@ -3,16 +3,22 @@
 @import helper._
 
 @main("Welcome to Play") {
-	<script type='text/javascript' src='@routes.Assets.versioned("javascripts/index.js")'></script>
-
 	<ul id="persons"></ul>
+	<form method="POST" action="@routes.Application.addPerson()">
+	<div class="form-group">
+		<table class="table" border=2px>
+		<tr>
+							<td><label>Name</label></td>
 
-  @form(routes.PersonController.addPerson()) {
-		@inputText(person("name"))
-		@inputText(person("age"))
+							<td><input type="text"  value="@person("name").value" placeholder="Pleace input name" name="name" id="name" class="form-control" /></td>
+  						</tr>
+  						<tr>
+							<td><label>Age</label></td>
 
-		<div class="buttons">
-			<input type="submit" value="Add Person"/>
-		</div>
-	}
+							<td><input type="text"  value="@person("age").value" placeholder="Pleace input name" name="age" id="age" class="form-control" /></td>
+  						</tr>
+  						<button class='btnEdit btn btn-primary' type="submit" >Add</button>
+		</table>
+	</div>
+	</form>
 }

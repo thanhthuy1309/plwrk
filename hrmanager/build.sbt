@@ -7,13 +7,13 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.11.7"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-slick" % "2.0.0",
-  "com.typesafe.play" %% "play-slick-evolutions" % "2.0.0",
-  "com.h2database" % "h2" % "1.4.190",
+  javaJpa,
   "mysql" % "mysql-connector-java" % "5.1.18",
-  specs2 % Test
+  "org.hibernate" % "hibernate-core" % "4.3.6.Final",
+  "org.hibernate" % "hibernate-entitymanager" % "4.3.6.Final"
 )
 
 // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
 EclipseKeys.preTasks := Seq(compile in Compile)
 PlayKeys.externalizeResources := false
+routesGenerator := InjectedRoutesGenerator
