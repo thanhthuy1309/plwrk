@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "org.hibernate" % "hibernate-core" % "4.3.6.Final",
   "org.hibernate" % "hibernate-entitymanager" % "4.3.6.Final",
   "org.apache.jena" % "jena-arq" % "2.9.3",
-  "com.restfb" % "restfb" % "1.6.11"
+  "com.restfb" % "restfb" % "1.6.11",
+  "com.typesafe.play" %% "play-mailer" % "5.0.0"
 )
 
 // Compile the project before generating Eclipse files, so that generated .scala or .class files for views and routes are present
