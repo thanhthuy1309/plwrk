@@ -16,7 +16,6 @@ import scala.concurrent.{ ExecutionContext, Future }
 import play.api.i18n.I18nSupport
 import play.api.i18n.MessagesApi
 
-
 class Application @Inject() (val messagesApi: MessagesApi)
                                  (implicit ec: ExecutionContext) extends Controller with I18nSupport{
   
