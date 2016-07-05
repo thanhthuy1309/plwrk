@@ -5,9 +5,10 @@
 # Home page
 GET     /                           controllers.Application.index()
 POST    /person                     controllers.Application.addPerson
-GET     /add                    controllers.Application.add
-GET     /loginGoogle                    controllers.Application.loginGoogle
-GET     /login      controllers.Application.login(state: String, code: String)
+GET     /add                    	controllers.Application.add
+GET     /loginGoogle                controllers.Application.loginGoogle
+GET     /login      				controllers.Application.login(state: String, code: String)
+GET		/loginForm					controllers.Application.loginForm()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file             controllers.Assets.at(path="/public", file)
+GET     /assets/*file             	controllers.Assets.at(path="/public", file)

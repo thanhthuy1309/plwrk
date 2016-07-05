@@ -56,6 +56,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   def add = Action {
     Ok(views.html.index(personForm))
   }
+  
   def strip(quoted: String): String = {
     quoted.filter(char => char != '\"')
   }
@@ -85,6 +86,10 @@ class Application @Inject() (val messagesApi: MessagesApi,
     }
 
     Ok(views.html.index(personForm))
+  }
+  
+  def loginForm() = Action {
+    Ok(views.html.login())
   }
   private def renderArticleJson(artists: Iterable[People]): Iterable[JsObject] = {
     val listToConvert = for (artist <- artists) yield {
