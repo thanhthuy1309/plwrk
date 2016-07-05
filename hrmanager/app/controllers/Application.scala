@@ -8,7 +8,7 @@ import play.api.libs.json.JsNumber
 import play.api.libs.json.JsString
 import play.api.libs.json.Json.toJson
 import play.api.data.validation.Constraints._
-import service.PeopleService
+import service._
 import javax.inject.{ Inject, Named }
 import play.api.data.Form
 import play.api.data.Forms.{ mapping, longNumber, nonEmptyText, number }
@@ -29,6 +29,9 @@ class Application @Inject() (val messagesApi: MessagesApi,
 
   @Inject
   private var artistService: PeopleService = _
+  
+  @Inject
+  private var userService:UserService = _
 
   val clientId = "328338891021-ee9ueunvbo7l0d94elh3bps43adlh2p6.apps.googleusercontent.com"
   val clientSecret = "-1aVh3RWhGw0GTXYnUeM0VJ6"
@@ -54,6 +57,7 @@ class Application @Inject() (val messagesApi: MessagesApi,
   }
 
   def add = Action {
+    println(userService.findUserAll)
     Ok(views.html.index(personForm))
   }
   
