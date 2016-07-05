@@ -12,7 +12,7 @@
 	<named-query name="UserDao.findUserByEmail">
 		<query>
 			select r from User r
-			where r.email =: email
+			where r.email = :email
 		</query>
 	</named-query>
 	

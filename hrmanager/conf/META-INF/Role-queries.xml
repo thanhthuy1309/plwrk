@@ -12,7 +12,7 @@
 	<named-query name="RoleDao.findRoleById">
 		<query>
 			select r from Role r
-			where r.roleId =: roleId
+			where r.roleId = :roleId
 		</query>
 	</named-query>
 	

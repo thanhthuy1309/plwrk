@@ -1,18 +1,13 @@
 package entity
 
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.GenerationType
-import javax.persistence.Entity
-import javax.persistence.Table
 import javax.persistence.Column
-import java.util.Date
-import javax.persistence.Temporal
-import javax.persistence.TemporalType
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "role")
-class Role extends Serializable {
+class Role {
 
   @Id
   @Column(name = "roleid", nullable = false, length = 1)
