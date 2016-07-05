@@ -19,9 +19,13 @@ import play.api.libs
 import play.api.libs.ws._
 import constants._
 import utils._
+import play.api.cache._
+import scala.concurrent.duration._
+import scala.concurrent.Await
 
-
-class Application @Inject() (val messagesApi: MessagesApi, ws: WSClient)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
+class Application @Inject() (val messagesApi: MessagesApi,
+    val ws: WSClient,
+    val cache: CacheApi)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
 
   @Inject
   private var artistService: PeopleService = _
@@ -32,7 +36,7 @@ class Application @Inject() (val messagesApi: MessagesApi, ws: WSClient)(implici
 
   def loginGoogle = Action {
     val scope = """https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state=%2Fprofile&"""
-    Redirect("https://accounts.google.com/o/oauth2/auth?client_id=" + GoogleConstant.CLIENT_ID + "&redirect_uri=" + redirectUrl + "&response_type=code&scope=" + scope)
+    Redirect("https://accounts.google.com/o/oauth2/auth?client_id=" + clientId + "&redirect_uri=" + redirectUrl + "&response_type=code&scope=" + scope)
   }
 
   private val personForm: Form[CreatePersonForm] = Form(
@@ -42,6 +46,7 @@ class Application @Inject() (val messagesApi: MessagesApi, ws: WSClient)(implici
 
   def index = Action {
     print("artistService:  " + artistService)
+    cache.remove("accessToken")
     val mylist = artistService.findAll
     import collection.JavaConversions._
     val typList = mylist.toList.asInstanceOf[List[People]]
@@ -55,19 +60,29 @@ class Application @Inject() (val messagesApi: MessagesApi, ws: WSClient)(implici
     quoted.filter(char => char != '\"')
   }
   def login(state: String, code: String) = Action {
-    val postBody = "code=" + code + "&client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirectUrl + "&grant_type=authorization_code"
-    val body = ws.url("https://accounts.google.com/o/oauth2/token").withHeaders("Content-Type" -> "application/x-www-form-urlencoded").post(postBody)
-    val accessJson = body.value.get.get.json
+    if (cache.get("accessToken") == None) {
+      val postBody = "code=" + code + "&client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirectUrl + "&grant_type=authorization_code"
+      val body = ws.url("https://accounts.google.com/o/oauth2/token").withHeaders("Content-Type" -> "application/x-www-form-urlencoded").post(postBody)
+      Await.result(body, GoogleConstant.TIMEOUT)
+      if (body.value != None) {
+        val accessJson = body.value.get.get.json
 
-    var aa = accessJson.\("access_token").get.toString()
-    val accessToken = strip(aa.toString)
-    println("email: " + accessToken)
-    val user1 = ws.url("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + accessToken).withHeaders("Content-Type" -> "application/x-www-form-urlencoded").get()
-    var result = user1.value.get.get.json
-    var email = strip((result.\("email").get.toString()).toString())
-    println(email)
-    var name = strip((result.\("name").get.toString()).toString())
-    println(name)
+        var aa = accessJson.\("access_token").get.toString()
+        val accessToken = strip(aa.toString)
+        println("email: " + accessToken)
+
+        cache.set("accessToken", accessToken)
+        val user1 = ws.url("https://www.googleapis.com/oauth2/v1/userinfo?access_token=" + accessToken).withHeaders("Content-Type" -> "application/x-www-form-urlencoded").get()
+        Await.result(user1, GoogleConstant.TIMEOUT)
+        if (user1.value != None) {
+          var result = user1.value.get.get.json
+          var email = strip((result.\("email").get.toString()).toString())
+          println(email)
+          var name = strip((result.\("name").get.toString()).toString())
+          println(name)
+        }
+      }
+    }
 
     Ok(views.html.index(personForm))
   }
