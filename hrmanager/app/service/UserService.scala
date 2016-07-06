@@ -15,4 +15,5 @@ trait UserService {
   def findUserAll: JList[User]
   def findUserByEmail(email: String): User
   def saveByGoogle(user: UserGoogleForm): Int
+  def updateUser(user: User): Int
 }

@@ -61,4 +61,23 @@ class UserDaoImpl extends UserDao {
       entityManager.close()
     result
   }
+  
+  def update(user: User): Int = {
+    val entityManager = persitence.createEntityManager()
+    def transaction = entityManager.getTransaction
+    transaction.begin()
+    var result: Int = 0
+    try {
+      entityManager.merge(user)
+      transaction.commit()
+      result = 1
+    } catch {
+      case exception: Throwable =>
+        if (transaction != null && transaction.isActive)
+          transaction.rollback()
+        throw exception
+    } finally
+      entityManager.close()
+    result
+  }
 }

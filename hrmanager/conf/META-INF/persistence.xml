@@ -9,6 +9,7 @@
         <mapping-file>META-INF/AccountAuthorityService-queries.xml</mapping-file>
         <mapping-file>META-INF/Role-queries.xml</mapping-file>
         <mapping-file>META-INF/User-queries.xml</mapping-file>
+        <mapping-file>META-INF/Deparment-queries.xml</mapping-file>
     </persistence-unit>
 
 </persistence>

@@ -28,5 +28,9 @@ class UserServiceImpl extends UserService{
     entity.name = user.name
     userDAO.save(entity)
   }
+  
+  def updateUser(user: User): Int = {
+    userDAO.update(user)
+  }
 
 }
