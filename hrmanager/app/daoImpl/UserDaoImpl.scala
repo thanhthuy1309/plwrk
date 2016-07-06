@@ -38,7 +38,9 @@ class UserDaoImpl extends UserDao {
       resultList = query.getResultList.asInstanceOf[JList[User]]
     }
     if (resultList != null) {
-      role = resultList.get(0).asInstanceOf[User]
+      if (resultList.size() > 0) {
+        role = resultList.get(0).asInstanceOf[User]
+      }
     }
     role
   }

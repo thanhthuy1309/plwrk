@@ -38,7 +38,9 @@ class RoleDaoImpl extends RoleDao {
       resultList = query.getResultList.asInstanceOf[JList[Role]]
     }
     if (resultList != null) {
-      role = resultList.get(0).asInstanceOf[Role]
+      if (resultList.size() > 0) {
+        role = resultList.get(0).asInstanceOf[Role]
+      }
     }
     role
   }
