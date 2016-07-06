@@ -63,4 +63,22 @@ class UserDaoImpl extends UserDao {
       entityManager.close()
     result
   }
+  
+  def findUserByEmailPassword(email: String, password:String): User = {
+    var role: User = new User
+    var entityManager = persitence.createEntityManager()
+    var resultList: JList[User] = null
+    if (entityManager != null) {
+      var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_EMAIL_PASSWORD)
+      query.setParameter("email", email)
+      query.setParameter("password", password)
+      resultList = query.getResultList.asInstanceOf[JList[User]]
+    }
+    if (resultList != null) {
+      if (resultList.size() > 0) {
+        role = resultList.get(0).asInstanceOf[User]
+      }
+    }
+    role
+  }
 }

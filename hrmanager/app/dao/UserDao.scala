@@ -10,4 +10,5 @@ trait UserDao {
   def findUserAll: JList[User]
   def findUserByEmail(email: String): User
   def save(user: User): Int
+  def findUserByEmailPassword(email: String, password:String): User
 }

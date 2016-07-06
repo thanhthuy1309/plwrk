@@ -3,15 +3,11 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+POST     /postLogin						controllers.LoginController.postLogin()
 GET     /home                           controllers.LoginController.home()
 GET     /loginHome                           controllers.LoginController.loginHome()
 GET     /loginByGoogle                controllers.LoginController.loginByGoogle()
-POST    /person                     controllers.Application.addPerson
-GET     /add                    	controllers.Application.add
-GET     /loginGoogle                controllers.Application.loginGoogle
 GET     /login      				controllers.LoginController.login(state: String, code: String)
-GET		/loginForm					controllers.Application.loginForm()
 GET     /send						controllers.ApplicationScala.send()
 
 # Map static resources from the /public folder to the /assets URL path

@@ -47,4 +47,15 @@ class UserServiceImpl extends UserService {
     userDAO.save(entity)
   }
 
+  def serviceLoginAccount(info : UserLoginAccountForm): Int = {
+    var result: Int = 0
+    var user: User = userDAO.findUserByEmailPassword(info.email, info.password)
+    if (user.email == null && user.passWord == null) {
+      result = 1
+    } else if (user.email != null && user.passWord != null) {
+      result = 2
+    }
+    result
+  }
+  
 }
