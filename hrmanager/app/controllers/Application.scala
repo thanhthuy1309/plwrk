@@ -32,6 +32,9 @@ class Application @Inject() (val messagesApi: MessagesApi,
   
   @Inject
   private var userService:UserService = _
+  
+  @Inject
+  private var roleService: RoleService = _
 
   val clientId = "328338891021-ee9ueunvbo7l0d94elh3bps43adlh2p6.apps.googleusercontent.com"
   val clientSecret = "-1aVh3RWhGw0GTXYnUeM0VJ6"
@@ -58,14 +61,16 @@ class Application @Inject() (val messagesApi: MessagesApi,
 
   def add = Action {
     println(userService.findUserAll)
+    println(roleService.findRoleAll)
     Ok(views.html.index(personForm))
   }
   
   def strip(quoted: String): String = {
     quoted.filter(char => char != '\"')
   }
+  
   def login(state: String, code: String) = Action {
-    if (cache.get("accessToken") == None) {
+      if (cache.get("accessToken") == None) {
       val postBody = "code=" + code + "&client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirectUrl + "&grant_type=authorization_code"
       val body = ws.url("https://accounts.google.com/o/oauth2/token").withHeaders("Content-Type" -> "application/x-www-form-urlencoded").post(postBody)
       Await.result(body, GoogleConstant.TIMEOUT)
@@ -88,7 +93,6 @@ class Application @Inject() (val messagesApi: MessagesApi,
         }
       }
     }
-
     Ok(views.html.index(personForm))
   }
   

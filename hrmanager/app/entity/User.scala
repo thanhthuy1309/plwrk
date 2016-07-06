@@ -16,16 +16,28 @@ class User {
   @Column(name = "email", nullable = false, length = 255)
   var email: String = _
 
-  @Column(name = "name", nullable = false, length = 500)
+  @Column(name = "name", nullable = false, length = 255)
   var name: String = _
+
+  @Column(name = "fullname", length = 500)
+  var fullName: String = _
 
   @Column(name = "dateborn")
   @Temporal(TemporalType.DATE)
   var dateBorn: Date = _
 
-  @Column(name = "role", length = 1)
-  var role: String = _
-  
+  @ManyToOne
+  @JoinColumn(name = "roleid", referencedColumnName = "roleid", insertable = false, updatable = false)
+  var role: Role = _
+
   @Column(name = "password")
   var passWord: String = _
+
+  @Column(name = "emailupper", length = 255)
+  var emailUpper: String = _
+  
+  @ManyToOne
+  @JoinColumn(name = "deparmentid", referencedColumnName = "deparmentid", insertable = false, updatable = false)
+  var deparment: Deparment = _
+  
 }
