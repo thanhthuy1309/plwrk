@@ -17,6 +17,7 @@ import play.api.i18n.I18nSupport
 import play.api.libs.ws.WSClient
 import play.api.i18n.MessagesApi
 import scala.concurrent.ExecutionContext
+import entity.User
 
 class AdminController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -78,6 +79,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
       // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
       // a future because the person creation function returns a future.
       errorForm => {
+        val users : List[User] = userService.findUserAll
         var user : User = userService.findUserByEmail(email)
         var form:CreateUserForm = new CreateUserForm(
           user.email,
@@ -89,7 +91,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
           user.emailUpper,
           user.deparment.deparmentId
           )
-        BadRequest(views.html.admin_update(email, userForm.fill(form), deparments, roles))
+        BadRequest(views.html.admin_list(users))
       },
       // There were no errors in the from, so create the person.
       user => {

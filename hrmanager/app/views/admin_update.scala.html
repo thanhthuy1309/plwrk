@@ -24,25 +24,25 @@
 				<form method="POST" action="@routes.AdminController.adminUpdateUserPost(email)">
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label>Email</label> <input class="form-control" value="@userForm("email").value">
+							<label>Email</label> <input class="form-control" value="@userForm("email").value" name="email" id="email">
 						</div>
 						
 						<div class="form-group">
-							<label>Name</label> <input class="form-control" value="@userForm("name").value">
+							<label>Name</label> <input class="form-control" value="@userForm("name").value" name="name" id="name">
 						</div>
 						
 						<div class="form-group">
-							<label>Full Name</label> <input class="form-control" value="@userForm("fullName").value">
+							<label>Full Name</label> <input class="form-control" value="@userForm("fullName").value" name="fullName" id="fullName">
 						</div>
 						
 						<div class="form-group">
-							<label>Date Born</label> <input class="form-control" value="@userForm("dateBorn").value">
+							<label>Date Born</label> <input class="form-control" value="@userForm("dateBorn").value" name="dateBorn" id="dateBorn">
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label>Role</label>
-							<select class="form-control">
+							<select class="form-control" name="roleId" id="roleId">
 								@for(value <- roles) {
 									@if(value.roleId == userForm("roleId").value){
 										<option value="@value.roleId" selected>@value.roleName</option>
@@ -54,12 +54,12 @@
 						</div>
 						
 						<div class="form-group">
-							<label>Password</label> <input class="form-control" value="@userForm("passWord").value">
+							<label>Password</label> <input class="form-control" value="@userForm("passWord").value" name="passWord" id="passWord">
 						</div>
 						
 						<div class="form-group">
 							<label>Deparment</label>
-							<select class="form-control">
+							<select class="form-control" name="deparmentId" id="deparmentId">
 								@for(value <- deparments) {
 									@if(value.deparmentId == userForm("deparmentId").value){
 										<option value="@value.deparmentId" selected>@value.deparmentName</option>
@@ -71,7 +71,7 @@
 						</div>
 						
 						<div class="form-group">
-							<label>Email Upper</label> <input class="form-control" value="@userForm("emailUpper").value">
+							<label>Email Upper</label> <input class="form-control" value="@userForm("emailUpper").value" name="emailUpper" id="emailUpper">
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary">Update</button>
