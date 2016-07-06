@@ -27,7 +27,7 @@ class User {
   var dateBorn: Date = _
 
   @ManyToOne
-  @JoinColumn(name = "roleid", referencedColumnName = "roleid", insertable = false, updatable = false)
+  @JoinColumn(name = "roleid", referencedColumnName = "roleid")
   var role: Role = _
 
   @Column(name = "password")
@@ -37,7 +37,7 @@ class User {
   var emailUpper: String = _
   
   @ManyToOne
-  @JoinColumn(name = "deparmentid", referencedColumnName = "deparmentid", insertable = false, updatable = false)
+  @JoinColumn(name = "deparmentid", referencedColumnName = "deparmentid")
   var deparment: Deparment = _
   
 }

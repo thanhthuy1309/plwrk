@@ -1,14 +1,17 @@
-@() @main("Welcome to Play") {
+@import forms._
+@import play.i18n._
+@(loginForm : Form[UserLoginAccountForm])(implicit flash: Flash)
+@main("Login") {
 <div class="container">
 	<div class="omb_login">
 		<h3 class="omb_authTitle">
-			Login
+			Register Account
 		</h3>
 		<div class="row omb_row-sm-offset-3 omb_socialButtons">
 
 			<div class="col-xs-12 col-sm-6">
-				<a href="/loginGoogle ">
-					<button class="btn btn-lg btn-danger btn-block">Google+</button>
+				<a href="/loginByGoogle">
+					<button class="btn btn-lg btn-danger btn-block">Login by Google+</button>
 				</a>
 			</div>
 		</div>
@@ -19,20 +22,29 @@
 				<span class="omb_spanOr">or</span>
 			</div>
 		</div>
-
 		<div class="row omb_row-sm-offset-3">
 			<div class="col-xs-12 col-sm-6">
-				<form class="omb_loginForm" action="" autocomplete="off"
+			<div class="omb_loginForm">
+			<span class="help-block">
+				@if(flash.get("userNotExist") != None) {
+					@flash.get("userNotExist").get
+				}
+	         </span>
+	         </div>
+         </div>
+         </div>
+		<div class="row omb_row-sm-offset-3">
+			<div class="col-xs-12 col-sm-6">
+				<form class="omb_loginForm" action="@controllers.routes.LoginController.postLogin()" autocomplete="off"
 					method="POST">
-					<input type="text" class="form-control" name="username"
-						placeholder="email address">
-					<span class="help-block"></span>
+					<input type="text" class="form-control" name="email" id="email"
+						placeholder="email address" value="@loginForm("email").value">
+					<span class="help-block">@if(loginForm("email").hasErrors) {@Messages.get(loginForm("email").error.get.message)}</span>
 
-					<input type="password" class="form-control" name="password"
-						placeholder="Password">
-					<span class="help-block">Password error</span>
-
-					<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+					<input type="password" class="form-control" name="password" id="password"
+						placeholder="Password" value="@loginForm("password").value">
+					<span class="help-block">@if(loginForm("password").hasErrors) {@Messages.get(loginForm("password").error.get.message)}</span>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">Login Account</button>
 				</form>
 			</div>
 		</div>

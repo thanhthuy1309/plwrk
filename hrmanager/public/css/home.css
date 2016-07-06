@@ -1,0 +1,10 @@
+.mg_10 {
+	margin-top: 10px;
+}
+a:hover {
+    text-decoration: none;
+}
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}

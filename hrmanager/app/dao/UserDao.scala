@@ -11,4 +11,5 @@ trait UserDao {
   def findUserByEmail(email: String): User
   def save(user: User): Int
   def update(user: User): Int
+  def findUserByEmailPassword(email: String, password:String): User
 }

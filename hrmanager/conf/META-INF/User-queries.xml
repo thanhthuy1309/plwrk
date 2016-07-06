@@ -16,4 +16,11 @@
 		</query>
 	</named-query>
 	
+	<named-query name="UserDao.findUserByEmailPassword">
+		<query>
+			select r from User r
+			where r.email = :email and r.passWord = :password
+		</query>
+	</named-query>
+	
 </entity-mappings>

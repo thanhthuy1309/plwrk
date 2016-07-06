@@ -1,2 +1,4 @@
 name = Name
 age = Age
+error.email = Email wrong format
+error.required = This field is required

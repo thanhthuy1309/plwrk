@@ -3,12 +3,11 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-POST    /person                     controllers.Application.addPerson
-GET     /add                    	controllers.Application.add
-GET     /loginGoogle                controllers.Application.loginGoogle
-GET     /login      				controllers.Application.login(state: String, code: String)
-GET		/loginForm					controllers.Application.loginForm()
+POST     /postLogin						controllers.LoginController.postLogin()
+GET     /home                           controllers.LoginController.home()
+GET     /loginHome                           controllers.LoginController.loginHome()
+GET     /loginByGoogle                controllers.LoginController.loginByGoogle()
+GET     /login      				controllers.LoginController.login(state: String, code: String)
 GET     /send						controllers.ApplicationScala.send()
 GET		/admin/list					controllers.AdminController.listUser()
 GET		/admin/update/:email		controllers.AdminController.updateUser(email: String)

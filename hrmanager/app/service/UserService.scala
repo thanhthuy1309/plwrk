@@ -16,4 +16,5 @@ trait UserService {
   def findUserByEmail(email: String): User
   def saveByGoogle(user: UserGoogleForm): Int
   def updateUser(user: User): Int
+  def serviceLoginAccount(info : UserLoginAccountForm):Int
 }
