@@ -1,4 +1,4 @@
-@(activeMenu: String)
+@(activeMenu: String, email:String, roleId:String)
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
 		<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -6,7 +6,7 @@
 			<span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="index.html">HR Manager Admin</a>
+		<a class="navbar-brand" href="/index">HR Manager</a>
 	</div>
 	<ul class="nav navbar-right top-nav">
 		<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -36,7 +36,7 @@
 							</span>
 							<div class="media-body">
 								<h5 class="media-heading">
-									<strong>John Smith</strong>
+									<strong>@email</strong>
 								</h5>
 								<p class="small text-muted">
 									<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
@@ -84,7 +84,7 @@
 				<li><a href="#">View All</a></li>
 			</ul></li>
 		<li class="dropdown"><a href="#" class="dropdown-toggle"
-			data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b
+			data-toggle="dropdown"><i class="fa fa-user"></i> @email <b
 				class="caret"></b></a>
 			<ul class="dropdown-menu">
 				<li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a></li>

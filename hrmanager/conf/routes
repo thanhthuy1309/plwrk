@@ -4,7 +4,8 @@
 
 # Home page
 POST     /postLogin						controllers.LoginController.postLogin()
-GET     /home                           controllers.LoginController.home()
+GET     /                           controllers.LoginController.home()
+GET     /index                           controllers.LoginController.index()
 GET     /loginHome                           controllers.LoginController.loginHome()
 GET     /loginByGoogle                controllers.LoginController.loginByGoogle()
 GET     /login      				controllers.LoginController.login(state: String, code: String)

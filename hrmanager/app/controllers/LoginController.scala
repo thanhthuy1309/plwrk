@@ -39,6 +39,10 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.login(loginForm))
   }
 
+  def index = Action { implicit request =>
+    Ok(views.html.index(request.session.get("email").get,request.session.get("roleId").get))
+  }
+  
   def loginByGoogle = Action {implicit request =>
     Redirect(GoogleConstant.GOOGLE_URL_LOGIN)
   }
@@ -75,17 +79,20 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
 
     if (email != null) {
       var user: User = userService.findUserByEmail(email)
+      var roleId:String = null
       if (user.email != null) {
-        cache.set(email, email)
+        roleId =  user.role.roleId
       } else {
         var infoGoogle: UserGoogleForm = new UserGoogleForm(email, name)
         if (userService.saveByGoogle(infoGoogle) == 1) {
-          cache.set(email, email)
+           var info: User = userService.findUserByEmail(email)
+           roleId =  info.role.roleId
         } else {
           Ok("Man hinh loi")
         }
       }
-      Ok("vao man hinh quan ly cache" + cache.get[String](email).get)
+      //Ok("vao man hinh quan ly cache" + cache.get[String](email).get)
+      Redirect("/index").withSession(request.session + ("email" -> email) + ("roleId" -> roleId))
     } else {
       Ok("loi")
     }
@@ -103,7 +110,7 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
         if (result == 1) {
           Redirect("/loginHome").flashing("userNotExist" -> (person.email + " not exist"))
         } else if (result == 2) {
-          Ok("login thanh cong")
+          Redirect("/index")
         } else {
           Ok("error")
         }
