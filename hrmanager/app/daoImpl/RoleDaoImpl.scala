@@ -23,7 +23,13 @@ class RoleDaoImpl extends RoleDao {
     var entityManager = persitence.createEntityManager()
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.ROLE_DAO_FIND_ROLE_ALL)
-      result = query.getResultList.asInstanceOf[JList[Role]]
+      //result = query.getResultList.asInstanceOf[JList[Role]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          result = temp.asInstanceOf[JList[Role]]
+        }
+      }
     }
     result
   }
@@ -35,7 +41,12 @@ class RoleDaoImpl extends RoleDao {
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.ROLE_DAO_FIND_ROLE_ID)
       query.setParameter("roleId", roleId)
-      resultList = query.getResultList.asInstanceOf[JList[Role]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          resultList = temp.asInstanceOf[JList[Role]]
+        }
+      }
     }
     if (resultList != null) {
       if (resultList.size() > 0) {

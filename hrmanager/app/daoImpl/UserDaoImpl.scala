@@ -23,7 +23,13 @@ class UserDaoImpl extends UserDao {
     var entityManager = persitence.createEntityManager()
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_USER_ALL)
-      result = query.getResultList.asInstanceOf[JList[User]]
+      //result = query.getResultList.asInstanceOf[JList[User]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          result = temp.asInstanceOf[JList[User]]
+        }
+      }
     }
     result
   }
@@ -35,7 +41,13 @@ class UserDaoImpl extends UserDao {
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_EMAIL)
       query.setParameter("email", email)
-      resultList = query.getResultList.asInstanceOf[JList[User]]
+      //resultList = query.getResultList.asInstanceOf[JList[User]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          resultList = temp.asInstanceOf[JList[User]]
+        }
+      }
     }
     if (resultList != null) {
       if (resultList.size() > 0) {
@@ -59,17 +71,18 @@ class UserDaoImpl extends UserDao {
         if (transaction != null && transaction.isActive)
           transaction.rollback()
         throw exception
-    } finally
+    } finally {
       entityManager.close()
+    }
     result
   }
   
   def update(user: User): Int = {
     val entityManager = persitence.createEntityManager()
     def transaction = entityManager.getTransaction
-    transaction.begin()
     var result: Int = 0
     try {
+      transaction.begin()
       entityManager.merge(user)
       transaction.commit()
       result = 1
@@ -78,8 +91,9 @@ class UserDaoImpl extends UserDao {
         if (transaction != null && transaction.isActive)
           transaction.rollback()
         throw exception
-    } finally
+    } finally {
       entityManager.close()
+    }
     result
   }
   
@@ -91,7 +105,13 @@ class UserDaoImpl extends UserDao {
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_EMAIL_PASSWORD)
       query.setParameter("email", email)
       query.setParameter("password", password)
-      resultList = query.getResultList.asInstanceOf[JList[User]]
+      //resultList = query.getResultList.asInstanceOf[JList[User]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          resultList = temp.asInstanceOf[JList[User]]
+        }
+      }
     }
     if (resultList != null) {
       if (resultList.size() > 0) {
@@ -107,7 +127,13 @@ class UserDaoImpl extends UserDao {
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_SUBTRACT_EMAIL)
       query.setParameter("email", email)
-      result = query.getResultList.asInstanceOf[JList[User]]
+      //result = query.getResultList.asInstanceOf[JList[User]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          result = temp.asInstanceOf[JList[User]]
+        }
+      }
     }
     result
   }

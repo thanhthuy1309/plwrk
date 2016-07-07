@@ -13,6 +13,7 @@ libraryDependencies ++= Seq(
   "mysql" % "mysql-connector-java" % "5.1.18",
   "org.hibernate" % "hibernate-core" % "4.3.6.Final",
   "org.hibernate" % "hibernate-entitymanager" % "4.3.6.Final",
+  "org.hibernate" % "hibernate-c3p0" % "4.3.6.Final",
   "org.apache.jena" % "jena-arq" % "2.9.3",
   "com.restfb" % "restfb" % "1.6.11",
   "com.typesafe.play" %% "play-mailer" % "5.0.0",

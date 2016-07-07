@@ -13,7 +13,8 @@ GET     /login      				controllers.LoginController.login(state: String, code: S
 GET     /send						controllers.ApplicationScala.send()
 GET		/admin/list					controllers.AdminController.listUser()
 GET		/admin/update/:email		controllers.AdminController.updateUser(email: String)
-POST	/admin/update/:email		controllers.AdminController.adminUpdateUserPost(email: String)
+POST	/admin/update/:email/:mode		controllers.AdminController.adminUpdateUserPost(email: String,mode: String)
+GET		/profile					controllers.AdminController.profile()
 
 GET		/employee/apply				controllers.EmployeeController.emloyeeApplyGet()
 POST	/employee/apply				controllers.EmployeeController.emloyeeApplyPost()

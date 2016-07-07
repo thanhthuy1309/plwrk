@@ -16,7 +16,13 @@ class DeparmentDaoImpl extends DepartemntDao {
     var entityManager = persitence.createEntityManager()
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.DEPARMENT_DAO_FIND_DEPARMENT_ALL)
-      result = query.getResultList.asInstanceOf[JList[Deparment]]
+      //result = query.getResultList.asInstanceOf[JList[Deparment]]
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          result = temp.asInstanceOf[JList[Deparment]]
+        }
+      }
     }
     result
   }
