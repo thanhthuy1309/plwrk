@@ -1,5 +1,6 @@
 @import entity._ 
 @import java.util.List
+@import play.i18n._
 
 @(email: String, userForm : Form[CreateUserForm], deparments : List[Deparment], roles : List[Role]) 
 @main("Welcome to Play") {
@@ -24,11 +25,13 @@
 				<form method="POST" action="@routes.AdminController.adminUpdateUserPost(email)">
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label>Email</label> <input class="form-control" value="@userForm("email").value" name="email" id="email">
+							<label>Email</label><span class="help-block">@if(userForm("email").hasErrors) {@Messages.get(userForm("email").error.get.message)}</span>
+							<input class="form-control" value="@userForm("email").value" name="email" id="email">
 						</div>
 						
 						<div class="form-group">
 							<label>Name</label> <input class="form-control" value="@userForm("name").value" name="name" id="name">
+							<span class="help-block">@if(userForm("name").hasErrors) {@Messages.get(userForm("name").error.get.message)}</span>
 						</div>
 						
 						<div class="form-group">
@@ -44,7 +47,7 @@
 							<label>Role</label>
 							<select class="form-control" name="roleId" id="roleId">
 								@for(value <- roles) {
-									@if(value.roleId == userForm("roleId").value){
+									@if(userForm("roleId").value.get == value.roleId){
 										<option value="@value.roleId" selected>@value.roleName</option>
 									} else {
 										<option value="@value.roleId">@value.roleName</option>
@@ -61,7 +64,7 @@
 							<label>Deparment</label>
 							<select class="form-control" name="deparmentId" id="deparmentId">
 								@for(value <- deparments) {
-									@if(value.deparmentId == userForm("deparmentId").value){
+									@if(userForm("deparmentId").value.get.toInt == value.deparmentId){
 										<option value="@value.deparmentId" selected>@value.deparmentName</option>
 									} else {
 										<option value="@value.deparmentId">@value.deparmentName</option>
@@ -74,10 +77,12 @@
 							<label>Email Upper</label> <input class="form-control" value="@userForm("emailUpper").value" name="emailUpper" id="emailUpper">
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary">Update</button>
-					<a href="@routes.AdminController.listUser()">
-		                <button class="btn btn-default">Cancel</button>
-					</a>
+					<div class="col-lg-12">
+						<button type="submit" class="btn btn-primary">Update</button>
+						<a href="@routes.AdminController.listUser()">
+			                <button class="btn btn-default">Cancel</button>
+						</a>
+					</div>
 				</form>
 			</div>
 		</div>
