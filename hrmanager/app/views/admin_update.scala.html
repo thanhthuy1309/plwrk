@@ -2,10 +2,10 @@
 @import java.util.List
 @import play.i18n._
 
-@(email: String, userForm : Form[CreateUserForm], deparments : List[Deparment], roles : List[Role]) 
+@(email: String, userForm : Form[CreateUserForm], deparments : List[Deparment], roles : List[Role], emailLogin: String, roleIdLogin: String)
 @main("Welcome to Play") {
 <div id="wrapper">
-	@admin_header("List User","a","b")
+	@admin_header("List User",emailLogin,roleIdLogin)
 	<div id="page-wrapper">
 		<div class="container-fluid">
 			<!-- Page Heading -->

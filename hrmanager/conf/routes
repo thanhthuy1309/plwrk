@@ -5,6 +5,7 @@
 # Home page
 POST     /postLogin						controllers.LoginController.postLogin()
 GET     /                           controllers.LoginController.home()
+GET     /logout                           controllers.LogoutController.logout()
 GET     /index                           controllers.LoginController.index()
 GET     /loginHome                           controllers.LoginController.loginHome()
 GET     /loginByGoogle                controllers.LoginController.loginByGoogle()

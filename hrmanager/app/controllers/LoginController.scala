@@ -110,7 +110,8 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
         if (result == 1) {
           Redirect("/loginHome").flashing("userNotExist" -> (person.email + " not exist"))
         } else if (result == 2) {
-          Redirect("/index")
+          var user:User = userService.findUserByEmail(person.email)
+          Redirect("/index").withSession(request.session + ("email" -> user.email) + ("roleId" -> user.role.roleId))
         } else {
           Ok("error")
         }

@@ -45,14 +45,14 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
       
   val mapMenu = Map("listUser" -> "List User","createUser" -> "CreateUser")
  
-  def listUser() = Action {
+  def listUser() = Action {implicit request =>
     val users : List[User] = userService.findUserAll
     
-    Ok(views.html.admin_list(users))
+    Ok(views.html.admin_list(users,request.session.get("email").get,request.session.get("roleId").get))
   }
   
   
-  def updateUser(email : String) = Action {
+  def updateUser(email : String) = Action { implicit request =>
     var deparments : List[Deparment] = deparmentService.findDeparmentAll
     var roles : List[Role] = roleService.findRoleAll
     var user : User = userService.findUserByEmail(email)
@@ -66,7 +66,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
         user.emailUpper,
         user.deparment.deparmentId
     )
-    Ok(views.html.admin_update(email, userForm.fill(form), deparments, roles))
+    Ok(views.html.admin_update(email, userForm.fill(form), deparments, roles,request.session.get("email").get,request.session.get("roleId").get))
   }
   
   def adminUpdateUserPost(email : String) = Action {implicit request =>
@@ -79,7 +79,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
       // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
       // a future because the person creation function returns a future.
       errorForm => {
-        BadRequest(views.html.admin_update(email, errorForm, deparments, roles))
+        BadRequest(views.html.admin_update(email, errorForm, deparments, roles,request.session.get("email").get, request.session.get("roleId").get))
       },
       // There were no errors in the from, so create the person.
       user => {
