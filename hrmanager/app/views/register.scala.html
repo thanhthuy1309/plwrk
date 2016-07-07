@@ -4,26 +4,29 @@
 @import constants._
 @import forms._
 
-@(email: String,
- userForm : Form[UpdateUserForm],
+@(userForm : Form[UpdateUserForm],
  deparments : List[Deparment],
- roles : List[Role],
- emailLogin: String,
- roleIdLogin: String,
- mode: String,
- superList : List[User])
+ superList : List[User]
+)(implicit flash: Flash)
 @main("Welcome to Play") {
 <div id="wrapper">
-	@admin_header("List User",emailLogin,roleIdLogin)
+	@home_header()
 	<div id="page-wrapper">
 		<div class="container-fluid">
 			<!-- Page Heading -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Update user</h1>
+					<h1 class="page-header">Register user</h1>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-dashboard"></i> <a href="/index">HR Manager</a></li>
-						<li class="active"><i class="fa fa-table"></i> Update user</li>
+						<li><i class="fa fa-dashboard"></i> <a href="/">HR Manager</a></li>
+						<li class="active"><i class="fa fa-table"></i> Register user</li>
+					</ol>
+					<ol class="breadcrumb">
+						<span class="help-block">
+						@if(flash.get("userExist") != None) {
+							@flash.get("userExist").get
+						}
+						</span>
 					</ol>
 				</div>
 			</div>
@@ -31,10 +34,11 @@
 
 			<div class="row">
 
-				<form method="POST" action="@routes.AdminController.adminUpdateUserPost(email,mode)">
+				<form method="POST" action="/register">
 					<div class="col-lg-6">
 					<div class="form-group">
-							<label>Email</label> <input class="form-control" value="@userForm("email").value" name="email" id="email" readonly="readonly">
+					<input class="form-control" value="2" name="roleId" id="roleId" type="hidden">
+							<label>Email</label> <input class="form-control" value="@userForm("email").value" name="email" id="email">
 							<span class="help-block">@if(userForm("email").hasErrors) {@Messages.get(userForm("email").error.get.message)}</span>
 				   </div>
 						<div class="form-group">
@@ -54,28 +58,6 @@
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label>Role</label>
-							@if(roleIdLogin != "1") {
-								@for(value <- roles) {
-									@if(userForm("roleId").value.get == value.roleId){
-								 <input class="form-control" value="@value.roleName" name="roleName" id="roleName" readonly="readonly">
-								 <input class="form-control" value="@userForm("roleId").value" name="roleId" id="roleId" type="hidden">
-								 }
-								 }
-							} else {
-								<select class="form-control" name="roleId" id="roleId">
-								@for(value <- roles) {
-									@if(userForm("roleId").value.get == value.roleId){
-										<option value="@value.roleId" selected>@value.roleName</option>
-									} else {
-										<option value="@value.roleId">@value.roleName</option>
-									}
-								}
-								</select>
-							}
-							<span class="help-block"></span>
-						</div>
-						<div class="form-group">
 							<label>Password</label> <input class="form-control" value="@userForm("passWord").value" name="passWord" id="passWord" type="password">
 							<span class="help-block">@if(userForm("passWord").hasErrors) {@Messages.get(userForm("passWord").error.get.message)}</span>
 						</div>
@@ -83,8 +65,12 @@
 							<label>Deparment</label>
 							<select class="form-control" name="deparmentId" id="deparmentId">
 								@for(value <- deparments) {
-									@if(userForm("deparmentId").value.get.toInt == value.deparmentId){
-										<option value="@value.deparmentId" selected>@value.deparmentName</option>
+									@if(userForm("deparmentId").value != None){
+										@if(userForm("deparmentId").value.get.toInt == value.deparmentId) {
+											<option value="@value.deparmentId" selected>@value.deparmentName</option>
+										} else {
+											<option value="@value.deparmentId">@value.deparmentName</option>
+										}
 									} else {
 										<option value="@value.deparmentId">@value.deparmentName</option>
 									}
@@ -98,9 +84,13 @@
 							<select class="form-control" name="emailUpper" id="emailUpper">
 								<option value="" selected></option>
 								@for(emailUser <- superList) {
-									@if(userForm("emailUpper").value.get.toString == emailUser.email){
-										<option value="@emailUser.email" selected>@emailUser.fullName</option>
-									} else {
+									@if(userForm("emailUpper").value != None){
+										@if(userForm("emailUpper").value.get.toString == emailUser.email){
+											<option value="@emailUser.email" selected>@emailUser.fullName</option>
+										} else {
+											<option value="@emailUser.email">@emailUser.fullName</option>
+										}
+									}  else {
 										<option value="@emailUser.email">@emailUser.fullName</option>
 									}
 								}
@@ -109,12 +99,8 @@
 						</div>
 					</div>
 					<div class="col-lg-12">
-						<button type="submit" class="btn btn-primary">Update</button>
-						@if(mode == CommonConstant.MODE_LIST_SCREEN) {
-							<a href="@routes.AdminController.listUser()">
-						} else {
-							<a href="@routes.LoginController.index()">
-						}
+						<button type="submit" class="btn btn-primary">Register</button>
+							<a href="@routes.LoginController.home()">
 			                <button type="button" class="btn btn-default">Cancel</button>
 						</a>
 					</div>

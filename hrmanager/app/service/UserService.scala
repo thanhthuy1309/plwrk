@@ -19,4 +19,5 @@ trait UserService {
   def serviceLoginAccount(info : UserLoginAccountForm):Int
   
   def findUserSubtractEmail(email: String): JList[User]
+   def registerUser(user: UpdateUserForm): Int
 }

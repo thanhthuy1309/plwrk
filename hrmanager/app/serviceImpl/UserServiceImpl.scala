@@ -76,6 +76,19 @@ class UserServiceImpl extends UserService {
     userDAO.update(u)
   }
 
+    def registerUser(user: UpdateUserForm): Int = {
+    var u: User = new User
+    u.email = user.email.asInstanceOf[String]
+    u.name = user.name.asInstanceOf[String]
+    u.fullName = user.fullName.asInstanceOf[String]
+    u.dateBorn = user.dateBorn.asInstanceOf[Date]
+    u.passWord = user.passWord.asInstanceOf[String]
+    u.emailUpper = user.emailUpper.asInstanceOf[String]
+    u.role = (roleDao.findRoleById(CommonConstant.ROLE_USER)).asInstanceOf[Role]
+    u.deparment = departmentDao.findDeparmentById(user.deparmentId).asInstanceOf[Deparment]
+    userDAO.save(u)
+  }
+    
   def serviceLoginAccount(info: UserLoginAccountForm): Int = {
     var result: Int = 0
     var user: User = userDAO.findUserByEmailPassword(info.email, info.password)
