@@ -100,4 +100,15 @@ class UserDaoImpl extends UserDao {
     }
     role
   }
+  
+  def findUserSubtractEmail(email: String): JList[User]= {
+    var result: JList[User] = null
+    var entityManager = persitence.createEntityManager()
+    if (entityManager != null) {
+      var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_SUBTRACT_EMAIL)
+      query.setParameter("email", email)
+      result = query.getResultList.asInstanceOf[JList[User]]
+    }
+    result
+  }
 }

@@ -23,4 +23,11 @@
 		</query>
 	</named-query>
 	
+		<named-query name="UserDao.findUserSubtractEmail">
+		<query>
+			select p from User p
+			where p.email NOT IN (select r.email from User r where r.email = :email)
+		</query>
+	</named-query>
+	
 </entity-mappings>

@@ -46,8 +46,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
   val mapMenu = Map("listUser" -> "List User","createUser" -> "CreateUser")
  
   def listUser() = Action {implicit request =>
-    val users : List[User] = userService.findUserAll
-    
+    val users : List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
     Ok(views.html.admin_list(users,request.session.get("email").get,request.session.get("roleId").get))
   }
   

@@ -19,7 +19,7 @@ class User {
   @Column(name = "name", nullable = false, length = 255)
   var name: String = _
 
-  @Column(name = "fullname", length = 500)
+  @Column(name = "fullname", nullable = false,length = 500)
   var fullName: String = _
 
   @Column(name = "dateborn")

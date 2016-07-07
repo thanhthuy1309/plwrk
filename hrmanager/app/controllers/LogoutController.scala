@@ -24,9 +24,7 @@ class LogoutController @Inject() (val messagesApi: MessagesApi,
     val cache: CacheApi)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
 
   def logout = Action { implicit request =>
-    request.session.-("email")
-    request.session.-("roleId")
-    Ok(views.html.home())
+    Ok(views.html.home()).withSession(request.session - ("email")-("roleId"))
   }
 
 }

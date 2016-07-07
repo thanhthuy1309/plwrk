@@ -12,4 +12,6 @@ trait UserDao {
   def save(user: User): Int
   def update(user: User): Int
   def findUserByEmailPassword(email: String, password:String): User
+  
+  def findUserSubtractEmail(email: String): JList[User]
 }

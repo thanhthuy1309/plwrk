@@ -17,4 +17,6 @@ trait UserService {
   def saveByGoogle(user: UserGoogleForm): Int
   def updateUser(user: User): Int
   def serviceLoginAccount(info : UserLoginAccountForm):Int
+  
+    def findUserSubtractEmail(email: String): JList[User]
 }
