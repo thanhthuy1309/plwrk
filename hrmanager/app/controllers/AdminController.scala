@@ -79,19 +79,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
       // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
       // a future because the person creation function returns a future.
       errorForm => {
-        val users : List[User] = userService.findUserAll
-        var user : User = userService.findUserByEmail(email)
-        var form:CreateUserForm = new CreateUserForm(
-          user.email,
-          user.name,
-          user.fullName,
-          user.dateBorn,
-          user.role.roleId,
-          user.passWord,
-          user.emailUpper,
-          user.deparment.deparmentId
-          )
-        BadRequest(views.html.admin_list(users))
+        BadRequest(views.html.admin_update(email, errorForm, deparments, roles))
       },
       // There were no errors in the from, so create the person.
       user => {
