@@ -4,7 +4,6 @@ import java.util.{ List => JList }
 
 import com.google.inject.ImplementedBy
 
-import entity.People
 import javax.persistence.Entity
 import javax.persistence.Table
 import serviceImpl.RoleServiceImpl

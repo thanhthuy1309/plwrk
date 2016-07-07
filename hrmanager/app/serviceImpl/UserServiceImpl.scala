@@ -4,20 +4,24 @@ import java.util.{ List => JList }
 
 import com.google.inject.ImplementedBy
 
-import dao.UserDao
-import dao.RoleDao
+import constants.CommonConstant
 import dao.DepartemntDao
-import daoImpl.PeopleDaoImpl
+import dao.RoleDao
+import dao.UserDao
+import daoImpl.DeparmentDaoImpl
+import daoImpl.RoleDaoImpl
+import daoImpl.UserDaoImpl
+import entity.Deparment
+import entity.Role
 import entity.User
+import forms.UpdateUserForm
+import forms.UserGoogleForm
+import forms.UserLoginAccountForm
 import javax.inject.Inject
 import javax.persistence.Entity
 import javax.persistence.Table
 import service.UserService
-import forms._
-import java.util.List
-import entity.Role
-import constants.CommonConstant
-import entity.Deparment
+import java.util.Date
 
 class UserServiceImpl extends UserService {
 
@@ -26,8 +30,8 @@ class UserServiceImpl extends UserService {
 
   @Inject
   private var roleDao: RoleDao = _
-  
-   @Inject
+
+  @Inject
   private var departmentDao: DepartemntDao = _
 
   def findUserAll: JList[User] = userDAO.findUserAll
@@ -39,7 +43,7 @@ class UserServiceImpl extends UserService {
     entity.email = user.email
     entity.name = user.name
     entity.fullName = user.name
-    var listUser: List[User] = userDAO.findUserAll
+    var listUser: JList[User] = userDAO.findUserAll
 
     if (listUser != null) {
       if (listUser.size() > 0) {
@@ -50,7 +54,7 @@ class UserServiceImpl extends UserService {
       var role: Role = roleDao.findRoleById(CommonConstant.ROLE_ADMIN)
       entity.role = role
     }
-    var department:Deparment = departmentDao.findDeparmentById(1)
+    var department: Deparment = departmentDao.findDeparmentById(1)
     if (department != null) {
       if (department.deparmentName != null) {
         entity.deparment = department
@@ -58,12 +62,21 @@ class UserServiceImpl extends UserService {
     }
     userDAO.save(entity)
   }
-  
-  def updateUser(user: User): Int = {
-    userDAO.update(user)
+
+  def updateUser(userUpdate: UpdateUserForm): Int = {
+    var u: User = new User
+    u.email = userUpdate.email.asInstanceOf[String]
+    u.name = userUpdate.name.asInstanceOf[String]
+    u.fullName = userUpdate.fullName.asInstanceOf[String]
+    u.dateBorn = userUpdate.dateBorn.asInstanceOf[Date]
+    u.passWord = userUpdate.passWord.asInstanceOf[String]
+    u.emailUpper = userUpdate.emailUpper.asInstanceOf[String]
+    u.role = (roleDao.findRoleById(userUpdate.roleId)).asInstanceOf[Role]
+    u.deparment = departmentDao.findDeparmentById(userUpdate.deparmentId).asInstanceOf[Deparment]
+    userDAO.update(u)
   }
 
-  def serviceLoginAccount(info : UserLoginAccountForm): Int = {
+  def serviceLoginAccount(info: UserLoginAccountForm): Int = {
     var result: Int = 0
     var user: User = userDAO.findUserByEmailPassword(info.email, info.password)
     if (user.email == null && user.passWord == null) {
@@ -73,8 +86,8 @@ class UserServiceImpl extends UserService {
     }
     result
   }
-  
-    def findUserSubtractEmail(email: String): JList[User] = {
-      userDAO.findUserSubtractEmail(email)
-    }
+
+  def findUserSubtractEmail(email: String): JList[User] = {
+    userDAO.findUserSubtractEmail(email)
+  }
 }

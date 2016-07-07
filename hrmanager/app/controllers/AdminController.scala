@@ -18,6 +18,9 @@ import play.api.libs.ws.WSClient
 import play.api.i18n.MessagesApi
 import scala.concurrent.ExecutionContext
 import entity.User
+import constants._
+import forms._
+import entity.User
 
 class AdminController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -31,20 +34,18 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
   @Inject
   private var roleService:RoleService = _
   
-  private val userForm: Form[CreateUserForm] = Form(
+  private val userForm: Form[UpdateUserForm] = Form(
     mapping(
       "email" -> nonEmptyText,
       "name" -> nonEmptyText,
-      "fullName" -> text,
+      "fullName" -> nonEmptyText,
       "dateBorn" -> date,
       "roleId" -> text,
-      "passWord" -> text,
+      "passWord" -> nonEmptyText,
       "emailUpper" -> text,
       "deparmentId" -> number
-      )(CreateUserForm.apply)(CreateUserForm.unapply))
+      )(UpdateUserForm.apply)(UpdateUserForm.unapply))
       
-  val mapMenu = Map("listUser" -> "List User","createUser" -> "CreateUser")
- 
   def listUser() = Action {implicit request =>
     val users : List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
     Ok(views.html.admin_list(users,request.session.get("email").get,request.session.get("roleId").get))
@@ -54,8 +55,47 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
   def updateUser(email : String) = Action { implicit request =>
     var deparments : List[Deparment] = deparmentService.findDeparmentAll
     var roles : List[Role] = roleService.findRoleAll
+    var supList : List[User] = userService.findUserSubtractEmail(email)
+    var form: UpdateUserForm = setInfoUser(email, deparments,roles)
+    Ok(views.html.admin_update(email, userForm.fill(form), deparments, roles,request.session.get("email").get,request.session.get("roleId").get,CommonConstant.MODE_LIST_SCREEN,supList))
+  }
+  
+  def adminUpdateUserPost(email : String,mode :String) = Action {implicit request =>
+    var deparments : List[Deparment] = deparmentService.findDeparmentAll
+    var roles : List[Role] = roleService.findRoleAll
+    var supList : List[User] = userService.findUserSubtractEmail(email)
+    val newUserForm = userForm.bindFromRequest()
+    // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle succes.
+    newUserForm.bindFromRequest.fold(
+      // The error function. We return the index page with the error form, which will render the errors.
+      // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
+      // a future because the person creation function returns a future.
+      errorForm => {
+        BadRequest(views.html.admin_update(email, errorForm, deparments, roles,request.session.get("email").get, request.session.get("roleId").get,mode,supList))
+      },
+      // There were no errors in the from, so create the person.
+      user => {
+        // If successful, we simply redirect to the index page.
+        userService.updateUser(user)
+        if(mode == CommonConstant.MODE_LIST_SCREEN) {
+        	Redirect(routes.AdminController.listUser())
+        } else {
+          Redirect(routes.LoginController.index())
+        }
+      })
+  }
+  
+  def profile = Action { implicit request =>
+    var deparments : List[Deparment] = deparmentService.findDeparmentAll
+    var roles : List[Role] = roleService.findRoleAll
+    var supList : List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
+    var form: UpdateUserForm = setInfoUser(request.session.get("email").get, deparments,roles)
+    Ok(views.html.admin_update(request.session.get("email").get, userForm.fill(form), deparments, roles,request.session.get("email").get,request.session.get("roleId").get,CommonConstant.MODE_LIST_OTHERS,supList))
+  }
+  
+  private def setInfoUser(email: String, deparments: List[Deparment],roles : List[Role]): UpdateUserForm = {
     var user : User = userService.findUserByEmail(email)
-    var form:CreateUserForm = new CreateUserForm(
+    var form:UpdateUserForm = new UpdateUserForm(
         user.email,
         user.name,
         user.fullName,
@@ -65,37 +105,6 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
         user.emailUpper,
         user.deparment.deparmentId
     )
-    Ok(views.html.admin_update(email, userForm.fill(form), deparments, roles,request.session.get("email").get,request.session.get("roleId").get))
-  }
-  
-  def adminUpdateUserPost(email : String) = Action {implicit request =>
-    var deparments : List[Deparment] = deparmentService.findDeparmentAll
-    var roles : List[Role] = roleService.findRoleAll
-    val newUserForm = userForm.bindFromRequest()
-    // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle succes.
-    newUserForm.bindFromRequest.fold(
-      // The error function. We return the index page with the error form, which will render the errors.
-      // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
-      // a future because the person creation function returns a future.
-      errorForm => {
-        BadRequest(views.html.admin_update(email, errorForm, deparments, roles,request.session.get("email").get, request.session.get("roleId").get))
-      },
-      // There were no errors in the from, so create the person.
-      user => {
-        // If successful, we simply redirect to the index page.
-        var u: User = new User
-        u.email = user.email
-        u.name = user.name
-        u.fullName = user.fullName
-        u.dateBorn = user.dateBorn
-        u.passWord = user.passWord
-        u.emailUpper = user.emailUpper
-        u.role = roleService.findRoleById(user.roleId)
-        u.deparment = deparmentService.findDeparmentById(user.deparmentId)
-        userService.updateUser(u)
-        Redirect(routes.AdminController.listUser())
-      })
+    form
   }
 }
-
-case class CreateUserForm(email: String, name: String, fullName: String, dateBorn: Date, roleId: String, passWord: String, emailUpper: String, deparmentId: Int)
