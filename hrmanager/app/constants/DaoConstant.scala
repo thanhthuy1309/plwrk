@@ -12,4 +12,6 @@ object DaoConstant {
   var USER_DAO_FIND_EMAIL_PASSWORD: String = "UserDao.findUserByEmailPassword"
   
   var USER_DAO_FIND_SUBTRACT_EMAIL: String = "UserDao.findUserSubtractEmail"
+  
+  var EMPLOYEE_DAO_FIND_STATUS: String = "EmployeeApplyDao.findEmployeeByStatus"
 }
