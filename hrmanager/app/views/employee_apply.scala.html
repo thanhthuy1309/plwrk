@@ -3,10 +3,10 @@
 @import java.util.List
 
 @(employeeApplyForm : Form[CreateEmployeeApplyForm],deparments : List[Deparment],users: List[User],reasons: List[Reason],emailLogin: String, roleIdLogin: String) 
-@main("Welcome user") { 
+@main("Welcome Apply") { 
 @admin_header("List User",emailLogin,roleIdLogin)
 <div id="wrapper">
-	@admin_header("List User",emailLogin, roleIdLogin)
+	@admin_header("Employee Page",emailLogin, roleIdLogin)
 	<div id="page-wrapper">
 		<div class="container-fluid">
 			<!-- Page Heading -->
@@ -93,6 +93,8 @@
 						</div>
 					</div>
 					<input type="hidden" name="emailEmployee" id="emailEmployee" value="@employeeApplyForm("emailEmployee").value">
+					<input type="hidden" name="statusId" id="statusId" value="@employeeApplyForm("statusId").value">
+					<input type="hidden" name="submitDate" id="submitDate" value="@employeeApplyForm("submitDate").value">
 					
 					<div class="col-lg-12">
 						<button type="submit" class="btn btn-primary">Nộp đơn</button>

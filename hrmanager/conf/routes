@@ -21,5 +21,7 @@ GET		/error_first					controllers.ErrorController.error_first()
 
 GET		/employee/apply				controllers.EmployeeController.emloyeeApplyGet()
 POST	/employee/apply				controllers.EmployeeController.emloyeeApplyPost()
+
+GET		/employee/notApproved		controllers.EmployeeController.notApproved()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file             	controllers.Assets.at(path="/public", file)

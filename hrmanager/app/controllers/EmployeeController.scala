@@ -21,6 +21,7 @@ import service.ReasonService
 import service.StatusService
 import entity.Reason
 import entity.Status
+import entity.EmployeeApply
 
 
 class EmployeeController @Inject() (val messagesApi: MessagesApi,
@@ -49,6 +50,7 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       "deparmentid" -> number,
       "fromDate" -> date,
       "toDate" -> date,
+      "submitDate" -> date,
       "reasonId" -> number,
       "statusId" -> number)(CreateEmployeeApplyForm.apply)(CreateEmployeeApplyForm.unapply))
 
@@ -62,6 +64,7 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       user.email,
       "",
       user.deparment.deparmentId,
+      new Date(),
       new Date(),
       new Date(),
       1,
@@ -89,6 +92,11 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
         Redirect(routes.AdminController.listUser())
       })
   }
+  
+  def notApproved() = Action {implicit request =>
+    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(1)
+    Ok(views.html.employee_not_approved(employeeApplys,request.session.get("email").get,request.session.get("roleId").get))
+  }
 }
 
 case class CreateEmployeeApplyForm(
@@ -98,5 +106,6 @@ case class CreateEmployeeApplyForm(
   deparmentid: Int,
   fromDate: Date,
   toDate: Date,
+  submitDate: Date,
   reasonId: Int,
   statusId: Int)

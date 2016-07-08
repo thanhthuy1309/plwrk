@@ -9,5 +9,5 @@ import daoImpl.EmployeeApplyDaoImpl
 trait EmployeeApplyDao {
   def save(employeeApply: EmployeeApply): Int
   
-  def findEmployeeApplyByStatus(status: Int):JList[EmployeeApply]
+  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]
 }

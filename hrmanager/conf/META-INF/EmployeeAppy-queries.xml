@@ -5,7 +5,7 @@
                             http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
 	<named-query name="EmployeeApplyDao.findEmployeeByStatus">
 		<query>
-			select r from EmployeeApply r where r.status = :status
+			select r from EmployeeApply r where r.statusId = :statusId
 		</query>
 	</named-query>
 	
