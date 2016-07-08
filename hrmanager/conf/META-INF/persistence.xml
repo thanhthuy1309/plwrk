@@ -11,7 +11,7 @@
         <mapping-file>META-INF/Deparment-queries.xml</mapping-file>
         <mapping-file>META-INF/Reason-queries.xml</mapping-file>
         <mapping-file>META-INF/Status-queries.xml</mapping-file>
-        
+        <mapping-file>META-INF/EmployeeAppy-queries.xml</mapping-file>
         <properties>
       <!-- Configuring JDBC properties -->
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.1.58:3306/hrmanager?characterEncoding=UTF-8" />

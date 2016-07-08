@@ -49,8 +49,9 @@ class AdminJobApplicationController @Inject() (val messagesApi: MessagesApi,
       "emailUpper" -> text,
       "deparmentId" -> number
       )(UpdateUserForm.apply)(UpdateUserForm.unapply))
+      
    def listJobApplication(status:Int) = Action {implicit request =>
      var list : List[ListJobApplication] = employeeService.findJobApplitationByEmailStatus(request.session.get("email").get, status)
-     Ok("")
+     Ok(views.html.jobapplication_list(list,request.session.get("email").get,request.session.get("roleId").get))
    }
 }
