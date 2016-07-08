@@ -2,7 +2,7 @@
 @import play.i18n._
 @import java.util.List
 
-@(employeeApplyForm : Form[CreateEmployeeApplyForm],deparments : List[Deparment],users: List[User],emailLogin: String, roleIdLogin: String) 
+@(employeeApplyForm : Form[CreateEmployeeApplyForm],deparments : List[Deparment],users: List[User],reasons: List[Reason],emailLogin: String, roleIdLogin: String) 
 @main("Welcome user") { 
 @admin_header("List User",emailLogin,roleIdLogin)
 <div id="wrapper">
@@ -45,7 +45,7 @@
 									<input type="Text" name="fromDate"  value="@employeeApplyForm("fromDate").value" id="fromDate"
 				 								maxlength="25" size="25"  readonly/>  
 				 								 <img src="/assets/img/cal.gif"
-												onclick="javascript:NewCssCal('fromDate')" style="cursor: pointer" />
+												onclick="javascript:NewCssCal('fromDate', 'yyyyMMdd')" style="cursor: pointer" />
 								</div>
 							</div>
 						</div>
@@ -68,7 +68,16 @@
 						
 						<div class="form-group">
 							<label>Lý do nghỉ</label>
-							<input type="Text" class="form-control" rows="1" id="reason" name="reason"></textarea>
+							<select class="form-control" name="reasonId" id="reasonId">
+								@for(value <- reasons) {
+									@if(employeeApplyForm("reasonId").value.get.toInt == value.reasonId){
+										<option value="@value.reasonId" selected>@value.reasonName</option>
+									} else {
+										<option value="@value.reasonId">@value.reasonName</option>
+									}
+								}
+								
+							</select>
 						</div>
 						
 						<div class="form-group">
@@ -76,9 +85,9 @@
 								<label>Đến ngày</label>
 								<div class='input-group date'>
 									<input type="Text" name="toDate"  value="@employeeApplyForm("toDate").value" id="toDate"
-				 								maxlength="25" size="25"  readonly class="form-group"/>  
+				 								maxlength="25" size="25"  readonly/>  
 				 								 <img src="/assets/img/cal.gif"
-												onclick="javascript:NewCssCal('toDate')" style="cursor: pointer" />
+												onclick="javascript:NewCssCal('toDate', 'yyyyMMdd')" style="cursor: pointer" />
 								</div>
 							</div>
 						</div>

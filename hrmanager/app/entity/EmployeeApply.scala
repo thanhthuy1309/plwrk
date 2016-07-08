@@ -28,16 +28,18 @@ class EmployeeApply {
   var deparment: Deparment = _
   
   @Column(name = "fromDate")
-  @Temporal(TemporalType.DATE)
+  @Temporal(TemporalType.TIMESTAMP)
   var fromDate: Date = _
   
   @Column(name = "toDate")
-  @Temporal(TemporalType.DATE)
+  @Temporal(TemporalType.TIMESTAMP)
   var toDate: Date = _
   
-  @Column(name = "reason", length = 255)
-  var reason: String = _
+  @ManyToOne
+  @JoinColumn(name = "reasonId", referencedColumnName = "reasonId")
+  var reason: Reason = _
   
-  @Column(name = "status", nullable = false)
-  var status: Int = _
+  @ManyToOne
+  @JoinColumn(name = "statusId", referencedColumnName = "statusId")
+  var status: Status = _
 }
