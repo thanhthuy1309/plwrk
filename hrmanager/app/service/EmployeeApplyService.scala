@@ -13,5 +13,8 @@ trait EmployeeApplyService {
   
   def save(employeeApplyForm: CreateEmployeeApplyForm): Int
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication]
-  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]
+  def findEmployeeApplyByStatus(email:String, statusId: Int):JList[EmployeeApply]
+  def findEmployeeApplyById(id: Int): EmployeeApply
+  def deleteEmployeeApplyById(id: Int): Int
+  def updateEmployeeApply(employeeApplyForm: CreateEmployeeApplyForm): Int
 }

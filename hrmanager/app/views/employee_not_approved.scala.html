@@ -31,7 +31,7 @@
                                     <th>Đến ngày</th>
                                     <th>Ngày đệ trình</th>
                                     <th>Lý do nghỉ</th>
-                                    <th></th>
+                                    <th class="col_edit"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -41,11 +41,15 @@
 	                                    <td>@employeeApply.toDate</td>
 	                                    <td>@employeeApply.submitDate</td>
 	                                    <td>@employeeApply.reason.reasonName</td>
-	                                    <td></td>
+	                                    <td class="col_edit">
+	                                    	<a id='updateBtnId'  class='btn btn-primary' href='/employee/update/@employeeApply.id'>Update</a>
+	                                    	<a id='deleteBtnId'  class='btn btn-danger' onclick="confirmDelete();">Delete</a>
+	                                    </td>
                             		</tr>
                             	}
                             </tbody>
                         </table>
+                        <input type="hidden" id="id" value="@employeeApply.id">
                     </div>
                 </div>
 			</div>

@@ -45,6 +45,7 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
 
   private val employeeApplyForm: Form[CreateEmployeeApplyForm] = Form(
     mapping(
+      "id" -> number,
       "fullName" -> text,
       "emailEmployee" -> nonEmptyText,
       "emailManager" -> nonEmptyText,
@@ -55,22 +56,48 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       "reasonId" -> number,
       "statusId" -> number)(CreateEmployeeApplyForm.apply)(CreateEmployeeApplyForm.unapply))
 
-  def emloyeeApplyGet() = Action { implicit request =>
+  def emloyeeApplyGet(idValue: Int) = Action { implicit request =>
     var user: User = userService.findUserByEmail(request.session.get("email").get)
     var deparments: List[Deparment] = deparmentService.findDeparmentAll
     val users: List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
     var reasons: List[Reason] = reasonService.findReasonAll
     var statusList: List[entity.Status] = statusService.findStatusAll
+    
+    var id = 0
+    var fullName = user.fullName
+    var emailEmployee = user.email
+    var emailManager = ""
+    var deparmentid = user.deparment.deparmentId
+    var fromDate = new Date()
+    var toDate = new Date()
+    var submitDate = new Date()
+    var reasonId = 1
+    var statusId = 1
+    
+    if (idValue != null) {
+    	var emloyeeApply: EmployeeApply = employeeApplyService.findEmployeeApplyById(id)
+      id = emloyeeApply.id
+      emailManager = emloyeeApply.emailManager.email
+      deparmentid = emloyeeApply.deparment.deparmentId
+      fromDate = emloyeeApply.fromDate
+      toDate = emloyeeApply.toDate
+      submitDate = emloyeeApply.submitDate
+      reasonId = emloyeeApply.reason.reasonId
+      statusId = emloyeeApply.status.statusId
+    }
+
     var form: CreateEmployeeApplyForm = new CreateEmployeeApplyForm(
-      user.fullName,
-      user.email,
-      "",
-      user.deparment.deparmentId,
-      new Date(),
-      new Date(),
-      new Date(),
-      1,
-      1)
+      id,
+      fullName,
+      emailEmployee,
+      emailManager,
+      deparmentid,
+      fromDate,
+      toDate,
+      submitDate,
+      reasonId,
+      statusId)
+    
     Ok(views.html.employee_apply(
       employeeApplyForm.fill(form),
       deparments,
@@ -90,18 +117,29 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
         BadRequest(views.html.employee_apply(errorForm, deparments, users, reasons, request.session.get("email").get, request.session.get("roleId").get))
       },
       employeeApply => {
-        employeeApplyService.save(employeeApply)
+        if (employeeApply.id != 0) {
+          employeeApplyService.updateEmployeeApply(employeeApply)
+        } else {
+        	employeeApplyService.save(employeeApply)
+        }
         Redirect(routes.AdminController.listUser())
       })
   }
   
   def notApproved() = Action {implicit request =>
-    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(1)
+    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(request.session.get("email").get, 1)
     Ok(views.html.employee_not_approved(employeeApplys,request.session.get("email").get,request.session.get("roleId").get))
   }
+  
+
+//  def deleteApply(id: Int)= Action { implicit request =>
+//    employeeApplyService.deleteEmployeeApplyById(id)
+//    Ok(views.html.)
+//  }
 }
 
 case class CreateEmployeeApplyForm(
+  id: Int,
   fullName: String,
   emailEmployee: String,
   emailManager: String,
