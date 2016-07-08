@@ -21,6 +21,7 @@ import service.ReasonService
 import service.StatusService
 import entity.Reason
 import entity.Status
+import entity.Status
 
 
 class EmployeeController @Inject() (val messagesApi: MessagesApi,
@@ -57,6 +58,7 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
     var deparments: List[Deparment] = deparmentService.findDeparmentAll
     val users: List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
     var reasons: List[Reason] = reasonService.findReasonAll
+    var statusList: List[entity.Status] = statusService.findStatusAll
     var form: CreateEmployeeApplyForm = new CreateEmployeeApplyForm(
       user.fullName,
       user.email,
