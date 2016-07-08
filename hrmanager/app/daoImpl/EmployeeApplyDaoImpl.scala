@@ -2,16 +2,14 @@ package daoImpl
 
 import java.util.{ List => JList }
 
-import com.google.inject.ImplementedBy
-
-import constants.DaoConstant
+import constants._
 import dao.EmployeeApplyDao
 import entity.EmployeeApply
-import forms.ListJobApplication
-import javax.persistence.Entity
+import forms._
+import javax.persistence.EntityManager
 import javax.persistence.Persistence
 import javax.persistence.Query
-import javax.persistence.Table
+import entity.EmployeeApply
 
 class EmployeeApplyDaoImpl extends EmployeeApplyDao {
 
@@ -36,11 +34,12 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
     result
   }
   
-  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]= {
+  def findEmployeeApplyByStatus(email:String, statusId: Int):JList[EmployeeApply]= {
     var result: JList[EmployeeApply] = null
     var entityManager = persitence.createEntityManager()
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_STATUS)
+      query.setParameter("email", email)
       query.setParameter("statusId", statusId)
       result = query.getResultList.asInstanceOf[JList[EmployeeApply]]
     }
@@ -64,8 +63,46 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
     result
   }
   
-  def loadJobApplitationById(id: Int):EmployeeApply = {
+  def findEmployeeApplyById(id:Int): EmployeeApply = {
+    var employeeApply = persitence.createEntityManager()
+    employeeApply.find(classOf[EmployeeApply], id)
+  }
+  
+  def deleteEmployeeApply(employeeApply: EmployeeApply): Int = {
+    var result: Int = 0
     var entityManager = persitence.createEntityManager()
-    entityManager.find(classOf[EmployeeApply], id)
+    def transaction = entityManager.getTransaction
+    transaction.begin()
+    try {
+      entityManager.remove(employeeApply)
+      transaction.commit()
+      result = 1
+    } catch {
+      case exception: Throwable =>
+        if (transaction != null && transaction.isActive)
+          transaction.rollback()
+        throw exception
+    } finally
+      entityManager.close()
+    result
+  }
+  
+  def updateEmployeeApply(employeeApply: EmployeeApply): Int = {
+    val entityManager = persitence.createEntityManager()
+    def transaction = entityManager.getTransaction
+    transaction.begin()
+    var result: Int = 0
+    try {
+      entityManager.merge(employeeApply)
+      transaction.commit()
+      result = 1
+    } catch {
+      case exception: Throwable =>
+        if (transaction != null && transaction.isActive)
+          transaction.rollback()
+        throw exception
+    } finally
+      entityManager.close()
+    result
   }
 }

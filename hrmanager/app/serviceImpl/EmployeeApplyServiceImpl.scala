@@ -45,15 +45,35 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
     employeeApplyDao.save(entity)
   }
   
-  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]= {
-    employeeApplyDao.findEmployeeApplyByStatus(statusId)
+  def findEmployeeApplyByStatus(email:String, statusId: Int):JList[EmployeeApply]= {
+    employeeApplyDao.findEmployeeApplyByStatus(email, statusId)
   }
   
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication] = {
     employeeApplyDao.findJobApplitationByEmailStatus(email, status)
   }
   
-  def loadJobApplitationById(id: Int):EmployeeApply = {
-    employeeApplyDao.loadJobApplitationById(id)
+  def deleteEmployeeApplyById(id: Int): Int = {
+    var entity:EmployeeApply = employeeApplyDao.findEmployeeApplyById(id)
+    employeeApplyDao.deleteEmployeeApply(entity)
+  }
+  
+  def findEmployeeApplyById(id: Int):EmployeeApply = {
+    employeeApplyDao.findEmployeeApplyById(id)
+  }
+  
+  def updateEmployeeApply(employeeApplyForm: CreateEmployeeApplyForm): Int = {
+    var entity:EmployeeApply = new EmployeeApply
+    entity.id = employeeApplyForm.id
+    entity.deparment = deparmentService.findDeparmentById(employeeApplyForm.deparmentid)
+    entity.emailEmployee = userService.findUserByEmail(employeeApplyForm.emailEmployee)
+    entity.emailManager = userService.findUserByEmail(employeeApplyForm.emailManager)
+    entity.fromDate = employeeApplyForm.fromDate
+    entity.toDate = employeeApplyForm.toDate
+    entity.reason = reasonService.findReasonById(employeeApplyForm.reasonId)
+    entity.status = statusService.findStatusById(employeeApplyForm.statusId)
+    entity.submitDate = employeeApplyForm.submitDate
+    
+    employeeApplyDao.updateEmployeeApply(entity)
   }
 }

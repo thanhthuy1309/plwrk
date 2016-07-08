@@ -10,10 +10,13 @@ import forms._
 trait EmployeeApplyDao {
   def save(employeeApply: EmployeeApply): Int
   
-  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]
+  def findEmployeeApplyByStatus(email:String, statusId: Int):JList[EmployeeApply]
   
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication]
   
-  def loadJobApplitationById(id: Int):EmployeeApply
+  def findEmployeeApplyById(id:Int): EmployeeApply
   
+  def deleteEmployeeApply(employeeApply: EmployeeApply): Int
+  
+  def updateEmployeeApply(entity:EmployeeApply): Int
 }

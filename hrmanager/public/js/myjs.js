@@ -4,7 +4,8 @@ $(document).ready(function() {
 	});
 	
 	$(".btn-success").click(function() {
-		var url = "/students";
+		var id = $("#id").val();
+		var url = "/deleteApply/delete/" + id;
 		$.get(url,function(data, status) {
 		
 		}

@@ -25,5 +25,7 @@ GET		/admin/application/list/:status					controllers.AdminJobApplicationControll
 GET		/admin/application/info/:id/:status				controllers.AdminJobApplicationController.loadJobApplicationInfo(id: Int,status: Int)
 
 GET		/employee/notApproved		controllers.EmployeeController.notApproved()
+#GET		/employee/updateApply/:id		controllers.EmployeeController.updateApply(id: Int)
+#GET		/employee/deleteApply/:id		controllers.EmployeeController.deleteApply(id: Int)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file             	controllers.Assets.at(path="/public", file)
