@@ -12,6 +12,7 @@ import forms._
 import service.ReasonService
 import service.DeparmentService
 import service.StatusService
+import java.util.{ List => JList }
 
 class EmployeeApplyServiceImpl extends EmployeeApplyService {
   
@@ -39,8 +40,13 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
     entity.toDate = employeeApplyForm.toDate
     entity.reason = reasonService.findReasonById(employeeApplyForm.reasonId)
     entity.status = statusService.findStatusById(employeeApplyForm.statusId)
+    entity.submitDate = employeeApplyForm.submitDate
     
     employeeApplyDao.save(entity)
+  }
+  
+  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]= {
+    employeeApplyDao.findEmployeeApplyByStatus(statusId)
   }
   
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication] = {

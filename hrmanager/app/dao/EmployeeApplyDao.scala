@@ -10,7 +10,7 @@ import forms._
 trait EmployeeApplyDao {
   def save(employeeApply: EmployeeApply): Int
   
-  def findEmployeeApplyByStatus(status: Int):JList[EmployeeApply]
+  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]
   
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication]
   

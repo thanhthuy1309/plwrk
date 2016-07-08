@@ -35,12 +35,12 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
     result
   }
   
-  def findEmployeeApplyByStatus(status: Int):JList[EmployeeApply]= {
+  def findEmployeeApplyByStatus(statusId: Int):JList[EmployeeApply]= {
     var result: JList[EmployeeApply] = null
     var entityManager = persitence.createEntityManager()
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_STATUS)
-      query.setParameter("status", status)
+      query.setParameter("statusId", statusId)
       result = query.getResultList.asInstanceOf[JList[EmployeeApply]]
     }
     result
