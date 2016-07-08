@@ -17,4 +17,9 @@
 		</query>
 	</named-query>
 	
+	<named-query name="EmployeeApplyDao.findEmployeeByEmail">
+		<query>
+			select r from EmployeeApply r where r.emailEmployee.email = :email
+		</query>
+	</named-query>
 </entity-mappings>

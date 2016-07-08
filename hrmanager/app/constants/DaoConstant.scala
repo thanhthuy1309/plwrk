@@ -19,4 +19,6 @@ object DaoConstant {
   var REASON_DAO_FIND_REASON_ALL: String = "ReasonDao.findReasonAll"
   
   var STATUS_DAO_FIND_STATUS_ALL: String = "StatusDao.findStatusAll"
+  
+  var EMPLOYEE_DAO_FIND_EMAIL: String = "EmployeeApplyDao.findEmployeeByEmail"
 }

@@ -105,4 +105,15 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
       entityManager.close()
     result
   }
+  
+  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
+    var result: JList[EmployeeApply] = null
+    var entityManager = persitence.createEntityManager()
+    if (entityManager != null) {
+      var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_EMAIL)
+      query.setParameter("email", email)
+      result = query.getResultList.asInstanceOf[JList[EmployeeApply]]
+    }
+    result
+  }
 }

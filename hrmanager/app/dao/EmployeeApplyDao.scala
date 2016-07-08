@@ -20,5 +20,5 @@ trait EmployeeApplyDao {
   
   def updateEmployeeApply(entity:EmployeeApply): Int
   
-//  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
+  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
 }
