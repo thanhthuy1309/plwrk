@@ -35,7 +35,7 @@ class EmployeeApply {
   @Temporal(TemporalType.TIMESTAMP)
   var toDate: Date = _
   
-  @Column(name = "submitDate", nullable = false)
+  @Column(name = "submitDate")
   @Temporal(TemporalType.TIMESTAMP)
   var submitDate: Date = _
   
