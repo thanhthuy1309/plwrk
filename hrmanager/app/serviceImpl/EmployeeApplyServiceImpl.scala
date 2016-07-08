@@ -76,4 +76,8 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
     
     employeeApplyDao.updateEmployeeApply(entity)
   }
+  
+//  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
+//    employeeApplyDao.findEmployeeApplyByEmail(email)
+//  }
 }
