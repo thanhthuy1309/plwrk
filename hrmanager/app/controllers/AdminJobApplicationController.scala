@@ -45,7 +45,7 @@ class AdminJobApplicationController @Inject() (val messagesApi: MessagesApi,
    }
   
   def loadJobApplicationInfo(id: Int, status:Int) = Action {implicit request =>
-     var info: EmployeeApply = employeeService.loadJobApplitationById(id)
+     var info: EmployeeApply = employeeService.findEmployeeApplyById(id)
      Ok(views.html.jobapplication_info(info,request.session.get("email").get,request.session.get("roleId").get))
   }
   
