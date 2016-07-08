@@ -50,7 +50,7 @@ class AdminJobApplicationController @Inject() (val messagesApi: MessagesApi,
   }
   
   def approvalJobApplication(id: Int, status:Int) = Action {implicit request =>
-     var info: EmployeeApply = employeeService.loadJobApplitationById(id)
+     var info: EmployeeApply = employeeService.findEmployeeApplyById(id)
      Redirect(routes.AdminJobApplicationController.listJobApplication(status))
   }
 }
