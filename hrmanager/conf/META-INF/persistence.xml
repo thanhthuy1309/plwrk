@@ -9,6 +9,8 @@
         <mapping-file>META-INF/Role-queries.xml</mapping-file>
         <mapping-file>META-INF/User-queries.xml</mapping-file>
         <mapping-file>META-INF/Deparment-queries.xml</mapping-file>
+        <mapping-file>META-INF/Reason-queries.xml</mapping-file>
+        <mapping-file>META-INF/Status-queries.xml</mapping-file>
         
         <properties>
       <!-- Configuring JDBC properties -->

@@ -17,6 +17,11 @@ import entity.Deparment
 import service.DeparmentService
 import java.util.List
 import service.EmployeeApplyService
+import service.ReasonService
+import service.StatusService
+import entity.Reason
+import entity.Status
+
 
 class EmployeeController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -29,6 +34,12 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
 
   @Inject
   private var deparmentService: DeparmentService = _
+  
+  @Inject
+  private var reasonService:ReasonService = _
+  
+  @Inject
+  private var statusService:StatusService = _
 
   private val employeeApplyForm: Form[CreateEmployeeApplyForm] = Form(
     mapping(
@@ -38,12 +49,14 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       "deparmentid" -> number,
       "fromDate" -> date,
       "toDate" -> date,
-      "reason" -> text)(CreateEmployeeApplyForm.apply)(CreateEmployeeApplyForm.unapply))
+      "reasonId" -> number,
+      "statusId" -> number)(CreateEmployeeApplyForm.apply)(CreateEmployeeApplyForm.unapply))
 
   def emloyeeApplyGet() = Action { implicit request =>
     var user: User = userService.findUserByEmail(request.session.get("email").get)
     var deparments: List[Deparment] = deparmentService.findDeparmentAll
     val users: List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
+    var reasons: List[Reason] = reasonService.findReasonAll
     var form: CreateEmployeeApplyForm = new CreateEmployeeApplyForm(
       user.fullName,
       user.email,
@@ -51,11 +64,13 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       user.deparment.deparmentId,
       new Date(),
       new Date(),
-      "")
+      1,
+      1)
     Ok(views.html.employee_apply(
       employeeApplyForm.fill(form),
       deparments,
       users,
+      reasons,
       request.session.get("email").get,
       request.session.get("roleId").get))
   }
@@ -66,7 +81,8 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       errorForm => {
         val users: List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
         var deparments: List[Deparment] = deparmentService.findDeparmentAll
-        BadRequest(views.html.employee_apply(errorForm, deparments, users, request.session.get("email").get, request.session.get("roleId").get))
+        var reasons: List[Reason] = reasonService.findReasonAll
+        BadRequest(views.html.employee_apply(errorForm, deparments, users, reasons, request.session.get("email").get, request.session.get("roleId").get))
       },
       employeeApply => {
         employeeApplyService.save(employeeApply)
@@ -82,4 +98,5 @@ case class CreateEmployeeApplyForm(
   deparmentid: Int,
   fromDate: Date,
   toDate: Date,
-  reason: String)
+  reasonId: Int,
+  statusId: Int)
