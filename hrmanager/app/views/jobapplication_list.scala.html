@@ -1,7 +1,7 @@
 @import forms._
 @import java.util.List
 
-@(jobList: List[ListJobApplication],emailLogin: String, roleIdLogin:String)
+@(jobList: List[ListJobApplication],emailLogin: String, roleIdLogin:String, status: Int)
 @main("Welcome to Play") {
 <div id="wrapper">
 	@admin_header("",emailLogin,roleIdLogin)
@@ -14,14 +14,36 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                        Danh Sách Đơn Chờ Duyệt
+                     @if(status == 1) {
+                        		Danh Sách Đơn Chờ Duyệt
+                     		} else {
+                     		   @if(status == 2) {
+                     			  Danh Sách Đơn Đã Duyệt
+                     		   } else {
+                     		   		@if(status == 3) {
+                     					Danh Sách Đơn Từ Chối
+                     				}
+                     		   }
+                     		} 
+                     
                     </h1>
                     <ol class="breadcrumb">
                         <li>
                             <i class="fa fa-dashboard"></i>  <a href="/index">HR Manager</a>
                         </li>
                         <li class="active">
-                            <i class="fa fa-table"></i> Chờ Duyệt
+                            <i class="fa fa-table"></i> 
+                            @if(status == 1) {
+                        		Đơn Chờ Duyệt
+                     		} else {
+                     		   @if(status == 2) {
+                     			  Đơn Đã Duyệt
+                     		   } else {
+                     		   		@if(status == 3) {
+                     					Đơn Từ Chối
+                     				}
+                     		   }
+                     		} 
                         </li>
                     </ol>
                 </div>
@@ -43,15 +65,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            	@for(info <- jobList) {
-                            		<tr>
-	                                    <td><a href="/application/info/@info.id">@info.name</a></td>
-	                                    <td>@info.fromDate</td>
-	                                    <td>@info.toDate</td>
-	                                    <td>@info.submitDate</td>
-	                                    <td>@info.reason</td>
-                            		</tr>
-                            	}
+                            	@if(jobList != null) {
+	                            	@for(info <- jobList) {
+	                            		<tr>
+		                                    <td><a href="/application/info/@info.id/@status">@info.name</a></td>
+		                                    <td>@info.fromDate</td>
+		                                    <td>@info.toDate</td>
+		                                    <td>@info.submitDate</td>
+		                                    <td>@info.reason</td>
+	                            		</tr>
+	                            	} 
+	                            } else {
+	                            	<tr>
+	                            		<td colspan="5">
+	                            	 		<span class="help-block">Không có dữ liệu</span> 
+	                            	 	</td>
+	                            	</tr>
+	                            }
                             </tbody>
                         </table>
                     </div>

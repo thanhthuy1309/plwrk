@@ -1,16 +1,17 @@
 package daoImpl
 
 import java.util.{ List => JList }
+
+import com.google.inject.ImplementedBy
+
+import constants.DaoConstant
 import dao.EmployeeApplyDao
-import javax.persistence.Entity
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
-import javax.persistence.Table
-import javax.persistence.Persistence
-import constants._
-import javax.persistence.Query
 import entity.EmployeeApply
-import forms._
+import forms.ListJobApplication
+import javax.persistence.Entity
+import javax.persistence.Persistence
+import javax.persistence.Query
+import javax.persistence.Table
 
 class EmployeeApplyDaoImpl extends EmployeeApplyDao {
 
@@ -61,5 +62,10 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
       }
     }
     result
+  }
+  
+  def loadJobApplitationById(id: Int):EmployeeApply = {
+    var entityManager = persitence.createEntityManager()
+    entityManager.find(classOf[EmployeeApply], id)
   }
 }

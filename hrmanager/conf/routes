@@ -22,6 +22,7 @@ GET		/error_first					controllers.ErrorController.error_first()
 GET		/employee/apply				controllers.EmployeeController.emloyeeApplyGet()
 POST	/employee/apply				controllers.EmployeeController.emloyeeApplyPost()
 GET		/admin/application/list/:status					controllers.AdminJobApplicationController.listJobApplication(status: Int)
+GET		/admin/application/info/:id/:status				controllers.AdminJobApplicationController.loadJobApplicationInfo(id: Int,status: Int)
 
 GET		/employee/notApproved		controllers.EmployeeController.notApproved()
 # Map static resources from the /public folder to the /assets URL path

@@ -14,4 +14,6 @@ trait EmployeeApplyDao {
   
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication]
   
+  def loadJobApplitationById(id: Int):EmployeeApply
+  
 }

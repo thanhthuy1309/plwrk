@@ -52,4 +52,8 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication] = {
     employeeApplyDao.findJobApplitationByEmailStatus(email, status)
   }
+  
+  def loadJobApplitationById(id: Int):EmployeeApply = {
+    employeeApplyDao.loadJobApplitationById(id)
+  }
 }
