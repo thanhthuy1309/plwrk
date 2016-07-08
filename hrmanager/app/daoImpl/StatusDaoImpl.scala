@@ -2,11 +2,15 @@ package daoImpl
 
 import java.util.{ List => JList }
 
-import constants._
-import javax.persistence.Persistence
-import javax.persistence.Query
 import dao.StatusDao
 import entity.Status
+import javax.persistence.Entity
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
+import javax.persistence.Table
+import javax.persistence.Persistence
+import constants._
+import javax.persistence.Query
 
 class StatusDaoImpl extends StatusDao {
   private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
