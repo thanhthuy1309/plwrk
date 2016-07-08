@@ -15,7 +15,7 @@
 					<h1 class="page-header">Đơn xin nghỉ của tôi</h1>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
-						<li class="active"><i class="fa fa-table"></i> Danh sách đơn xin nghỉ chưa được duyệt</li>
+						<li class="active"><i class="fa fa-table"></i> Danh sách đơn xin nghĩ</li>
 					</ol>
 				</div>
 			</div>
@@ -31,6 +31,7 @@
                                     <th>Đến ngày</th>
                                     <th>Ngày đệ trình</th>
                                     <th>Lý do nghỉ</th>
+                                    <th>Trạng thái</th>
                                     <th class="col_edit"></th>
                                 </tr>
                             </thead>
@@ -41,6 +42,7 @@
 	                                    <td>@employeeApply.toDate</td>
 	                                    <td>@employeeApply.submitDate</td>
 	                                    <td>@employeeApply.reason.reasonName</td>
+	                                    <td>@employeeApply.status.statusName</td>
 	                                    <td class="col_edit">
 	                                    	<a id='updateBtnId'  class='btn btn-primary' href='/employee/apply/@employeeApply.id/@currentPage'>Update</a>
 	                                    	<a id='deleteBtnId'  class='btn btn-danger' href='/employee/deleteApply/@employeeApply.id/@currentPage'>Delete</a>

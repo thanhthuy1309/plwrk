@@ -1,17 +1,20 @@
+var id = 0;
+var currentPage = 0;
 $(document).ready(function() {
 	$("#idTest").click(function() {
 		alert("test js");
 	});
 	
 	$(".btn-success").click(function() {
-		var id = $("#id").val();
-		var url = "/deleteApply/delete/" + id;
+		var url = "/employee/deleteApply/" + id + "/" + currentPage;
 		$.get(url,function(data, status) {
 		
 		}
 	});
 });
-function confirmDelete() {
+function confirmDelete(idValue, currentPageValue) {
+	id = idValue;
+	currentPage = currentPageValue;
 	var settings = {
 			callbackSuccess : function() {
 				

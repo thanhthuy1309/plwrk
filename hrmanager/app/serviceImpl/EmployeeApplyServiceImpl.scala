@@ -32,17 +32,7 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
   @Inject
   private var statusService:StatusService = _
   
-  def save(employeeApplyForm: CreateEmployeeApplyForm): Int = {
-    var entity:EmployeeApply = new EmployeeApply
-    entity.deparment = deparmentService.findDeparmentById(employeeApplyForm.deparmentid)
-    entity.emailEmployee = userService.findUserByEmail(employeeApplyForm.emailEmployee)
-    entity.emailManager = userService.findUserByEmail(employeeApplyForm.emailManager)
-    entity.fromDate = employeeApplyForm.fromDate
-    entity.toDate = employeeApplyForm.toDate
-    entity.reason = reasonService.findReasonById(employeeApplyForm.reasonId)
-    entity.status = statusService.findStatusById(employeeApplyForm.statusId)
-    entity.submitDate = employeeApplyForm.submitDate
-    
+  def save(entity:EmployeeApply): Int = {
     employeeApplyDao.save(entity)
   }
   
@@ -63,24 +53,13 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
     employeeApplyDao.findEmployeeApplyById(id)
   }
   
-  def updateEmployeeApply(employeeApplyForm: CreateEmployeeApplyForm): Int = {
-    var entity:EmployeeApply = new EmployeeApply
-    entity.id = employeeApplyForm.id
-    entity.deparment = deparmentService.findDeparmentById(employeeApplyForm.deparmentid)
-    entity.emailEmployee = userService.findUserByEmail(employeeApplyForm.emailEmployee)
-    entity.emailManager = userService.findUserByEmail(employeeApplyForm.emailManager)
-    entity.fromDate = employeeApplyForm.fromDate
-    entity.toDate = employeeApplyForm.toDate
-    entity.reason = reasonService.findReasonById(employeeApplyForm.reasonId)
-    entity.status = statusService.findStatusById(employeeApplyForm.statusId)
-    entity.submitDate = employeeApplyForm.submitDate
-    
+  def updateEmployeeApply(entity:EmployeeApply): Int = {
     employeeApplyDao.updateEmployeeApply(entity)
   }
   
-//  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
-//    employeeApplyDao.findEmployeeApplyByEmail(email)
-//  }
+  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
+    employeeApplyDao.findEmployeeApplyByEmail(email)
+  }
   def updateEmployeeApply(employeeApplyForm: EmployeeApply): Int = {
     employeeApplyDao.updateEmployeeApply(employeeApplyForm)
   }

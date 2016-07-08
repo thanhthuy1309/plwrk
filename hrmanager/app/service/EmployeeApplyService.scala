@@ -11,13 +11,13 @@ import entity.EmployeeApply
 @ImplementedBy(classOf[EmployeeApplyServiceImpl])
 trait EmployeeApplyService {
   
-  def save(employeeApplyForm: CreateEmployeeApplyForm): Int
+  def save(entity:EmployeeApply): Int
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication]
   def findEmployeeApplyByStatus(email:String, statusId: Int):JList[EmployeeApply]
   def findEmployeeApplyById(id: Int): EmployeeApply
   def deleteEmployeeApplyById(id: Int): Int
-  def updateEmployeeApply(employeeApplyForm: CreateEmployeeApplyForm): Int
-//  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
+  def updateEmployeeApply(entity:EmployeeApply): Int
+  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
   def updateEmployeeApply(employeeApplyForm: EmployeeApply): Int
   
   def findJobApplitationAllList():JList[ListAllJobApplication]

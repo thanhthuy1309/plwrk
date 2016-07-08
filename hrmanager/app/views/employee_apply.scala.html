@@ -3,7 +3,7 @@
 @import java.util.List
 
 @(employeeApplyForm : Form[CreateEmployeeApplyForm],deparments : List[Deparment],users: List[User],reasons: List[Reason],emailLogin: String, roleIdLogin: String) 
-@main("Welcome Apply") { 
+@main("Employee Page") { 
 @admin_header("List User",emailLogin,roleIdLogin)
 <div id="wrapper">
 	@admin_header("Employee Page",emailLogin, roleIdLogin)
@@ -12,7 +12,7 @@
 			<!-- Page Heading -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">List user</h1>
+					<h1 class="page-header">Đơn xin nghỉ của tôi</h1>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
 						<li class="active"><i class="fa fa-table"></i> Nộp đơn</li>
@@ -34,6 +34,11 @@
 							<select class="form-control" name="emailManager" id="emailManager">
 								@for(value <- users) {
 									<option value="@value.email">@value.fullName</option>
+									@if(employeeApplyForm("emailManager").value == value.email){
+										<option value="@value.email" selected>@value.fullName</option>
+									} else {
+										<option value="@value.email">@value.fullName</option>
+									}
 								}
 							</select>
 						</div>
@@ -96,12 +101,14 @@
 					<input type="hidden" name="statusId" id="statusId" value="@employeeApplyForm("statusId").value">
 					<input type="hidden" name="submitDate" id="submitDate" value="@employeeApplyForm("submitDate").value">
 					<input type="hidden" name="id" id="id" value="@employeeApplyForm("id").value">
+					<input type="hidden" name="currentPage" id="currentPage" value="@employeeApplyForm("currentPage").value">
 					
 					<div class="col-lg-12">
 						<button type="submit" class="btn btn-primary">Nộp đơn</button>
-						<a href="@routes.AdminController.listUser()">
+						<a href="@routes.EmployeeController.myLeaveOfAbsence()">
 			                <button class="btn btn-default">Cancel</button>
 						</a>
+						
 					</div>
 				</form>
 			</div>
