@@ -1,13 +1,14 @@
 package serviceImpl
 
 import com.google.inject.Inject
-
+import java.util.{ List => JList }
 import controllers.CreateEmployeeApplyForm
 import dao.EmployeeApplyDao
 import entity.EmployeeApply
 import service.DeparmentService
 import service.EmployeeApplyService
 import service.UserService
+import forms._
 
 class EmployeeApplyServiceImpl extends EmployeeApplyService {
   
@@ -31,5 +32,9 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
     entity.status = 1
     
     employeeApplyDao.save(entity)
+  }
+  
+  def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication] = {
+    employeeApplyDao.findJobApplitationByEmailStatus(email, status)
   }
 }

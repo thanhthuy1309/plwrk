@@ -10,6 +10,7 @@ import javax.persistence.Persistence
 import constants._
 import javax.persistence.Query
 import entity.EmployeeApply
+import forms._
 
 class EmployeeApplyDaoImpl extends EmployeeApplyDao {
 
@@ -41,6 +42,23 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_STATUS)
       query.setParameter("status", status)
       result = query.getResultList.asInstanceOf[JList[EmployeeApply]]
+    }
+    result
+  }
+  
+  def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication] = {
+    var result: JList[ListJobApplication] = null
+    var entityManager = persitence.createEntityManager()
+    if (entityManager != null) {
+      var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_JOBAPPLITATIONBYEMAILSTATUS)
+      query.setParameter("emailManager", email)
+      query.setParameter("status", status)
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          result = temp.asInstanceOf[JList[ListJobApplication]]
+        }
+      }
     }
     result
   }
