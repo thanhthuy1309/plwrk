@@ -51,8 +51,8 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
     var entityManager = persitence.createEntityManager()
     if (entityManager != null) {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_JOBAPPLITATIONBYEMAILSTATUS)
-      query.setParameter("emailManager", email)
-      query.setParameter("status", status)
+      query.setParameter("email", email)
+      query.setParameter("statusId", status)
       var temp = query.getResultList
       if(temp != null) {
         if (!temp.isEmpty()) {

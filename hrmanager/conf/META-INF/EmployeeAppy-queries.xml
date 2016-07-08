@@ -13,7 +13,7 @@
 		<query>
 			select new forms.ListJobApplication(r.id,u.fullName,r.fromDate,r.toDate,r.submitDate,rs.reasonName)
 			from EmployeeApply r left join r.emailEmployee u left join r.reason rs
-			where r.emailManager.email = :emailManager and r.status.statusId = :status
+			where r.emailManager.email = :email and r.status.statusId = :statusId
 		</query>
 	</named-query>
 	
