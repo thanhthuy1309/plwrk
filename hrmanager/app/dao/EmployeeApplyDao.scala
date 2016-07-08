@@ -19,4 +19,6 @@ trait EmployeeApplyDao {
   def deleteEmployeeApply(employeeApply: EmployeeApply): Int
   
   def updateEmployeeApply(entity:EmployeeApply): Int
+  
+//  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
 }

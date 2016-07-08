@@ -136,6 +136,11 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
 //    employeeApplyService.deleteEmployeeApplyById(id)
 //    Ok(views.html.)
 //  }
+  
+//  def myLeaveOfAbsence()= Action {implicit request =>
+//    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(request.session.get("email").get, 1)
+//    Ok(views.html.employee(employeeApplys,request.session.get("email").get,request.session.get("roleId").get))
+//  }
 }
 
 case class CreateEmployeeApplyForm(
