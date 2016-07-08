@@ -91,7 +91,7 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
           Ok("Man hinh loi")
         }
       }
-      //Ok("vao man hinh quan ly cache" + cache.get[String](email).get)
+      //cache.get[String](email).get)
       Redirect("/index").withSession(request.session + ("email" -> email) + ("roleId" -> roleId))
     } else {
       Ok("loi")
@@ -111,7 +111,7 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
           Redirect("/loginHome").flashing("userNotExist" -> (person.email + " not exist"))
         } else if (result == 2) {
           var user:User = userService.findUserByEmail(person.email)
-          Redirect("/myLeaveOfAbsence").withSession(request.session + ("email" -> user.email) + ("roleId" -> user.role.roleId))
+          Redirect("/employee/myLeaveOfAbsence").withSession(request.session + ("email" -> user.email) + ("roleId" -> user.role.roleId))
         } else {
           Ok("error")
         }

@@ -17,49 +17,51 @@ import utils.DataBaseUtils
 
 class UserDaoImpl extends UserDao {
 
-  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-  private var persitence = DataBaseUtils.persitence
   def findUserAll: JList[User] = {
     var result: JList[User] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    var entityManager = DataBaseUtils.persitence.createEntityManager()
+    try {
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_USER_ALL)
-      //result = query.getResultList.asInstanceOf[JList[User]]
       var temp = query.getResultList
       if(temp != null) {
         if (!temp.isEmpty()) {
           result = temp.asInstanceOf[JList[User]]
         }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
 
   def findUserByEmail(email: String): User = {
     var role: User = new User
-    var entityManager = persitence.createEntityManager()
-    var resultList: JList[User] = null
-    if (entityManager != null) {
-      var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_EMAIL)
-      query.setParameter("email", email)
-      //resultList = query.getResultList.asInstanceOf[JList[User]]
-      var temp = query.getResultList
-      if(temp != null) {
-        if (!temp.isEmpty()) {
-          resultList = temp.asInstanceOf[JList[User]]
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
+      var resultList: JList[User] = null
+        var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_EMAIL)
+        query.setParameter("email", email)
+        var temp = query.getResultList
+        if(temp != null) {
+          if (!temp.isEmpty()) {
+            resultList = temp.asInstanceOf[JList[User]]
+          }
+        }
+      if (resultList != null) {
+        if (resultList.size() > 0) {
+          role = resultList.get(0).asInstanceOf[User]
         }
       }
-    }
-    if (resultList != null) {
-      if (resultList.size() > 0) {
-        role = resultList.get(0).asInstanceOf[User]
-      }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     role
   }
 
   def save(user: User): Int = {
-    val entityManager = persitence.createEntityManager()
+    val entityManager = DataBaseUtils.persitence.createEntityManager()
     def transaction = entityManager.getTransaction
     transaction.begin()
     var result: Int = 0
@@ -79,7 +81,7 @@ class UserDaoImpl extends UserDao {
   }
   
   def update(user: User): Int = {
-    val entityManager = persitence.createEntityManager()
+    val entityManager = DataBaseUtils.persitence.createEntityManager()
     def transaction = entityManager.getTransaction
     var result: Int = 0
     try {
@@ -100,42 +102,47 @@ class UserDaoImpl extends UserDao {
   
   def findUserByEmailPassword(email: String, password:String): User = {
     var role: User = new User
-    var entityManager = persitence.createEntityManager()
-    var resultList: JList[User] = null
-    if (entityManager != null) {
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
+      var resultList: JList[User] = null
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_EMAIL_PASSWORD)
       query.setParameter("email", email)
       query.setParameter("password", password)
-      //resultList = query.getResultList.asInstanceOf[JList[User]]
       var temp = query.getResultList
       if(temp != null) {
         if (!temp.isEmpty()) {
           resultList = temp.asInstanceOf[JList[User]]
         }
       }
-    }
-    if (resultList != null) {
-      if (resultList.size() > 0) {
-        role = resultList.get(0).asInstanceOf[User]
+      if (resultList != null) {
+        if (resultList.size() > 0) {
+          role = resultList.get(0).asInstanceOf[User]
+        }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     role
   }
   
   def findUserSubtractEmail(email: String): JList[User]= {
     var result: JList[User] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
       var query: Query = entityManager.createNamedQuery(DaoConstant.USER_DAO_FIND_SUBTRACT_EMAIL)
       query.setParameter("email", email)
-      //result = query.getResultList.asInstanceOf[JList[User]]
       var temp = query.getResultList
       if(temp != null) {
         if (!temp.isEmpty()) {
           result = temp.asInstanceOf[JList[User]]
         }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
+  
 }

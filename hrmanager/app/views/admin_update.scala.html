@@ -20,10 +20,10 @@
 			<!-- Page Heading -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Update user</h1>
+					<h1 class="page-header">Cập Nhật Tài Khoản</h1>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-dashboard"></i> <a href="/index">HR Manager</a></li>
-						<li class="active"><i class="fa fa-table"></i> Update user</li>
+						<li class="active"><i class="fa fa-table"></i> Cập Nhật Tài Khoản</li>
 					</ol>
 				</div>
 			</div>
@@ -38,23 +38,23 @@
 							<span class="help-block">@if(userForm("email").hasErrors) {@Messages.get(userForm("email").error.get.message)}</span>
 				   </div>
 						<div class="form-group">
-							<label>Short Name</label> <input class="form-control" value="@userForm("name").value" name="name" id="name">
+							<label>Tên tắt</label> <input class="form-control" value="@userForm("name").value" name="name" id="name">
 							<span class="help-block">@if(userForm("name").hasErrors) {@Messages.get(userForm("name").error.get.message)}</span>
 						</div>
 						
 						<div class="form-group">
-							<label>Full Name</label> <input class="form-control" value="@userForm("fullName").value" name="fullName" id="fullName">
+							<label>Họ và Tên</label> <input class="form-control" value="@userForm("fullName").value" name="fullName" id="fullName">
 							<span class="help-block">@if(userForm("fullName").hasErrors) {@Messages.get(userForm("fullName").error.get.message)}</span>
 						</div>
 						
 						<div class="form-group">
-							<label>Date Born</label> <input class="form-control" placeholder="YYYY-MM-DD" value="@userForm("dateBorn").value" name="dateBorn" id="dateBorn">
+							<label>Ngày sinh</label> <input class="form-control" placeholder="YYYY-MM-DD" value="@userForm("dateBorn").value" name="dateBorn" id="dateBorn">
 							<span class="help-block">@if(userForm("dateBorn").hasErrors) {@Messages.get(userForm("dateBorn").error.get.message)}</span>
 						</div>
 					</div>
 					<div class="col-lg-6">
 						<div class="form-group">
-							<label>Role</label>
+							<label>Quyền hạn</label>
 							@if(roleIdLogin != "1") {
 								@for(value <- roles) {
 									@if(userForm("roleId").value.get == value.roleId){
@@ -76,11 +76,11 @@
 							<span class="help-block"></span>
 						</div>
 						<div class="form-group">
-							<label>Password</label> <input class="form-control" value="@userForm("passWord").value" name="passWord" id="passWord" type="password">
+							<label>Mật khẩu</label> <input class="form-control" value="@userForm("passWord").value" name="passWord" id="passWord" type="password">
 							<span class="help-block">@if(userForm("passWord").hasErrors) {@Messages.get(userForm("passWord").error.get.message)}</span>
 						</div>
 						<div class="form-group">
-							<label>Deparment</label>
+							<label>Bộ phận</label>
 							<select class="form-control" name="deparmentId" id="deparmentId">
 								@for(value <- deparments) {
 									@if(userForm("deparmentId").value.get.toInt == value.deparmentId){
@@ -94,7 +94,7 @@
 						</div>
 						
 						<div class="form-group">
-							<label>Employee Superior</label>
+							<label>Cấp trên</label>
 							<select class="form-control" name="emailUpper" id="emailUpper">
 								<option value="" selected></option>
 								@for(emailUser <- superList) {
@@ -109,13 +109,13 @@
 						</div>
 					</div>
 					<div class="col-lg-12">
-						<button type="submit" class="btn btn-primary">Update</button>
+						<button type="submit" class="btn btn-primary">Cập nhật</button>
 						@if(mode == CommonConstant.MODE_LIST_SCREEN) {
 							<a href="@routes.AdminController.listUser()">
 						} else {
 							<a href="@routes.LoginController.index()">
 						}
-			                <button type="button" class="btn btn-default">Cancel</button>
+			                <button type="button" class="btn btn-default">Hủy bỏ</button>
 						</a>
 					</div>
 				</form>

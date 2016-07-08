@@ -36,6 +36,7 @@ import serviceImpl.UserServiceImpl
 import constants.CommonConstant
 import play.api.Environment
 import play.api.libs.mailer._
+import forms._
 
 class EmployeeController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient, mailer: MailerClient, environment: Environment)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -225,16 +226,3 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.employee_denied(employeeApplys,currentPage,request.session.get("email").get,request.session.get("roleId").get))
   }
 }
-
-case class CreateEmployeeApplyForm(
-  id: Int,
-  fullName: String,
-  emailEmployee: String,
-  emailManager: String,
-  deparmentid: Int,
-  fromDate: Date,
-  toDate: Date,
-  submitDate: Date,
-  reasonId: Int,
-  statusId: Int,
-  currentPage: Int)

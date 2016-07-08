@@ -12,10 +12,10 @@
 			<!-- Page Heading -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">List user</h1>
+					<h1 class="page-header">Nộp Đơn</h1>
 					<ol class="breadcrumb">
 						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
-						<li class="active"><i class="fa fa-table"></i> Nộp đơn</li>
+						<li class="active"><i class="fa fa-table"></i> Nộp Đơn</li>
 					</ol>
 				</div>
 			</div>
@@ -74,16 +74,16 @@
 					
 					<div class="col-lg-12">
 						@if(status == 1) {
-							<button type="submit" class="btn btn-primary">Duyệt Đơn</button>
+							<button type="submit" class="btn btn-primary">Duyệt đơn</button>
 							<a href="@routes.AdminJobApplicationController.approvalNotJobApplication(employeeApplyForm.id,status)">
-				                <button class="btn btn-danger" type="button">Từ Chối</button>
+				                <button class="btn btn-danger" type="button">Từ chối</button>
 							</a>
 							<a href="@routes.AdminJobApplicationController.listJobApplication(status)">
-				                <button class="btn btn-default" type="button">Hủy</button>
+				                <button class="btn btn-default" type="button">Hủy bỏ</button>
 							</a>
 						} else {
 							<a href="@routes.AdminJobApplicationController.listJobApplication(status)">
-				                <button class="btn btn-primary" type="button">Hủy</button>
+				                <button class="btn btn-primary" type="button">Hủy bỏ</button>
 							</a>
 						}
 					</div>

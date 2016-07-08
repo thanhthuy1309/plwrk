@@ -6,13 +6,13 @@
 <div class="container">
 	<div class="omb_login">
 		<h3 class="omb_authTitle">
-			Login Account
+			Đăng Nhập Tài Khoản
 		</h3>
 		<div class="row omb_row-sm-offset-3 omb_socialButtons">
 
 			<div class="col-xs-12 col-sm-6">
 				<a href="/loginByGoogle">
-					<button class="btn btn-lg btn-danger btn-block">Login by Google+</button>
+					<button class="btn btn-lg btn-danger btn-block">Đăng nhập bằng Google+</button>
 				</a>
 			</div>
 		</div>
@@ -20,7 +20,7 @@
 		<div class="row omb_row-sm-offset-3 omb_loginOr">
 			<div class="col-xs-12 col-sm-6">
 				<hr class="omb_hrOr">
-				<span class="omb_spanOr">or</span>
+				<span class="omb_spanOr">hoặc</span>
 			</div>
 		</div>
 		<div class="row omb_row-sm-offset-3">
@@ -39,13 +39,13 @@
 				<form class="omb_loginForm" action="@controllers.routes.LoginController.postLogin()" autocomplete="off"
 					method="POST">
 					<input type="text" class="form-control" name="email" id="email"
-						placeholder="email address" value="@loginForm("email").value">
+						placeholder="Địa chỉ email" value="@loginForm("email").value">
 					<span class="help-block">@if(loginForm("email").hasErrors) {@Messages.get(loginForm("email").error.get.message)}</span>
 
 					<input type="password" class="form-control" name="password" id="password"
-						placeholder="Password" value="@loginForm("password").value">
+						placeholder="Mật khẩu" value="@loginForm("password").value">
 					<span class="help-block">@if(loginForm("password").hasErrors) {@Messages.get(loginForm("password").error.get.message)}</span>
-					<button class="btn btn-lg btn-primary btn-block" type="submit">Login Account</button>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">Đăng nhập</button>
 				</form>
 			</div>
 		</div>

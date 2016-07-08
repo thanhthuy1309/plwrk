@@ -1,4 +1,4 @@
 name = Name
 age = Age
-error.email = Email wrong format
-error.required = This field is required
+error.email = Địa chỉ email không hợp lệ
+error.required = Hãy nhập thông tin

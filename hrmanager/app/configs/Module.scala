@@ -1,7 +1,8 @@
 
 
+package configs
+
 import com.google.inject.AbstractModule
-import com.google.inject.name.Names
 import utils.DataBaseUtils
 
 class Module extends AbstractModule {

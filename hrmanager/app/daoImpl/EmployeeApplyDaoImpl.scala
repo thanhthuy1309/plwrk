@@ -14,10 +14,8 @@ import utils.DataBaseUtils
 
 class EmployeeApplyDaoImpl extends EmployeeApplyDao {
 
-  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-private var persitence = DataBaseUtils.persitence
   def save(employeeApply: EmployeeApply): Int = {
-    val entityManager = persitence.createEntityManager()
+    val entityManager = DataBaseUtils.persitence.createEntityManager()
     def transaction = entityManager.getTransaction
     transaction.begin()
     var result: Int = 0
@@ -37,20 +35,23 @@ private var persitence = DataBaseUtils.persitence
   
   def findEmployeeApplyByStatus(email:String, statusId: Int):JList[EmployeeApply]= {
     var result: JList[EmployeeApply] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    var entityManager = DataBaseUtils.persitence.createEntityManager()
+    try {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_STATUS)
       query.setParameter("email", email)
       query.setParameter("statusId", statusId)
       result = query.getResultList.asInstanceOf[JList[EmployeeApply]]
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
   
   def findJobApplitationByEmailStatus(email:String, status: Int):JList[ListJobApplication] = {
     var result: JList[ListJobApplication] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    var entityManager = DataBaseUtils.persitence.createEntityManager()
+    try {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_JOBAPPLITATIONBYEMAILSTATUS)
       query.setParameter("email", email)
       query.setParameter("statusId", status)
@@ -60,18 +61,28 @@ private var persitence = DataBaseUtils.persitence
           result = temp.asInstanceOf[JList[ListJobApplication]]
         }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
   
   def findEmployeeApplyById(id:Int): EmployeeApply = {
-    var employeeApply = persitence.createEntityManager()
-    employeeApply.find(classOf[EmployeeApply], id)
+    var entity:EmployeeApply = null
+    try {
+      var employeeApply = DataBaseUtils.persitence.createEntityManager()
+      entity = employeeApply.find(classOf[EmployeeApply], id)
+    } catch {
+       case exception: Throwable =>
+        throw exception
+    }
+    entity
   }
   
   def deleteEmployeeApply(id:Int): Int = {
     var result: Int = 0
-    var entityManager = persitence.createEntityManager()
+    var entityManager = DataBaseUtils.persitence.createEntityManager()
     def transaction = entityManager.getTransaction
     transaction.begin()
     try {
@@ -90,7 +101,7 @@ private var persitence = DataBaseUtils.persitence
   }
   
   def updateEmployeeApply(employeeApply: EmployeeApply): Int = {
-    val entityManager = persitence.createEntityManager()
+    val entityManager = DataBaseUtils.persitence.createEntityManager()
     def transaction = entityManager.getTransaction
     transaction.begin()
     var result: Int = 0
@@ -110,8 +121,8 @@ private var persitence = DataBaseUtils.persitence
   
   def findJobApplitationAllList():JList[ListAllJobApplication] = {
     var result: JList[ListAllJobApplication] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    var entityManager = DataBaseUtils.persitence.createEntityManager()
+    try {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_ALL)
       var temp = query.getResultList
       if(temp != null) {
@@ -119,17 +130,23 @@ private var persitence = DataBaseUtils.persitence
           result = temp.asInstanceOf[JList[ListAllJobApplication]]
         }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
   
   def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
     var result: JList[EmployeeApply] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    var entityManager = DataBaseUtils.persitence.createEntityManager()
+    try {
       var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_EMAIL)
       query.setParameter("email", email)
       result = query.getResultList.asInstanceOf[JList[EmployeeApply]]
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }

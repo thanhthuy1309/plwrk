@@ -76,7 +76,7 @@ class UserServiceImpl extends UserService {
     userDAO.update(u)
   }
 
-    def registerUser(user: UpdateUserForm): Int = {
+  def registerUser(user: UpdateUserForm): Int = {
     var u: User = new User
     u.email = user.email.asInstanceOf[String]
     u.name = user.name.asInstanceOf[String]

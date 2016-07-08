@@ -2,7 +2,7 @@ package service
 
 import com.google.inject.ImplementedBy
 import java.util.{ List => JList }
-import controllers.CreateEmployeeApplyForm
+import forms.CreateEmployeeApplyForm
 import serviceImpl.EmployeeApplyServiceImpl
 import forms._
 import java.util.{ List => JList }

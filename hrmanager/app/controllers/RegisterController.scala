@@ -48,22 +48,17 @@ class RegisterController @Inject() (val messagesApi: MessagesApi,
       var deparments : List[Deparment] = deparmentService.findDeparmentAll
       var users : List[User] = userService.findUserAll
       Ok(views.html.register(userForm,deparments,users))
-  }
+    }
     
-   def registerUserPost() = Action {implicit request =>
+   def registerUserPost() = Action { implicit request =>
     var deparments : List[Deparment] = deparmentService.findDeparmentAll
     var users : List[User] = userService.findUserAll
     val newUserForm = userForm.bindFromRequest()
-    // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle succes.
     newUserForm.bindFromRequest.fold(
-      // The error function. We return the index page with the error form, which will render the errors.
-      // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
-      // a future because the person creation function returns a future.
-      errorForm => {
+    errorForm => {
         BadRequest(views.html.register(errorForm,deparments,users))
       },
-      // There were no errors in the from, so create the person.
-      user => {
+    user => {
         var isExistUser: User = userService.findUserByEmail(user.email)
         if (isExistUser.email != null) {
           Redirect(routes.ErrorController.error_first()).flashing("errormessage" -> ("This email is exist"))

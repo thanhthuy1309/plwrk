@@ -10,26 +10,34 @@ import javax.persistence.Query
 import utils.DataBaseUtils
 
 class DeparmentDaoImpl extends DepartemntDao {
-  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-  private var persitence = DataBaseUtils.persitence
+  
   def findDeparmentAll: JList[Deparment] = {
     var result: JList[Deparment] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
       var query: Query = entityManager.createNamedQuery(DaoConstant.DEPARMENT_DAO_FIND_DEPARMENT_ALL)
-      //result = query.getResultList.asInstanceOf[JList[Deparment]]
       var temp = query.getResultList
       if(temp != null) {
-        if (!temp.isEmpty()) {
+        if(!temp.isEmpty()) {
           result = temp.asInstanceOf[JList[Deparment]]
         }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
   
   def findDeparmentById(deparmentId:Int): Deparment = {
-    var entityManager = persitence.createEntityManager()
-    entityManager.find(classOf[Deparment], deparmentId)
+    var department: Deparment = null;
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
+      department = entityManager.find(classOf[Deparment], deparmentId)
+    } catch {
+       case exception: Throwable =>
+        throw exception
+    }
+    department
   }
 }

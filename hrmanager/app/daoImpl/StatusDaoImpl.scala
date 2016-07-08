@@ -14,12 +14,11 @@ import javax.persistence.Query
 import utils.DataBaseUtils
 
 class StatusDaoImpl extends StatusDao {
-  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-  private var persitence = DataBaseUtils.persitence
+  
   def findStatusAll: JList[Status] = {
     var result: JList[Status] = null
-    var entityManager = persitence.createEntityManager()
-    if (entityManager != null) {
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
       var query: Query = entityManager.createNamedQuery(DaoConstant.STATUS_DAO_FIND_STATUS_ALL)
       var temp = query.getResultList
       if(temp != null) {
@@ -27,12 +26,23 @@ class StatusDaoImpl extends StatusDao {
           result = temp.asInstanceOf[JList[Status]]
         }
       }
+    } catch {
+       case exception: Throwable =>
+        throw exception
     }
     result
   }
   
   def findStatusById(statusId:Int): Status = {
-    var entityManager = persitence.createEntityManager()
-    entityManager.find(classOf[Status], statusId)
+    var status:Status = null
+    try {
+      var entityManager = DataBaseUtils.persitence.createEntityManager()
+      status = entityManager.find(classOf[Status], statusId)
+    } catch {
+       case exception: Throwable =>
+        throw exception
+    }
+    status
   }
+  
 }

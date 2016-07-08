@@ -65,17 +65,11 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
     var roles : List[Role] = roleService.findRoleAll
     var supList : List[User] = userService.findUserSubtractEmail(email)
     val newUserForm = userForm.bindFromRequest()
-    // Bind the form first, then fold the result, passing a function to handle errors, and a function to handle succes.
     newUserForm.bindFromRequest.fold(
-      // The error function. We return the index page with the error form, which will render the errors.
-      // We also wrap the result in a successful future, since this action is synchronous, but we're required to return
-      // a future because the person creation function returns a future.
       errorForm => {
         BadRequest(views.html.admin_update(email, errorForm, deparments, roles,request.session.get("email").get, request.session.get("roleId").get,mode,supList))
       },
-      // There were no errors in the from, so create the person.
       user => {
-        // If successful, we simply redirect to the index page.
         userService.updateUser(user)
         if(mode == CommonConstant.MODE_LIST_SCREEN) {
         	Redirect(routes.AdminController.listUser())
