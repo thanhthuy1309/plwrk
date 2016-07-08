@@ -16,7 +16,7 @@ trait EmployeeApplyDao {
   
   def findEmployeeApplyById(id:Int): EmployeeApply
   
-  def deleteEmployeeApply(employeeApply: EmployeeApply): Int
+  def deleteEmployeeApply(id:Int): Int
   
   def updateEmployeeApply(entity:EmployeeApply): Int
   

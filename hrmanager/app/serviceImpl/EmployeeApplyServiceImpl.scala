@@ -46,7 +46,7 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
   
   def deleteEmployeeApplyById(id: Int): Int = {
     var entity:EmployeeApply = employeeApplyDao.findEmployeeApplyById(id)
-    employeeApplyDao.deleteEmployeeApply(entity)
+    employeeApplyDao.deleteEmployeeApply(id)
   }
   
   def findEmployeeApplyById(id: Int):EmployeeApply = {
@@ -60,9 +60,7 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
   def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
     employeeApplyDao.findEmployeeApplyByEmail(email)
   }
-  def updateEmployeeApply(employeeApplyForm: EmployeeApply): Int = {
-    employeeApplyDao.updateEmployeeApply(employeeApplyForm)
-  }
+  
   def findJobApplitationAllList():JList[ListAllJobApplication] = {
     employeeApplyDao.findJobApplitationAllList()
   }

@@ -18,7 +18,6 @@ trait EmployeeApplyService {
   def deleteEmployeeApplyById(id: Int): Int
   def updateEmployeeApply(entity:EmployeeApply): Int
   def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
-  def updateEmployeeApply(employeeApplyForm: EmployeeApply): Int
   
   def findJobApplitationAllList():JList[ListAllJobApplication]
 }

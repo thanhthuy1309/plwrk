@@ -69,13 +69,14 @@ private var persitence = DataBaseUtils.persitence
     employeeApply.find(classOf[EmployeeApply], id)
   }
   
-  def deleteEmployeeApply(employeeApply: EmployeeApply): Int = {
+  def deleteEmployeeApply(id:Int): Int = {
     var result: Int = 0
     var entityManager = persitence.createEntityManager()
     def transaction = entityManager.getTransaction
     transaction.begin()
     try {
-      entityManager.remove(employeeApply)
+      var entity:EmployeeApply = entityManager.find(classOf[EmployeeApply], id)
+      entityManager.remove(entity)
       transaction.commit()
       result = 1
     } catch {
