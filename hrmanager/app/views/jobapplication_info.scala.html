@@ -1,0 +1,84 @@
+@import entity._
+@import play.i18n._
+@import java.util.List
+
+@(employeeApplyForm : EmployeeApply,emailLogin: String, roleIdLogin: String) 
+@main("Welcome Apply") { 
+@admin_header("List User",emailLogin,roleIdLogin)
+<div id="wrapper">
+	@admin_header("Employee Page",emailLogin, roleIdLogin)
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<!-- Page Heading -->
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">List user</h1>
+					<ol class="breadcrumb">
+						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
+						<li class="active"><i class="fa fa-table"></i> Nộp đơn</li>
+					</ol>
+				</div>
+			</div>
+			<!-- /.row -->
+
+			<div class="row">
+				<form method="POST" action="@routes.EmployeeController.emloyeeApplyPost()">
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Người nộp đơn</label>
+							<input class="form-control" value="@employeeApplyForm.emailEmployee.fullName" readonly="readonly" name="emailEmployee" id="emailEmployee">
+						</div>
+						
+						<div class="form-group">
+							<label>Người duyệt</label>
+							<input class="form-control" value="@employeeApplyForm.emailManager.fullName" readonly="readonly" name="emailManager" id="emailManager">
+						</div>
+						
+						<div class="form-group">
+							<div class="form-group">
+								<label>Từ ngày</label>
+								<div class='input-group date'>
+									<input type="Text" name="fromDate"  value="@employeeApplyForm.fromDate" id="fromDate"
+				 								maxlength="25" size="25"  readonly/>  
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-lg-6">
+						<div class="form-group">
+							<label>Đơn vị</label>
+							<input class="form-control" value="@employeeApplyForm.deparment.deparmentName" readonly="readonly" name="deparmentName" id="deparmentName">
+						</div>
+						
+						<div class="form-group">
+							<label>Lý do nghỉ</label>
+							<input class="form-control" value="@employeeApplyForm.reason.reasonName" readonly="readonly" name="reasonName" id="reasonName">
+						</div>
+						
+						<div class="form-group">
+							<div class="form-group">
+								<label>Đến ngày</label>
+								<div class='input-group date'>
+									<input type="Text" name="toDate"  value="@employeeApplyForm.toDate" id="toDate"
+				 								maxlength="25" size="25"  readonly/>  
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-lg-12">
+						<button type="submit" class="btn btn-primary">Duyệt Đơn</button>
+						<a href="@routes.AdminController.listUser()">
+			                <button class="btn btn-default">Từ Chối</button>
+						</a>
+						<a href="@routes.AdminController.listUser()">
+			                <button class="btn btn-default">Hủy</button>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+}

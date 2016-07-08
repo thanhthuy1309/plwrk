@@ -22,6 +22,7 @@ import constants._
 import forms._
 import entity.User
 import service.EmployeeApplyService
+import entity.EmployeeApply
 
 class AdminJobApplicationController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -37,21 +38,19 @@ class AdminJobApplicationController @Inject() (val messagesApi: MessagesApi,
   
   @Inject
   private var employeeService:EmployeeApplyService = _
-  
-  private val userForm: Form[UpdateUserForm] = Form(
-    mapping(
-      "email" -> nonEmptyText,
-      "name" -> nonEmptyText,
-      "fullName" -> nonEmptyText,
-      "dateBorn" -> date,
-      "roleId" -> text,
-      "passWord" -> nonEmptyText,
-      "emailUpper" -> text,
-      "deparmentId" -> number
-      )(UpdateUserForm.apply)(UpdateUserForm.unapply))
-      
-   def listJobApplication(status:Int) = Action {implicit request =>
+ 
+  def listJobApplication(status:Int) = Action {implicit request =>
      var list : List[ListJobApplication] = employeeService.findJobApplitationByEmailStatus(request.session.get("email").get, status)
-     Ok(views.html.jobapplication_list(list,request.session.get("email").get,request.session.get("roleId").get))
+     Ok(views.html.jobapplication_list(list,request.session.get("email").get,request.session.get("roleId").get, status))
    }
+  
+  def loadJobApplicationInfo(id: Int, status:Int) = Action {implicit request =>
+     var info: EmployeeApply = employeeService.loadJobApplitationById(id)
+     Ok(views.html.jobapplication_info(info,request.session.get("email").get,request.session.get("roleId").get))
+  }
+  
+  def approvalJobApplication(id: Int, status:Int) = Action {implicit request =>
+     var info: EmployeeApply = employeeService.loadJobApplitationById(id)
+     Redirect(routes.AdminJobApplicationController.listJobApplication(status))
+  }
 }

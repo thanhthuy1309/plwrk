@@ -22,6 +22,7 @@ GET		/error_first					controllers.ErrorController.error_first()
 GET		/employee/apply/:id				controllers.EmployeeController.emloyeeApplyGet(id: Int)
 POST	/employee/apply/				controllers.EmployeeController.emloyeeApplyPost()
 GET		/admin/application/list/:status					controllers.AdminJobApplicationController.listJobApplication(status: Int)
+GET		/admin/application/info/:id/:status				controllers.AdminJobApplicationController.loadJobApplicationInfo(id: Int,status: Int)
 
 GET		/employee/notApproved		controllers.EmployeeController.notApproved()
 #GET		/employee/updateApply/:id		controllers.EmployeeController.updateApply(id: Int)
