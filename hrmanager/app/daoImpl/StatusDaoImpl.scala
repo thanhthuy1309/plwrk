@@ -11,10 +11,11 @@ import javax.persistence.Table
 import javax.persistence.Persistence
 import constants._
 import javax.persistence.Query
+import utils.DataBaseUtils
 
 class StatusDaoImpl extends StatusDao {
-  private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-  
+  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
+  private var persitence = DataBaseUtils.persitence
   def findStatusAll: JList[Status] = {
     var result: JList[Status] = null
     var entityManager = persitence.createEntityManager()

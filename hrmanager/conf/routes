@@ -23,8 +23,12 @@ GET		/employee/apply/:id				controllers.EmployeeController.emloyeeApplyGet(id: I
 POST	/employee/apply/				controllers.EmployeeController.emloyeeApplyPost()
 GET		/admin/application/list/:status					controllers.AdminJobApplicationController.listJobApplication(status: Int)
 GET		/admin/application/info/:id/:status				controllers.AdminJobApplicationController.loadJobApplicationInfo(id: Int,status: Int)
-
+POST		/admin/application/approval/:id/:status				controllers.AdminJobApplicationController.approvalJobApplication(id: Int,status: Int)
+GET		/admin/application/notapproval/:id/:status				controllers.AdminJobApplicationController.approvalNotJobApplication(id: Int,status: Int)
 GET		/employee/notApproved		controllers.EmployeeController.notApproved()
+GET		/admin/manager/application		controllers.AdminJobApplicationController.managerJobApplicationList()
+GET		/admin/manager/application/info/:id		controllers.AdminJobApplicationController.infoJobApplicationInfo(id: Int)
+GET		/admin/manager/application/delete/:id		controllers.AdminJobApplicationController.deleteApply(id: Int)
 #GET		/employee/updateApply/:id		controllers.EmployeeController.updateApply(id: Int)
 #GET		/employee/deleteApply/:id		controllers.EmployeeController.deleteApply(id: Int)
 #GET	/myLeaveOfAbsence					controllers.EmployeeController.myLeaveOfAbsence()

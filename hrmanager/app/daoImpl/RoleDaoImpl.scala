@@ -13,11 +13,12 @@ import javax.persistence.Table
 import javax.persistence.Persistence
 import constants._
 import javax.persistence.Query
+import utils.DataBaseUtils
 
 class RoleDaoImpl extends RoleDao {
 
-  private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-
+  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
+  private var persitence = DataBaseUtils.persitence
   def findRoleAll: JList[Role] = {
     var result: JList[Role] = null
     var entityManager = persitence.createEntityManager()

@@ -13,6 +13,7 @@ import service.ReasonService
 import service.DeparmentService
 import service.StatusService
 import java.util.{ List => JList }
+import constants.CommonConstant
 
 class EmployeeApplyServiceImpl extends EmployeeApplyService {
   
@@ -80,4 +81,10 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
 //  def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]= {
 //    employeeApplyDao.findEmployeeApplyByEmail(email)
 //  }
+  def updateEmployeeApply(employeeApplyForm: EmployeeApply): Int = {
+    employeeApplyDao.updateEmployeeApply(employeeApplyForm)
+  }
+  def findJobApplitationAllList():JList[ListAllJobApplication] = {
+    employeeApplyDao.findJobApplitationAllList()
+  }
 }

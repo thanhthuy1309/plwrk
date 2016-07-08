@@ -11,9 +11,16 @@
 	
 	<named-query name="EmployeeApplyDao.findJobApplitationByEmailStatus">
 		<query>
-			select new forms.ListJobApplication(r.id,u.fullName,r.fromDate,r.toDate,r.submitDate,rs.reasonName)
+			select new forms.ListJobApplication(r.id,u.fullName,r.fromDate,r.toDate,r.submitDate,rs.reasonName,u.email)
 			from EmployeeApply r left join r.emailEmployee u left join r.reason rs
 			where r.emailManager.email = :email and r.status.statusId = :statusId
+		</query>
+	</named-query>
+	
+	<named-query name="EmployeeApplyDao.findJobApplitationAllList">
+		<query>
+			select new forms.ListAllJobApplication(r.id,u1.fullName,u2.fullName,r.fromDate,r.toDate,rs.statusName,u1.email,u2.email)
+			from EmployeeApply r left join r.emailEmployee u1 left join r.emailManager u2 left join r.status rs
 		</query>
 	</named-query>
 	

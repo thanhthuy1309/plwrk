@@ -7,10 +7,11 @@ import javax.persistence.Persistence
 import javax.persistence.Query
 import dao.ReasonDao
 import entity.Reason
+import utils.DataBaseUtils
 
 class ReasonDaoImpl extends ReasonDao {
-  private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-  
+  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
+  private var persitence = DataBaseUtils.persitence
   def findReasonAll: JList[Reason] = {
     var result: JList[Reason] = null
     var entityManager = persitence.createEntityManager()

@@ -7,10 +7,11 @@ import entity.Deparment
 import constants._
 import javax.persistence.Persistence
 import javax.persistence.Query
+import utils.DataBaseUtils
 
 class DeparmentDaoImpl extends DepartemntDao {
-  private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-  
+  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
+  private var persitence = DataBaseUtils.persitence
   def findDeparmentAll: JList[Deparment] = {
     var result: JList[Deparment] = null
     var entityManager = persitence.createEntityManager()

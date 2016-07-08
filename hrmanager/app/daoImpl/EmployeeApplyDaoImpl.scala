@@ -10,11 +10,12 @@ import javax.persistence.EntityManager
 import javax.persistence.Persistence
 import javax.persistence.Query
 import entity.EmployeeApply
+import utils.DataBaseUtils
 
 class EmployeeApplyDaoImpl extends EmployeeApplyDao {
 
-  private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
-
+  //private var persitence = Persistence.createEntityManagerFactory(DaoConstant.DEFAULT_PERSISTENCE_UNIT)
+private var persitence = DataBaseUtils.persitence
   def save(employeeApply: EmployeeApply): Int = {
     val entityManager = persitence.createEntityManager()
     def transaction = entityManager.getTransaction
@@ -103,6 +104,21 @@ class EmployeeApplyDaoImpl extends EmployeeApplyDao {
         throw exception
     } finally
       entityManager.close()
+    result
+  }
+  
+  def findJobApplitationAllList():JList[ListAllJobApplication] = {
+    var result: JList[ListAllJobApplication] = null
+    var entityManager = persitence.createEntityManager()
+    if (entityManager != null) {
+      var query: Query = entityManager.createNamedQuery(DaoConstant.EMPLOYEE_DAO_FIND_ALL)
+      var temp = query.getResultList
+      if(temp != null) {
+        if (!temp.isEmpty()) {
+          result = temp.asInstanceOf[JList[ListAllJobApplication]]
+        }
+      }
+    }
     result
   }
 }
