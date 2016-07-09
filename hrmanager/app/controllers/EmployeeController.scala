@@ -158,11 +158,11 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
         val employeeName:String = entity.emailEmployee.fullName
         val depatermentName:String = entity.deparment.deparmentName
         val reasonName:String = entity.reason.reasonName
-        
+        val employeeEmail: String = entity.emailEmployee.email
         // send mail
         val email = Email(
         "Duyệt đơn xin nghỉ của nhân viên",
-        "HR Manager <thanhthuy13091992@gmail.com>",
+        "HR Manager <hrmanagersystem@yandex.com>",
         Seq(s"$managerName <$managerEmail>"),
         bodyHtml = Some(s"""<html><body>
                         <p>Gửi Anh/Chị: $managerName</p>
@@ -173,6 +173,21 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
                         <p>Trân trọng cảm ơn!</p>
                   </body></html>""")
         )
+        
+        val email1 = Email(
+        "Duyệt đơn xin nghỉ của nhân viên",
+        "HR Manager <hrmanagersystem@yandex.com>",
+        Seq(s"$managerName <$employeeEmail>"),
+        bodyHtml = Some(s"""<html><body>
+                        <p>Gửi Anh/Chị: $managerName</p>
+                        <p>Từ ngày $dateFrom đến ngày $toDate, có nhân viên $employeeName</p>
+                        <p>Thuộc phòng ban/bộ phận $depatermentName xin nghỉ vì lý do $reasonName</p>
+                        <p></p>
+                        <p>Anh/chị vui lòng truy cập vào <a href="http://localhost:9000/admin/application/list/1">HR Manager</a> để duyệt đơn xin nghỉ của nhân viên.</p>
+                        <p>Trân trọng cảm ơn!</p>
+                  </body></html>""")
+        )
+        mailer.send(email1)
         mailer.send(email)
         
         // redirect page

@@ -1,8 +1,9 @@
 @import forms._
 @import java.util.List
+@import utils._
 
 @(jobList: List[ListJobApplication],emailLogin: String, roleIdLogin:String, status: Int)
-@main("Welcome to Play") {
+@main("Hrmanager") {
 <div id="wrapper">
 	@admin_header("",emailLogin,roleIdLogin)
 
@@ -14,18 +15,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1 class="page-header">
-                     @if(status == 1) {
-                        		Danh Sách Đơn Chờ Duyệt
-                     		} else {
-                     		   @if(status == 2) {
-                     			  Danh Sách Đơn Đã Duyệt
-                     		   } else {
-                     		   		@if(status == 3) {
-                     					Danh Sách Đơn Từ Chối
-                     				}
-                     		   }
-                     		} 
-                     
+                    @StringUtils.printTitleJobList(status)
                     </h1>
                     <ol class="breadcrumb">
                         <li>
@@ -33,17 +23,7 @@
                         </li>
                         <li class="active">
                             <i class="fa fa-table"></i> 
-                            @if(status == 1) {
-                        		Đơn Chờ Duyệt
-                     		} else {
-                     		   @if(status == 2) {
-                     			  Đơn Đã Duyệt
-                     		   } else {
-                     		   		@if(status == 3) {
-                     					Đơn Từ Chối
-                     				}
-                     		   }
-                     		} 
+                            @StringUtils.printTitleJobList(status)
                         </li>
                     </ol>
                 </div>
