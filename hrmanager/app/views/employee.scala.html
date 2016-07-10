@@ -1,6 +1,8 @@
 @import entity._
 @import play.i18n._
 @import java.util.List
+@import utils._
+@import constants._
 
 @(employeeApplys : List[EmployeeApply],currentPage:Int, emailLogin: String, roleIdLogin:String) 
 @main("Employee Page") { 
@@ -12,10 +14,10 @@
 			<!-- Page Heading -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Đơn Xin Nghỉ Của Tôi</h1>
+					<h1 class="page-header"> @StringUtils.printTitleJobList(currentPage)</h1>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
-						<li class="active"><i class="fa fa-table"></i> Danh Sách Đơn Xin Nghỉ</li>
+						<li><i class="fa fa-dashboard"></i> <a href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a></li>
+						<li class="active"><i class="fa fa-table"></i> @StringUtils.printTitleJobList(currentPage)</li>
 					</ol>
 				</div>
 			</div>
@@ -32,23 +34,36 @@
                                     <th>Ngày đệ trình</th>
                                     <th>Lý do nghỉ</th>
                                     <th>Trạng thái</th>
-                                    <th class="col_edit"></th>
+                                    <th class="col_list"></th>
+                                    <th class="col_list"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                            	@for(employeeApply <- employeeApplys) {
-                            		<tr>
-	                                    <td>@employeeApply.fromDate</td>
-	                                    <td>@employeeApply.toDate</td>
-	                                    <td>@employeeApply.submitDate</td>
-	                                    <td>@employeeApply.reason.reasonName</td>
-	                                    <td>@employeeApply.status.statusName</td>
-	                                    <td class="col_edit">
-	                                    	<a id='updateBtnId'  class='btn btn-primary' href='/employee/apply/@employeeApply.id/@currentPage'>Cập nhật</a>
-	                                    	<a id='deleteBtnId'  class='btn btn-danger' href='/employee/deleteApply/@employeeApply.id/@currentPage'>Xóa</a>
-	                                    </td>
-                            		</tr>
-                            	}
+                            	@if(employeeApplys.size() > 0){
+	                            	@for(employeeApply <- employeeApplys) {
+	                            		<tr>
+		                                    <td>@employeeApply.fromDate</td>
+		                                    <td>@employeeApply.toDate</td>
+		                                    <td>@employeeApply.submitDate</td>
+		                                    <td>@employeeApply.reason.reasonName</td>
+		                                    <td>@employeeApply.status.statusName</td>
+		                                    <td class="col_list">
+		                                    	@if(employeeApply.status.statusId == CommonConstant.STATUS_YET_APPROVAL) {
+			                                    	<a id='updateBtnId'  class='btn btn-primary' href='/employee/apply/@employeeApply.id/@currentPage'>Cập nhật</a>
+			                                    }
+		                                    </td>
+		                                    <td class="col_list">
+			                                   <a id='deleteBtnId'  class='btn btn-danger' href='/employee/deleteApply/@employeeApply.id/@currentPage'>Xóa</a>
+		                                    </td>
+	                            		</tr>
+	                            	}
+	                            }else {
+	                            	<tr>
+	                            		<td colspan="7">
+	                            	 		<span class="help-block">Không có dữ liệu</span> 
+	                            	 	</td>
+	                            	</tr>
+	                            }
                             </tbody>
                         </table>
                     </div>

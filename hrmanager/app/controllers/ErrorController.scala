@@ -18,6 +18,7 @@ import forms.UserGoogleForm
 import forms.UserLoginAccountForm
 import play.api.data.Form
 import play.api.data.Forms.{ mapping, longNumber, nonEmptyText, number, email }
+import configs._
 
 class ErrorController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient,
@@ -25,6 +26,10 @@ class ErrorController @Inject() (val messagesApi: MessagesApi,
 
   def error_first = Action { implicit request =>
     Ok(views.html.error_first())
+  }
+  
+  def error_after() = Authenticated { implicit request =>
+    Ok(views.html.error_after(request.session.get("email").get,request.session.get("roleId").get))
   }
 
 }

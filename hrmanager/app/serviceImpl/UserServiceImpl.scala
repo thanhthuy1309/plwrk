@@ -53,6 +53,7 @@ class UserServiceImpl extends UserService {
     } else {
       var role: Role = roleDao.findRoleById(CommonConstant.ROLE_ADMIN)
       entity.role = role
+      entity.emailUpper = user.email
     }
     var department: Deparment = departmentDao.findDeparmentById(1)
     if (department != null) {
@@ -83,9 +84,23 @@ class UserServiceImpl extends UserService {
     u.fullName = user.fullName.asInstanceOf[String]
     u.dateBorn = user.dateBorn.asInstanceOf[Date]
     u.passWord = user.passWord.asInstanceOf[String]
-    u.emailUpper = user.emailUpper.asInstanceOf[String]
+    if(user.emailUpper != null) {
+    	u.emailUpper = user.emailUpper.asInstanceOf[String]
+    }
     u.role = (roleDao.findRoleById(CommonConstant.ROLE_USER)).asInstanceOf[Role]
     u.deparment = departmentDao.findDeparmentById(user.deparmentId).asInstanceOf[Deparment]
+    
+    var listUser: JList[User] = userDAO.findUserAll
+    if (listUser != null) {
+      if (listUser.size() > 0) {
+        var role: Role = roleDao.findRoleById(CommonConstant.ROLE_USER)
+        u.role = role
+      }
+    } else {
+      var role: Role = roleDao.findRoleById(CommonConstant.ROLE_ADMIN)
+      u.role = role
+      u.emailUpper = user.email
+    }
     userDAO.save(u)
   }
     

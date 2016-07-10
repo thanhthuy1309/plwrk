@@ -1,6 +1,7 @@
 @import entity._
 @import play.i18n._
 @import java.util.List
+@import utils._
 
 @(employeeApplyForm : EmployeeApply,emailLogin: String, roleIdLogin: String) 
 @main("Hrmanager") { 
@@ -14,7 +15,7 @@
 				<div class="col-lg-12">
 					<h1 class="page-header">Nộp Đơn</h1>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
+						<li><i class="fa fa-dashboard"></i> <a href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a></li>
 						<li class="active"><i class="fa fa-table"></i> Nộp Đơn</li>
 					</ol>
 				</div>

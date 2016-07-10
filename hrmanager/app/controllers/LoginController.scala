@@ -18,6 +18,8 @@ import forms.UserGoogleForm
 import forms.UserLoginAccountForm
 import play.api.data.Form
 import play.api.data.Forms.{ mapping, longNumber, nonEmptyText, number, email }
+import constants.CommonConstant
+import play.api.Logger
 
 class LoginController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient,
@@ -29,7 +31,7 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
   private val loginForm: Form[UserLoginAccountForm] = Form(
     mapping(
       "email" -> email,
-      "password" -> nonEmptyText)(UserLoginAccountForm.apply)(UserLoginAccountForm.unapply))
+      "password" -> nonEmptyText)(UserLoginAccountForm.apply)(UserLoginAccountForm.unapply).verifying("login.error.userNotExist",checkUserNotExist(_)))
 
   def home = Action { implicit request =>
     Ok(views.html.home())
@@ -88,35 +90,39 @@ class LoginController @Inject() (val messagesApi: MessagesApi,
            var info: User = userService.findUserByEmail(email)
            roleId =  info.role.roleId
         } else {
-          Ok("Man hinh loi")
+          Redirect("/error_first").flashing("errormessage" -> (messagesApi.apply("login.error.google")))
         }
       }
       //cache.get[String](email).get)
-      Redirect("/index").withSession(request.session + ("email" -> email) + ("roleId" -> roleId))
+      roleId match {
+        case CommonConstant.ROLE_USER => Redirect("/employee/list/0").withSession(request.session + ("email" -> email) + ("roleId" -> roleId))
+        case _ => Redirect("/admin/list").withSession(request.session + ("email" -> email) + ("roleId" -> roleId))
+       }
     } else {
-      Ok("loi")
+      Redirect("/error_first").flashing("errormessage" -> (messagesApi.apply("login.error.emailproblem")))
     }
   }
 
   def postLogin = Action { implicit request =>
     val login = loginForm.bindFromRequest()
+    Logger.info("Attempting risky calculation.")
     login.bindFromRequest.fold(
       errorForm => {
         BadRequest(views.html.login(errorForm))
       },
       person => {
-        var result: Int = userService.serviceLoginAccount(person)
-        // user not exist
-        if (result == 1) {
-          Redirect("/loginHome").flashing("userNotExist" -> (person.email + " not exist"))
-        } else if (result == 2) {
           var user:User = userService.findUserByEmail(person.email)
-          Redirect("/employee/myLeaveOfAbsence").withSession(request.session + ("email" -> user.email) + ("roleId" -> user.role.roleId))
-        } else {
-          Ok("error")
-        }
-        
+          user.role.roleId match {
+            case CommonConstant.ROLE_USER => Redirect("/employee/list/0").withSession(request.session + ("email" -> user.email) + ("roleId" -> user.role.roleId))
+            case _ => Redirect("/admin/list").withSession(request.session + ("email" -> user.email) + ("roleId" -> user.role.roleId))
+          }
       })
+      
   }
-
+  private def checkUserNotExist(user: UserLoginAccountForm) : Boolean = {
+    userService.serviceLoginAccount(user) match {
+    case 1 => false
+    case _ => true
+    }
+  }
 }

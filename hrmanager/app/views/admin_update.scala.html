@@ -3,6 +3,7 @@
 @import play.i18n._
 @import constants._
 @import forms._
+@import utils._
 
 @(email: String,
  userForm : Form[UpdateUserForm],
@@ -22,7 +23,7 @@
 				<div class="col-lg-12">
 					<h1 class="page-header">Cập Nhật Tài Khoản</h1>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-dashboard"></i> <a href="/index">HR Manager</a></li>
+						<li><i class="fa fa-dashboard"></i> <a href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a></li>
 						<li class="active"><i class="fa fa-table"></i> Cập Nhật Tài Khoản</li>
 					</ol>
 				</div>
@@ -110,11 +111,7 @@
 					</div>
 					<div class="col-lg-12">
 						<button type="submit" class="btn btn-primary">Cập nhật</button>
-						@if(mode == CommonConstant.MODE_LIST_SCREEN) {
-							<a href="@routes.AdminController.listUser()">
-						} else {
-							<a href="@routes.LoginController.index()">
-						}
+							<a href="@StringUtils.redirectPageRole(roleIdLogin)">
 			                <button type="button" class="btn btn-default">Hủy bỏ</button>
 						</a>
 					</div>

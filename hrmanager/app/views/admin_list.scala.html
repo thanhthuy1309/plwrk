@@ -1,5 +1,6 @@
 @import entity.User
 @import java.util.List
+@import utils._
 
 @(users: List[User],emailLogin: String, roleIdLogin:String)
 @main("Hrmanager") {
@@ -18,7 +19,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li>
-                            <i class="fa fa-dashboard"></i>  <a href="/index">HR Manager</a>
+                            <i class="fa fa-dashboard"></i>  <a href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a>
                         </li>
                         <li class="active">
                             <i class="fa fa-table"></i> Danh Sách Tài Khoản

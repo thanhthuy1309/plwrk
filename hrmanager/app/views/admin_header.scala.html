@@ -1,3 +1,5 @@
+@import utils._
+
 @(activeMenu: String, emailLogin: String, roleIdLogin:String)
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
@@ -5,7 +7,7 @@
 			data-target=".navbar-ex1-collapse">
 			<span class="icon-bar"></span> <span class="icon-bar"></span>
 		</button>
-		<a class="navbar-brand" href="/index">HR Manager</a>
+		<a class="navbar-brand" href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a>
 	</div>
 	<ul class="nav navbar-right top-nav">
 		<li class="dropdown"><a href="#" class="dropdown-toggle"
@@ -23,29 +25,29 @@
 					<i class="fa fa-fw fa-table"></i> Quản Lý Đơn Nhân Viên</a>
 				</li>
 				
-				<li class="active"><a href="/admin/manager/application">
+				<li><a href="/admin/manager/application">
 					<i class="fa fa-fw fa-table"></i> Quản Lý Đơn Xin Nghỉ</a>
 				</li>
 			}
-			<li>
-                    <a href="/employee/myLeaveOfAbsence"><i class="fa fa-fw fa-arrows-v"></i> Đơn Xin Nghỉ Của Tôi <i class="fa fa-fw fa-caret-down"></i></a>
+			<li @if(roleIdLogin != "1"){class="active"}>
+                    <a href="/employee/list/0"><i class="fa fa-fw fa-arrows-v"></i> Đơn Xin Nghỉ Của Tôi <i class="fa fa-fw fa-caret-down"></i></a>
                      <ul id="demo">
                          <li class="active"><a href="/employee/apply/0/0">
 							<i class="fa fa-fw fa-table"></i>Nộp Đơn</a>
 						</li>
-						<li><a href="/employee/notApproved">
+						<li><a href="/employee/list/1">
 							<i class="fa fa-fw fa-table"></i>Chưa Được Duyệt</a>
 						</li>
-						<li><a href="/employee/approved">
+						<li><a href="/employee/list/2">
 							<i class="fa fa-fw fa-table"></i>Đã Duyệt</a>
 						</li>
-						<li><a href="/employee/denied">
+						<li><a href="/employee/list/3">
 							<i class="fa fa-fw fa-table"></i>Bị Từ Chối</a>
 						</li>
                   	</ul>
              </li>
              <li>
-                 <a href="#"><i class="fa fa-fw fa-arrows-v"></i> Tôi Duyệt Đơn Xin Nghỉ <i class="fa fa-fw fa-caret-down"></i></a>
+                 <a href="/admin/application/list/0"><i class="fa fa-fw fa-arrows-v"></i> Tôi Duyệt Đơn Xin Nghỉ <i class="fa fa-fw fa-caret-down"></i></a>
                      <ul id="demo1">
                          <li class="active"><a href="/admin/application/list/1">
 							<i class="fa fa-fw fa-table"></i>Chờ Duyệt</a>

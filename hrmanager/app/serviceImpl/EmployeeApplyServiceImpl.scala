@@ -46,4 +46,8 @@ class EmployeeApplyServiceImpl extends EmployeeApplyService {
   def findJobApplitationAllList():JList[ListAllJobApplication] = {
     employeeApplyDao.findJobApplitationAllList()
   }
+  
+  def findJobApplitationByEmailStatusAll(email:String):JList[ListJobApplication] = {
+    employeeApplyDao.findJobApplitationByEmailStatusAll(email)
+  }
 }

@@ -26,23 +26,25 @@ class RegisterController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient,
     val cache: CacheApi)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
     
+     @Inject
+     private var userService:UserService = _
+  
+     @Inject
+     private var deparmentService:DeparmentService = _
+     
     private val userForm: Form[UpdateUserForm] = Form(
     mapping(
-      "email" -> email,
+      "email" -> email.verifying("register.error.email",checkMailExist(_)),
       "name" -> nonEmptyText,
       "fullName" -> nonEmptyText,
-      "dateBorn" -> date,
+      "dateBorn" -> date("yyyy-MM-dd").verifying("date.error.beforenow",_.before(new Date())),
       "roleId" -> text,
       "passWord" -> nonEmptyText,
       "emailUpper" -> text,
       "deparmentId" -> number
       )(UpdateUserForm.apply)(UpdateUserForm.unapply))
       
-     @Inject
-     private var userService:UserService = _
-  
-     @Inject
-     private var deparmentService:DeparmentService = _
+
   
     def register = Action { implicit request =>
       var deparments : List[Deparment] = deparmentService.findDeparmentAll
@@ -59,15 +61,21 @@ class RegisterController @Inject() (val messagesApi: MessagesApi,
         BadRequest(views.html.register(errorForm,deparments,users))
       },
     user => {
-        var isExistUser: User = userService.findUserByEmail(user.email)
-        if (isExistUser.email != null) {
-          Redirect(routes.ErrorController.error_first()).flashing("errormessage" -> ("This email is exist"))
-        } else {
-        	// If successful, we simply redirect to the index page.
-        	userService.registerUser(user)
-        	var info: User = userService.findUserByEmail(user.email)
-        	Redirect(routes.LoginController.index()).withSession(request.session + ("email" -> info.email) + ("roleId" -> info.role.roleId))
-        }
+       // If successful, we simply redirect to the index page.
+        userService.registerUser(user)
+        var info: User = userService.findUserByEmail(user.email)
+        info.role.roleId match {
+            case CommonConstant.ROLE_USER => Redirect("/employee/list/0").withSession(request.session + ("email" -> user.email) + ("roleId" -> info.role.roleId))
+            case _ => Redirect("/admin/list").withSession(request.session + ("email" -> user.email) + ("roleId" -> info.role.roleId))
+          }
       })
   }
+   private def checkMailExist(email: String) : Boolean = {
+     var isExistUser: User = userService.findUserByEmail(email)
+     if (isExistUser.email != null) {
+       false
+     } else {
+       true
+     }
+   }
 }

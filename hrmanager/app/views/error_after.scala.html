@@ -1,0 +1,29 @@
+@import entity._ 
+@import java.util.List
+@import play.i18n._
+@import constants._
+@import forms._
+
+@(emailLogin: String, roleIdLogin: String)(implicit flash: Flash)
+@main("Hrmanager") {
+<div id="wrapper">
+	@admin_header("Employee Page",emailLogin, roleIdLogin)
+	<div id="page-wrapper">
+		<div class="container-fluid">
+			<!-- Page Heading -->
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">Thông tin lỗi</h1>
+					<ol class="breadcrumb">
+						<span class="help-block">
+						@if(flash.get("errormessage") != None) {
+							@flash.get("errormessage").get
+						}
+						</span>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+}

@@ -21,6 +21,7 @@ import entity.User
 import constants._
 import forms._
 import entity.User
+import configs._
 
 class AdminController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -39,20 +40,20 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
       "email" -> nonEmptyText,
       "name" -> nonEmptyText,
       "fullName" -> nonEmptyText,
-      "dateBorn" -> date,
+      "dateBorn" -> date("yyyy-MM-dd").verifying("date.error.beforenow",_.before(new Date())),
       "roleId" -> text,
       "passWord" -> nonEmptyText,
       "emailUpper" -> text,
       "deparmentId" -> number
       )(UpdateUserForm.apply)(UpdateUserForm.unapply))
       
-  def listUser() = Action {implicit request =>
+  def listUser() = Authenticated {implicit request =>
     val users : List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
     Ok(views.html.admin_list(users,request.session.get("email").get,request.session.get("roleId").get))
   }
   
   
-  def updateUser(email : String) = Action { implicit request =>
+  def updateUser(email : String) = Authenticated { implicit request =>
     var deparments : List[Deparment] = deparmentService.findDeparmentAll
     var roles : List[Role] = roleService.findRoleAll
     var supList : List[User] = userService.findUserSubtractEmail(email)
@@ -60,7 +61,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
     Ok(views.html.admin_update(email, userForm.fill(form), deparments, roles,request.session.get("email").get,request.session.get("roleId").get,CommonConstant.MODE_LIST_SCREEN,supList))
   }
   
-  def adminUpdateUserPost(email : String,mode :String) = Action {implicit request =>
+  def adminUpdateUserPost(email : String,mode :String) = Authenticated {implicit request =>
     var deparments : List[Deparment] = deparmentService.findDeparmentAll
     var roles : List[Role] = roleService.findRoleAll
     var supList : List[User] = userService.findUserSubtractEmail(email)
@@ -79,7 +80,7 @@ class AdminController @Inject() (val messagesApi: MessagesApi,
       })
   }
   
-  def profile = Action { implicit request =>
+  def profile = Authenticated { implicit request =>
     var deparments : List[Deparment] = deparmentService.findDeparmentAll
     var roles : List[Role] = roleService.findRoleAll
     var supList : List[User] = userService.findUserSubtractEmail(request.session.get("email").get)

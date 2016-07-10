@@ -1,6 +1,7 @@
 @import forms._
 @import java.util.List
 @import utils._
+@import constants._
 
 @(jobList: List[ListJobApplication],emailLogin: String, roleIdLogin:String, status: Int)
 @main("Hrmanager") {
@@ -19,7 +20,7 @@
                     </h1>
                     <ol class="breadcrumb">
                         <li>
-                            <i class="fa fa-dashboard"></i>  <a href="/index">HR Manager</a>
+                            <i class="fa fa-dashboard"></i>  <a href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a>
                         </li>
                         <li class="active">
                             <i class="fa fa-table"></i> 
@@ -41,25 +42,33 @@
                                     <th>Từ ngày</th>
                                     <th>Đến ngày</th>
                                     <th>Ngày đệ trình</th>
-                                    <th>Lý do nghỉ</th>
+                                    <th>Trạng thái</th>
                                     <th>Địa chỉ email</th>
+                                    <th class="col_list"></th>
                                 </tr>
                             </thead>
                             <tbody>
                             	@if(jobList != null) {
 	                            	@for(info <- jobList) {
 	                            		<tr>
-		                                    <td><a href="/admin/application/info/@info.id/@status">@info.name</a></td>
+		                                    <td>@info.name</td>
 		                                    <td>@info.fromDate</td>
 		                                    <td>@info.toDate</td>
 		                                    <td>@info.submitDate</td>
-		                                    <td>@info.reason</td>
+		                                    <td>@info.status</td>
 		                                    <td>@info.email</td>
+		                                    <td class="col_list">
+		                                     @if(info.statusId == CommonConstant.STATUS_YET_APPROVAL) {
+	                                    		<a id='updateBtnId'  class='btn btn-primary' href='/admin/application/info/@info.id/@info.statusId/@status'>Duyệt</a>
+	                                    	} else {
+	                                    		<a id='updateBtnId'  class='btn btn-danger width_button_approval' href='/admin/application/info/@info.id/@info.statusId/@status'>Xem</a>
+	                                    	}
+	                                    	</td>
 	                            		</tr>
 	                            	} 
 	                            } else {
 	                            	<tr>
-	                            		<td colspan="6">
+	                            		<td colspan="7">
 	                            	 		<span class="help-block">Không có dữ liệu</span> 
 	                            	 	</td>
 	                            	</tr>

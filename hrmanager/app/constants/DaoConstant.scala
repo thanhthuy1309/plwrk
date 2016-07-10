@@ -25,4 +25,6 @@ object DaoConstant {
   val EMPLOYEE_DAO_FIND_ALL: String = "EmployeeApplyDao.findJobApplitationAllList"
   
   val EMPLOYEE_DAO_FIND_EMAIL: String = "EmployeeApplyDao.findEmployeeByEmail"
+  
+  val EMPLOYEE_DAO_FIND_BYEMAILSTATUS_ALL: String = "EmployeeApplyDao.findJobApplitationByEmailStatusAll"
 }

@@ -28,15 +28,15 @@ class EmployeeApply {
   var deparment: Deparment = _
   
   @Column(name = "fromDate", nullable = false)
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.DATE)
   var fromDate: Date = _
   
   @Column(name = "toDate", nullable = false)
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.DATE)
   var toDate: Date = _
   
   @Column(name = "submitDate")
-  @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.DATE)
   var submitDate: Date = _
   
   @ManyToOne

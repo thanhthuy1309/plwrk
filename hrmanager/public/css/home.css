@@ -8,3 +8,9 @@ a:hover {
     display: table-cell;
     vertical-align: middle;
 }
+.width_button_show {
+    width: 85px;
+}
+.width_button_approval {
+    width: 63px;
+}

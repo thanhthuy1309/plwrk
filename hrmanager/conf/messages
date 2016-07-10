@@ -1,4 +1,13 @@
-name = Name
-age = Age
 error.email = Địa chỉ email không hợp lệ
 error.required = Hãy nhập thông tin
+error.date = Nhập ngày không hợp lệ
+login.error.emailproblem = Sự cố về email
+login.error.google = Lỗi khi đăng ký email bằng google
+login.error.userNotExist = Tài khoản chưa được đăng ký
+date.error.beforenow = Ngày nhập phải trước ngày hiện tại
+date.error.afternow = Ngày nhập phải sau ngày hiện tại
+register.error.email = Địa chỉ email đã được đăng ký
+employee.error.datefromto = Ngày bắt đầu không được lớn hơn ngày kết thúc
+url.error.notexist = Đường dẫn không tồn tại
+error.access.database = Có lỗi xãy ra khi truy cập dữ liệu:
+error.user.database = Chưa có tài khoản để quản lý

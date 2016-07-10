@@ -2,6 +2,9 @@
 @import forms._
 @import play.i18n._
 @import java.util.List
+@import constants._
+@import utils._
+@import scala.util.control._
 
 @(employeeApplyForm : Form[CreateEmployeeApplyForm],deparments : List[Deparment],users: List[User],reasons: List[Reason],emailLogin: String, roleIdLogin: String) 
 @main("Employee Page") { 
@@ -15,8 +18,8 @@
 				<div class="col-lg-12">
 					<h1 class="page-header">Đơn Xin Nghỉ Của Tôi</h1>
 					<ol class="breadcrumb">
-						<li><i class="fa fa-dashboard"></i> <a href="index.html">HR Manager</a></li>
-						<li class="active"><i class="fa fa-table"></i> Nộp Đơn</li>
+						<li><i class="fa fa-dashboard"></i> <a href="@StringUtils.redirectPageRole(roleIdLogin)">HR Manager</a></li>
+						<li class="active"><i class="fa fa-table"></i> @StringUtils.printTitleApplication(employeeApplyForm("id").value.get.toInt)</li>
 					</ol>
 				</div>
 			</div>
@@ -25,6 +28,9 @@
 			<div class="row">
 				<form method="POST" action="@routes.EmployeeController.emloyeeApplyPost()">
 					<div class="col-lg-6">
+					<span class="help-block">
+						@Messages.get(StringUtils.getMessageDate(employeeApplyForm))
+					</span>
 						<div class="form-group">
 							<label>Người nộp đơn</label>
 							<input class="form-control" value="@employeeApplyForm("fullName").value" readonly="readonly" name="fullName" id="fullName">
@@ -34,7 +40,6 @@
 							<label>Người duyệt</label>
 							<select class="form-control" name="emailManager" id="emailManager">
 								@for(value <- users) {
-									<option value="@value.email">@value.fullName</option>
 									@if(employeeApplyForm("emailManager").value == value.email){
 										<option value="@value.email" selected>@value.fullName</option>
 									} else {
@@ -52,6 +57,7 @@
 				 								maxlength="25" size="25"  readonly/>  
 				 								 <img src="/assets/img/cal.gif"
 												onclick="javascript:NewCssCal('fromDate', 'yyyyMMdd')" style="cursor: pointer" />
+									<span class="help-block">@if(employeeApplyForm("fromDate").hasErrors) {@Messages.get(employeeApplyForm("fromDate").error.get.message)}</span>
 								</div>
 							</div>
 						</div>
@@ -60,16 +66,12 @@
 					<div class="col-lg-6">
 						<div class="form-group">
 							<label>Đơn vị</label>
-							<select class="form-control" name="deparmentid" id="deparmentid">
-								@for(value <- deparments) {
-									@if(employeeApplyForm("deparmentid").value.get.toInt == value.deparmentId){
-										<option value="@value.deparmentId" selected>@value.deparmentName</option>
-									} else {
-										<option value="@value.deparmentId">@value.deparmentName</option>
-									}
+							@for(value <- deparments) {
+								@if(employeeApplyForm("deparmentid").value.get.toInt == value.deparmentId){
+								 	<input class="form-control" value="@value.deparmentName" name="deparmentName" id="deparmentName" readonly="readonly">
+								 	<input class="form-control" value="@employeeApplyForm("deparmentid").value" name="deparmentid" id="deparmentid" type="hidden">
 								}
-								
-							</select>
+							}
 						</div>
 						
 						<div class="form-group">
@@ -94,6 +96,7 @@
 				 								maxlength="25" size="25"  readonly/>  
 				 								 <img src="/assets/img/cal.gif"
 												onclick="javascript:NewCssCal('toDate', 'yyyyMMdd')" style="cursor: pointer" />
+									<span class="help-block">@if(employeeApplyForm("toDate").hasErrors) {@Messages.get(employeeApplyForm("toDate").error.get.message)}</span>
 								</div>
 							</div>
 						</div>
@@ -105,9 +108,11 @@
 					<input type="hidden" name="currentPage" id="currentPage" value="@employeeApplyForm("currentPage").value">
 					
 					<div class="col-lg-12">
-						<button type="submit" class="btn btn-primary">Nộp đơn</button>
-						<a href="@routes.EmployeeController.myLeaveOfAbsence()">
-			                <button class="btn btn-default">Hủy bỏ</button>
+						<button type="submit" class="btn btn-primary">
+						@StringUtils.printTitleApplication(employeeApplyForm("id").value.get.toInt)
+						</button>
+						<a href="@routes.EmployeeController.approveEmployeeList(employeeApplyForm("currentPage").value.get.toInt)">
+			                <button class="btn btn-default" type="button">Hủy bỏ</button>
 						</a>
 						
 					</div>

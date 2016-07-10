@@ -37,6 +37,8 @@ import constants.CommonConstant
 import play.api.Environment
 import play.api.libs.mailer._
 import forms._
+import utils.StringUtils
+import configs._
 
 class EmployeeController @Inject() (val messagesApi: MessagesApi,
     val ws: WSClient, mailer: MailerClient, environment: Environment)(implicit ec: ExecutionContext) extends Controller with I18nSupport {
@@ -63,14 +65,16 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       "emailEmployee" -> nonEmptyText,
       "emailManager" -> nonEmptyText,
       "deparmentid" -> number,
-      "fromDate" -> date,
-      "toDate" -> date,
-      "submitDate" -> date,
+      "fromDate" -> date("yyyy-MM-dd").verifying("date.error.afternow",_.after(new Date())),
+      "toDate" -> date("yyyy-MM-dd").verifying("date.error.afternow",_.after(new Date())),
+      "submitDate" -> date("yyyy-MM-dd"),
       "reasonId" -> number,
       "statusId" -> number,
-      "currentPage" -> number)(CreateEmployeeApplyForm.apply)(CreateEmployeeApplyForm.unapply))
+      "currentPage" -> number)(CreateEmployeeApplyForm.apply)(CreateEmployeeApplyForm.unapply).verifying("employee.error.datefromto", form => form.fromDate
+          .before(form.toDate))
+      )
 
-  def emloyeeApplyGet(idValue: Int, currentDate: Int) = Action { implicit request =>
+  def emloyeeApplyGet(idValue: Int, currentDate: Int) = Authenticated { implicit request =>
     var user: User = userService.findUserByEmail(request.session.get("email").get)
     var deparments: List[Deparment] = deparmentService.findDeparmentAll
     val users: List[User] = userService.findUserSubtractEmail(request.session.get("email").get)
@@ -124,7 +128,7 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
       request.session.get("roleId").get))
   }
 
-  def emloyeeApplyPost() = Action { implicit request =>
+  def emloyeeApplyPost() = Authenticated { implicit request =>
     val newEmployeeApplyForm = employeeApplyForm.bindFromRequest()
     var entity:EmployeeApply = new EmployeeApply
     newEmployeeApplyForm.bindFromRequest.fold(
@@ -160,84 +164,40 @@ class EmployeeController @Inject() (val messagesApi: MessagesApi,
         val reasonName:String = entity.reason.reasonName
         val employeeEmail: String = entity.emailEmployee.email
         // send mail
-        val email = Email(
-        "Duyệt đơn xin nghỉ của nhân viên",
-        "HR Manager <hrmanagersystem@yandex.com>",
-        Seq(s"$managerName <$managerEmail>"),
-        bodyHtml = Some(s"""<html><body>
-                        <p>Gửi Anh/Chị: $managerName</p>
-                        <p>Từ ngày $dateFrom đến ngày $toDate, có nhân viên $employeeName</p>
-                        <p>Thuộc phòng ban/bộ phận $depatermentName xin nghỉ vì lý do $reasonName</p>
-                        <p></p>
-                        <p>Anh/chị vui lòng truy cập vào <a href="http://localhost:9000/admin/application/list/1">HR Manager</a> để duyệt đơn xin nghỉ của nhân viên.</p>
-                        <p>Trân trọng cảm ơn!</p>
-                  </body></html>""")
-        )
-        
-        val email1 = Email(
-        "Duyệt đơn xin nghỉ của nhân viên",
-        "HR Manager <hrmanagersystem@yandex.com>",
-        Seq(s"$managerName <$employeeEmail>"),
-        bodyHtml = Some(s"""<html><body>
-                        <p>Gửi Anh/Chị: $managerName</p>
-                        <p>Từ ngày $dateFrom đến ngày $toDate, có nhân viên $employeeName</p>
-                        <p>Thuộc phòng ban/bộ phận $depatermentName xin nghỉ vì lý do $reasonName</p>
-                        <p></p>
-                        <p>Anh/chị vui lòng truy cập vào <a href="http://localhost:9000/admin/application/list/1">HR Manager</a> để duyệt đơn xin nghỉ của nhân viên.</p>
-                        <p>Trân trọng cảm ơn!</p>
-                  </body></html>""")
-        )
-        mailer.send(email1)
-        mailer.send(email)
-        
-        // redirect page
-        if (employeeApply.currentPage == CommonConstant.STATUS_ALL) {
-        	Redirect(routes.EmployeeController.myLeaveOfAbsence())
-        } else if (employeeApply.currentPage == CommonConstant.STATUS_YET_APPROVAL) {
-          Redirect(routes.EmployeeController.notApproved())
-        } else if (employeeApply.currentPage == CommonConstant.STATUS_APPROVAL) {
-          Redirect(routes.EmployeeController.approved())
-        } else {
-          Redirect(routes.EmployeeController.denied())
-        }
+        mailer.send(sendMail(managerName, managerEmail, dateFrom, toDate, employeeName, depatermentName,
+            reasonName, CommonConstant.TITLE_MAIL_REQUEST_APPROVAL, CommonConstant.URL_MAIL_REQUEST_APPROVAL))
+        Redirect(routes.EmployeeController.approveEmployeeList(employeeApply.currentPage))
       })
   }
-  
-  def notApproved() = Action {implicit request =>
-    var currentPage:Int = CommonConstant.STATUS_YET_APPROVAL;
-    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(request.session.get("email").get, CommonConstant.STATUS_YET_APPROVAL)
-    Ok(views.html.employee_not_approved(employeeApplys,currentPage, request.session.get("email").get,request.session.get("roleId").get))
-  }
-  
-
-  def deleteApply(id: Int, currentPage: Int)= Action { implicit request =>
+ 
+  def deleteApply(id: Int, currentPage: Int)= Authenticated { implicit request =>
     employeeApplyService.deleteEmployeeApplyById(id)
-    if (currentPage == CommonConstant.STATUS_ALL) {
-    	Redirect(routes.EmployeeController.myLeaveOfAbsence())
-    } else if (currentPage == CommonConstant.STATUS_YET_APPROVAL) {
-      Redirect(routes.EmployeeController.notApproved())
-    } else if (currentPage == CommonConstant.STATUS_APPROVAL) {
-      Redirect(routes.EmployeeController.approved())
-    } else {
-      Redirect(routes.EmployeeController.denied())
-    }
+    Redirect(routes.EmployeeController.approveEmployeeList(currentPage))
   }
   
-  def myLeaveOfAbsence()= Action {implicit request =>
-    var currentPage:Int = CommonConstant.STATUS_ALL
-    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByEmail(request.session.get("email").get)
+  def approveEmployeeList(currentPage:Int)= Authenticated {implicit request =>
+    var employeeApplys : List[EmployeeApply] = null
+    if (currentPage == CommonConstant.STATUS_ALL) {
+      employeeApplys = employeeApplyService.findEmployeeApplyByEmail(request.session.get("email").get)
+    } else {
+      employeeApplys = employeeApplyService.findEmployeeApplyByStatus(request.session.get("email").get, currentPage)
+    }
     Ok(views.html.employee(employeeApplys,currentPage,request.session.get("email").get,request.session.get("roleId").get))
   }
   
-  def approved = Action {implicit request =>
-    var currentPage:Int = CommonConstant.STATUS_APPROVAL
-    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(request.session.get("email").get, CommonConstant.STATUS_APPROVAL)
-    Ok(views.html.employee_approved(employeeApplys,currentPage,request.session.get("email").get,request.session.get("roleId").get))
-  }
-  
-  def denied = Action {implicit request =>
-    var currentPage:Int = CommonConstant.STATUS_CANCEL_APPROVAL
-    val employeeApplys : List[EmployeeApply] = employeeApplyService.findEmployeeApplyByStatus(request.session.get("email").get, CommonConstant.STATUS_CANCEL_APPROVAL)
-    Ok(views.html.employee_denied(employeeApplys,currentPage,request.session.get("email").get,request.session.get("roleId").get))
-  }
+   private def sendMail(managerName:String,managerEmail:String,
+      dateFrom:Date,toDate:Date,employeeName:String,depatermentName:String,reasonName:String,title:String, url:String) = 
+    Email(
+        title + employeeName,
+        "HR Manager <hrmanagersystem@yandex.com>",
+        Seq(s"$managerName <$managerEmail>"),
+        bodyHtml = Some(s"""<html><body>
+                        <p>Gửi Anh/Chị: <b>$managerName</b></p>
+                        <p>Từ ngày $dateFrom đến ngày $toDate, có nhân viên <b>$employeeName</b></p>
+                        <p>Thuộc phòng ban/bộ phận $depatermentName xin nghỉ vì lý do $reasonName</p>
+                        <p></p>
+                        <p>Anh/chị vui lòng truy cập vào <a href="http://localhost:9000/$url">HR Manager</a> để <b>duyệt đơn xin nghỉ</b> của nhân viên.</p>
+                        <p>Trân trọng cảm ơn!</p>
+                  </body></html>""")
+       )
 }

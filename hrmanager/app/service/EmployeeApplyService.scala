@@ -20,4 +20,6 @@ trait EmployeeApplyService {
   def findEmployeeApplyByEmail(email:String):JList[EmployeeApply]
   
   def findJobApplitationAllList():JList[ListAllJobApplication]
+  
+  def findJobApplitationByEmailStatusAll(email:String):JList[ListJobApplication]
 }

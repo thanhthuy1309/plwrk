@@ -83,15 +83,17 @@
 							<label>Cấp trên</label>
 							<select class="form-control" name="emailUpper" id="emailUpper">
 								<option value="" selected></option>
-								@for(emailUser <- superList) {
-									@if(userForm("emailUpper").value != None){
-										@if(userForm("emailUpper").value.get.toString == emailUser.email){
-											<option value="@emailUser.email" selected>@emailUser.fullName</option>
-										} else {
+								@if(superList != null) {
+									@for(emailUser <- superList) {
+										@if(userForm("emailUpper").value != None){
+											@if(userForm("emailUpper").value.get.toString == emailUser.email){
+												<option value="@emailUser.email" selected>@emailUser.fullName</option>
+											} else {
+												<option value="@emailUser.email">@emailUser.fullName</option>
+											}
+										}  else {
 											<option value="@emailUser.email">@emailUser.fullName</option>
 										}
-									}  else {
-										<option value="@emailUser.email">@emailUser.fullName</option>
 									}
 								}
 							</select>
